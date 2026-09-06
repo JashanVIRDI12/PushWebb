@@ -1,15 +1,18 @@
 'use client';
 
+import { useRef } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import {
   ArrowRight,
   ArrowUpRight,
-  Check,
   SquarePlay,
   Clapperboard,
   Target,
   Bot,
   Share2,
   BarChart3,
+  ChevronLeft,
+  ChevronRight,
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
@@ -115,94 +118,93 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   const Icon = service.icon;
 
   return (
-    <article className="service-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 bg-surface p-5 sm:p-6 shadow-[0_12px_32px_-18px_rgba(11,26,43,0.24)] transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover hover:shadow-[0_22px_44px_-20px_rgba(11,26,43,0.32)]">
-      {/* Accent rule across the head */}
-      <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-accent/40" />
+    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-surface p-6 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.30)] backdrop-blur-2xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover hover:shadow-[0_22px_48px_-22px_rgba(11,26,43,0.35)] sm:w-[370px] sm:p-7 md:w-[390px]">
+      {/* Ambient aura */}
+      <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-ink/[0.04] opacity-40 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
-      {/* Header: icon + category, watermark index */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-ink/20 bg-ink/10 text-ink">
-            <Icon className="h-4 w-4" />
+      <div className="relative z-10">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-ink/20 bg-ink/10 text-ink shadow-inner">
+              <Icon className="h-4 w-4" />
+            </div>
+            <span className="rounded-full border border-ink/15 bg-ink/[0.06] px-3 py-0.5 font-display text-[10px] font-medium uppercase tracking-wider text-ink">
+              {service.category}
+            </span>
           </div>
-          <span className="rounded-full border border-ink/15 bg-ink/[0.06] px-3 py-0.5 font-display text-[10px] font-medium uppercase tracking-wider text-ink">
-            {service.category}
+
+          <span className="watermark-number font-display text-2xl font-bold tracking-tight text-ink/20 transition-colors duration-300 group-hover:text-ink/40">
+            {String(index + 1).padStart(2, '0')}
           </span>
         </div>
-        <span className="font-display text-2xl font-bold tracking-tight text-ink/15 transition-colors duration-300 group-hover:text-ink/35">
-          {String(index + 1).padStart(2, '0')}
-        </span>
+
+        {/* Media */}
+        <div className="card-media-wrapper relative mb-5 h-44 w-full overflow-hidden rounded-2xl border border-ink/15 bg-paper-alt shadow-inner">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={service.image}
+            alt={service.title}
+            loading="lazy"
+            className="card-media-img h-full w-full scale-125 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent opacity-60" />
+        </div>
+
+        <h3 className="mb-2 font-display text-xl font-medium tracking-tight text-ink sm:text-2xl">
+          {service.title}
+        </h3>
+
+        <p className="line-clamp-2 text-xs leading-relaxed text-ink-soft sm:text-[13px]">
+          {service.description}
+        </p>
       </div>
 
-      {/* Media */}
-      <div className="relative mb-5 h-40 w-full overflow-hidden rounded-xl border border-ink/10 bg-paper-alt shadow-inner">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={service.image}
-          alt={service.title}
-          loading="lazy"
-          className="h-full w-full scale-105 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent opacity-60" />
+      <div className="relative z-10 border-t border-ink/[0.08] pt-4">
+        <a
+          href="/contact"
+          className="group/cta inline-flex w-full items-center justify-between font-display text-xs font-medium text-ink no-underline transition-colors duration-200 sm:text-sm"
+        >
+          <span className="tracking-wide">{service.cta}</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 bg-ink/10 transition-all duration-200 group-hover/cta:scale-105 group-hover/cta:bg-ink group-hover/cta:text-paper">
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
+          </div>
+        </a>
       </div>
-
-      {/* Copy */}
-      <h3 className="mb-2 font-display text-lg font-medium tracking-tight text-ink sm:text-xl">
-        {service.title}
-      </h3>
-      <p className="mb-4 text-[13px] leading-relaxed text-ink-soft">{service.description}</p>
-
-      <ul className="mb-6 space-y-2">
-        {service.bullets.map((bullet) => (
-          <li key={bullet} className="flex items-start gap-2 text-xs leading-relaxed text-ink-soft">
-            <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" strokeWidth={2.4} />
-            {bullet}
-          </li>
-        ))}
-      </ul>
-
-      {/* Action */}
-      <a
-        href="/contact"
-        className="mt-auto flex items-center justify-between border-t border-ink/[0.08] pt-4 font-display text-sm font-medium text-ink no-underline transition-colors duration-200 hover:text-accent"
-      >
-        <span className="tracking-wide">{service.cta}</span>
-        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/15 bg-ink/10 transition-all duration-200 group-hover:scale-105 group-hover:bg-ink group-hover:text-paper">
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
-      </a>
-    </article>
+    </div>
   );
 }
 
-function UnifiedGrowthPanel() {
+function ClosingCard() {
   return (
-    <div className="relative mt-6 overflow-hidden rounded-2xl bg-ink p-8 sm:mt-8 sm:p-10 md:p-12">
-      <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl bg-ink p-7 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.45)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_-24px_rgba(11,26,43,0.6)] sm:w-[370px] sm:p-8 md:w-[390px]">
+      <div className="pointer-events-none absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
 
-      <div className="relative z-10 flex flex-col gap-7 md:flex-row md:items-center md:justify-between md:gap-10">
-        <div className="max-w-xl">
-          <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/25 bg-white/10 text-paper">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <span className="mb-2 block font-display text-xs font-medium uppercase tracking-widest text-paper/60">
-            Unified Growth Engine
-          </span>
-          <h3 className="font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
-            Every Growth Lever, Connected as One.
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-paper/70">
-            We connect video, distribution, performance ads, and automation into a single scalable
-            growth system.
-          </p>
+      <div className="relative z-10">
+        <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/25 bg-white/10 text-paper transition-transform duration-300 group-hover:scale-110">
+          <Sparkles className="h-5 w-5 text-paper" />
         </div>
 
+        <span className="mb-3 block font-display text-xs font-medium uppercase tracking-widest text-paper/60">
+          Unified Growth Engine
+        </span>
+
+        <h3 className="mb-4 font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+          Every Growth Lever, Connected as One.
+        </h3>
+
+        <p className="text-xs leading-relaxed text-paper/70 sm:text-sm">
+          We connect video, distribution, performance ads, and automation into a single scalable
+          growth system.
+        </p>
+      </div>
+
+      <div className="relative z-10 border-t border-white/15 pt-4">
         <a
           href="/contact"
-          className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-paper px-6 py-3.5 font-display text-sm font-semibold text-ink no-underline transition-all duration-200 hover:scale-[1.02] hover:bg-white active:scale-[0.98]"
+          className="group/btn flex w-full items-center justify-center gap-2 rounded-2xl bg-paper py-3.5 font-display text-sm font-semibold text-ink no-underline transition-all duration-200 hover:scale-[1.02] hover:bg-white active:scale-[0.98]"
         >
           <span>Book a Brainstorming Call</span>
-          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
         </a>
       </div>
     </div>
@@ -210,39 +212,241 @@ function UnifiedGrowthPanel() {
 }
 
 export function WhatWeDoSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const progressLabelRef = useRef<HTMLSpanElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const stage = stageRef.current;
+      const track = trackRef.current;
+      if (!stage || !track) return;
+
+      const mm = gsap.matchMedia();
+
+      // ── Touch / small screens: native horizontal scroll, drive the progress UI
+      mm.add('(max-width: 1023px)', () => {
+        let frame = 0;
+        let activeIndex = -1;
+        const setProgressScale = progressBarRef.current
+          ? gsap.quickSetter(progressBarRef.current, 'scaleX')
+          : null;
+        const updateProgress = () => {
+          frame = 0;
+          const max = Math.max(1, track.scrollWidth - track.clientWidth);
+          const progress = Math.max(0, Math.min(1, track.scrollLeft / max));
+          const nextIndex = Math.min(
+            SERVICES.length - 1,
+            Math.round(progress * (SERVICES.length - 1)),
+          );
+          if (nextIndex !== activeIndex && progressLabelRef.current) {
+            activeIndex = nextIndex;
+            progressLabelRef.current.textContent = String(nextIndex + 1).padStart(2, '0');
+          }
+          setProgressScale?.(Math.max(0.16, progress));
+        };
+        const scheduleProgress = () => {
+          if (!frame) frame = requestAnimationFrame(updateProgress);
+        };
+        track.addEventListener('scroll', scheduleProgress, { passive: true });
+        updateProgress();
+        return () => {
+          cancelAnimationFrame(frame);
+          track.removeEventListener('scroll', scheduleProgress);
+        };
+      });
+
+      // ── Desktop: pin the section, map vertical scroll 1:1 onto the row
+      mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+        // Exact horizontal overrun — no fudge factors, so the vertical scroll
+        // maps straight onto it.
+        const getDistance = () => Math.max(0, track.scrollWidth - track.clientWidth);
+        // Hold the pin below the floating navbar.
+        const getNavOffset = () => {
+          const raw = getComputedStyle(document.documentElement).getPropertyValue(
+            '--site-nav-height',
+          );
+          return (parseInt(raw, 10) || 80) + 28;
+        };
+        // One card + the flex gap (gap-6 = 24px), as a fraction of total travel.
+        const getStep = () => {
+          const first = track.querySelector<HTMLElement>('.service-card');
+          const dist = getDistance();
+          if (!first || dist <= 0) return 0;
+          return (first.offsetWidth + 24) / dist;
+        };
+        let activeIndex = -1;
+        const setProgressScale = progressBarRef.current
+          ? gsap.quickSetter(progressBarRef.current, 'scaleX')
+          : null;
+
+        const tween = gsap.to(track, {
+          x: () => -getDistance(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: stage,
+            start: () => `top top+=${getNavOffset()}`,
+            end: () => `+=${getDistance()}`,
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            // Settle on a whole card when the scroll stops.
+            snap: {
+              snapTo: (value) => {
+                const step = getStep();
+                return step > 0 ? Math.min(1, Math.round(value / step) * step) : value;
+              },
+              duration: { min: 0.15, max: 0.35 },
+              delay: 0.04,
+              ease: 'power1.inOut',
+            },
+            onUpdate: (self) => {
+              const nextIndex = Math.min(
+                SERVICES.length - 1,
+                Math.round(self.progress * (SERVICES.length - 1)),
+              );
+              if (nextIndex !== activeIndex && progressLabelRef.current) {
+                activeIndex = nextIndex;
+                progressLabelRef.current.textContent = String(nextIndex + 1).padStart(2, '0');
+              }
+              setProgressScale?.(Math.max(0.16, self.progress));
+            },
+          },
+        });
+
+        // Parallax the card images against the horizontal scroll.
+        const cards = gsap.utils.toArray<HTMLElement>(track.querySelectorAll('.service-card'));
+        cards.forEach((card) => {
+          const img = card.querySelector<HTMLElement>('.card-media-img');
+          if (!img) return;
+          gsap.fromTo(
+            img,
+            { xPercent: -12 },
+            {
+              xPercent: 12,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                containerAnimation: tween,
+                start: 'left 95%',
+                end: 'right 5%',
+                scrub: true,
+              },
+            },
+          );
+        });
+
+        let refreshFrame = 0;
+        const refresh = () => ScrollTrigger.refresh();
+        if (document.readyState === 'complete') {
+          refreshFrame = requestAnimationFrame(refresh);
+        } else {
+          window.addEventListener('load', refresh);
+        }
+
+        return () => {
+          cancelAnimationFrame(refreshFrame);
+          window.removeEventListener('load', refresh);
+          tween.scrollTrigger?.kill();
+          tween.kill();
+        };
+      });
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef },
+  );
+
+  const scrollBy = (direction: 'left' | 'right') => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: direction === 'left' ? -420 : 420, behavior: 'smooth' });
+  };
+
   return (
     <section
       id="services"
-      className="reveal-section relative w-full overflow-hidden border-t border-line bg-paper py-16 md:py-28"
+      ref={sectionRef}
+      className="reveal-section relative w-full overflow-hidden border-t border-line bg-paper pt-14 pb-2 md:pt-20 md:pb-4"
     >
-      <div className="container mx-auto max-w-6xl px-4 md:px-8">
+      <div ref={stageRef} className="w-full">
         {/* Header */}
-        <div className="mb-10 flex flex-col gap-5 sm:mb-14 md:flex-row md:items-end md:justify-between">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-ink/[0.06] px-4 py-1 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(11,26,43,0.15)]">
-              <Sparkles className="h-3.5 w-3.5 text-ink" />
-              <span>WHAT WE DO · 6 CORE DISCIPLINES</span>
+        <div className="mb-6 w-full px-4 sm:mb-8 sm:px-8 lg:px-12">
+          <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-ink/[0.06] px-4 py-1 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(11,26,43,0.15)] backdrop-blur-md">
+                <Sparkles className="h-3.5 w-3.5 text-ink" />
+                <span>WHAT WE DO · 6 CORE DISCIPLINES</span>
+              </div>
+
+              <h2 className="split-h2 max-w-3xl font-display text-3xl font-medium leading-[1.08] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
+                We Turn Creative Ideas Into Growth Systems
+              </h2>
+
+              <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-soft">
+                Six connected disciplines. Take one on its own, or run them together as a single
+                growth system.
+              </p>
             </div>
 
-            <h2 className="split-h2 max-w-3xl font-display text-3xl font-medium leading-[1.08] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
-              We Turn Creative Ideas Into Growth Systems
-            </h2>
+            {/* Progress + manual nav */}
+            <div className="flex shrink-0 items-center gap-4">
+              <div className="flex items-center gap-2.5">
+                <span ref={progressLabelRef} className="font-display text-sm font-semibold text-ink">
+                  01
+                </span>
+                <div className="h-1.5 w-24 overflow-hidden rounded-full bg-ink/15">
+                  <div
+                    ref={progressBarRef}
+                    className="h-full origin-left bg-ink shadow-[0_0_8px_rgba(11,26,43,0.8)]"
+                    style={{ transform: 'scaleX(0.16)' }}
+                  />
+                </div>
+                <span className="font-display text-xs text-ink-muted">
+                  {String(SERVICES.length).padStart(2, '0')}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => scrollBy('left')}
+                  aria-label="Scroll left"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/15 bg-ink/10 text-ink transition-all hover:bg-ink hover:text-paper active:scale-95"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollBy('right')}
+                  aria-label="Scroll right"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/15 bg-ink/10 text-ink transition-all hover:bg-ink hover:text-paper active:scale-95"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
           </div>
-
-          <p className="max-w-sm text-sm leading-relaxed text-ink-soft md:text-right">
-            Six connected disciplines. Take one on its own, or run them together as a single growth
-            system.
-          </p>
         </div>
 
-        {/* Grid */}
-        <div className="reveal-stagger grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-          {SERVICES.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
-          ))}
+        {/* Horizontal scroll track. The viewport clips the row sideways; the
+            track's vertical padding keeps card hover-lift and drop shadows
+            inside that clip box so nothing gets sheared. */}
+        <div className="services-track-viewport w-full overflow-hidden">
+          <div
+            ref={trackRef}
+            className="services-track no-scrollbar flex gap-6 overflow-x-auto scroll-smooth px-4 pt-8 pb-20 will-change-transform sm:px-8 lg:overflow-visible lg:px-12"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {SERVICES.map((service, index) => (
+              <ServiceCard key={service.title} service={service} index={index} />
+            ))}
+            <ClosingCard />
+          </div>
         </div>
-
-        <UnifiedGrowthPanel />
       </div>
     </section>
   );

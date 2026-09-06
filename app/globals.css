@@ -333,6 +333,14 @@ html {
   display: none;
 }
 
+/* Desktop normally pins and scrubs the row with GSAP. Reduced-motion users
+   never enter that branch, so give them a plain native horizontal scroller. */
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .services-track {
+    overflow-x: auto;
+  }
+}
+
 /* ── Services page: channel rail visibility + active state ──── */
 .channel-rail.is-visible {
   opacity: 1;
