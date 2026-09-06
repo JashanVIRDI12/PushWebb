@@ -1,0 +1,744 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ────────────────────────────────────────────────────────────────
+   PUSHWebb design system — deck palette
+   Paper ground, near-black navy ink, indigo accent, hairline rules.
+──────────────────────────────────────────────────────────────── */
+:root {
+  --site-nav-height: 68px;
+
+  --background: #F4F5F7;
+  --foreground: #0B1A2B;
+
+  /* Surfaces */
+  --color-paper: #F4F5F7;
+  --color-paper-alt: #EAECEF;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F0F2F5;
+
+  /* Ink */
+  --color-ink: #0B1A2B;
+  --color-ink-soft: #3F4C5A;
+  --color-ink-muted: #6C7887;
+
+  /* Lines & accent */
+  --color-line: rgba(11, 26, 43, 0.12);
+  --color-line-strong: rgba(11, 26, 43, 0.24);
+  --color-accent: #1E2FA8;
+  --color-accent-hover: #16217C;
+}
+
+@theme {
+  --color-paper: #F4F5F7;
+  --color-paper-alt: #EAECEF;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F0F2F5;
+
+  --color-ink: #0B1A2B;
+  --color-ink-soft: #3F4C5A;
+  --color-ink-muted: #6C7887;
+
+  --color-line: rgba(11, 26, 43, 0.12);
+  --color-line-strong: rgba(11, 26, 43, 0.24);
+  --color-accent: #1E2FA8;
+  --color-accent-hover: #16217C;
+}
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(11, 26, 43, 0.12);
+  border-top-color: var(--color-ink);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-archivo);
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--color-ink-soft);
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+    color: var(--color-ink);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  /* Deck voice: statements are set in heavy, slightly expanded caps. */
+  h1,
+  h2 {
+    font-weight: 800;
+    text-transform: uppercase;
+    font-variation-settings: "wdth" 106;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .font-body {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Heavy caps statement — hero + section headlines */
+  .display-caps {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-variation-settings: "wdth" 106;
+  }
+
+  .eyebrow {
+    font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* Deck asterisk mark — small ink badge used as a section anchor */
+  .asterisk-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  /* One alpha mask, colored by the active surface token. This keeps the
+     navigation and footer mark identical while automatically switching to
+     white inside .on-dark sections. */
+  .brand-mark {
+    display: inline-block;
+    flex: none;
+    background-color: currentColor;
+    -webkit-mask: url('/pushwebb-assets/logos/brand-mark-dark.png') center / contain no-repeat;
+    mask: url('/pushwebb-assets/logos/brand-mark-dark.png') center / contain no-repeat;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Dark stage scope
+   Every utility resolves through these custom properties, so flipping
+   them on a wrapper inverts the whole subtree — no per-element classes.
+──────────────────────────────────────────────────────────────── */
+.on-dark {
+  --color-paper: #000000;
+  --color-paper-alt: #0B1524;
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-hover: rgba(255, 255, 255, 0.09);
+
+  --color-ink: #FFFFFF;
+  --color-ink-soft: rgba(255, 255, 255, 0.74);
+  --color-ink-muted: rgba(255, 255, 255, 0.52);
+
+  --color-line: rgba(255, 255, 255, 0.14);
+  --color-line-strong: rgba(255, 255, 255, 0.30);
+  --color-accent: #8296FF;
+  --color-accent-hover: #A3B2FF;
+
+  color: var(--color-ink-soft);
+}
+
+.on-dark ::selection {
+  background: #FFFFFF;
+  color: #05070A;
+}
+
+/* Black ground lifted by the deck's navy — used for whole dark bands. */
+.dark-zone {
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(24, 48, 104, 0.55) 0%, transparent 62%),
+    radial-gradient(90% 60% at 50% 100%, rgba(16, 34, 78, 0.45) 0%, transparent 68%),
+    linear-gradient(180deg, #000000 0%, #070C18 45%, #000000 100%);
+}
+
+/* ── Hero robot: deck periwinkle ─────────────────────────────
+   The Spline scene ships with a saturated magenta key that fights the
+   deck's indigo. Rotating that hue directly threw parts of the scene
+   green (surfaces start at different hues), so instead we flatten to
+   luminance first (grayscale + sepia) then tint the whole figure
+   through one hue — landing on the deck's periwinkle accent (#8296FF).
+   saturate stays low (~1.2) so it reads as tinted metal, not neon.
+   Dials: hue-rotate picks the blue (lower = warmer), saturate the
+   strength, brightness how far it sits out of the black. */
+.robot-tint {
+  filter: grayscale(1) sepia(1) hue-rotate(198deg) saturate(1.2) brightness(1.05) contrast(1.02);
+}
+
+/* Spline stamps a "Built with Spline" badge into the canvas corner.
+   Solid black over it, feathered outward by the shadow so no edge shows. */
+.spline-badge-cover {
+  background: #000;
+  box-shadow: 0 0 34px 20px #000;
+}
+
+/* ── SplitText line masks (about page) ────────────────────────
+   Each line gets a clipping wrapper so characters can slide up from
+   behind a hard edge; the padding keeps descenders from being cut. */
+.split-line {
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+/* Statement headlines start at opacity 0 so their reveal cannot flash
+   unstyled. If motion is reduced — or JS never runs — show them anyway
+   rather than leaving the page blank. */
+@media (prefers-reduced-motion: reduce) {
+  [data-anim='hero-title'],
+  [data-anim='statement'] {
+    opacity: 1 !important;
+  }
+}
+
+/* Required for Framer Motion useScroll when tracking section targets */
+html {
+  position: relative;
+}
+
+#services,
+#about,
+#framework,
+#locations,
+#faq {
+  scroll-margin-top: calc(var(--site-nav-height) + 16px);
+}
+
+/* Service channels are linked directly from the nav */
+.channel-section {
+  scroll-margin-top: calc(var(--site-nav-height) + 16px);
+}
+
+/* ── Marquee ticker ──────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+
+.marquee-outer {
+  animation: marquee-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-outer { animation: none; }
+}
+
+/* ── GSAP word-split masks ───────────────────────────────────── */
+.gsap-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+}
+
+.gsap-word {
+  display: inline-block;
+}
+
+/* ── Services scroll-story content swap ──────────────────────── */
+@keyframes wwd-fade-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wwd-fade-in {
+  animation: wwd-fade-in 0.5s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wwd-fade-in { animation: none; }
+}
+
+/* ── Reduced-motion fallbacks ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .marquee-outer,
+  .gsap-word {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Hide scrollbar on touch-swipe carousels (scroll still works) ── */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Services page: channel rail visibility + active state ──── */
+.channel-rail.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.channel-rail-item .channel-rail-dot {
+  background: var(--color-line-strong);
+  transform: scale(1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.channel-rail-item.is-active .channel-rail-dot {
+  background: var(--color-accent);
+  transform: scale(1.7);
+}
+
+.channel-rail-item .channel-rail-tag {
+  color: var(--color-ink-muted);
+  transition: color 0.3s ease;
+}
+
+.channel-rail-item.is-active .channel-rail-tag {
+  color: var(--color-ink);
+}
+
+/* ── Animated gradient ring accent ──────────────────────────── */
+@keyframes ring-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.ring-spin {
+  animation: ring-spin 18s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring-spin { animation: none; }
+}
+
+/* ── Cycling gradient wordmark (about hero) ──────────────────────
+   Ported from the "text-color" component, retoned to the deck palette:
+   each word rests as solid ink and takes a turn lighting up with an
+   indigo/sky/violet gradient. Used by <TextColor />. */
+.pw-gradient-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pw-gradient-1 { background-image: linear-gradient(to right, #1E2FA8, #5B8DEF); }
+.pw-gradient-2 { background-image: linear-gradient(to right, #3B1E8A, #7B5BE0); }
+.pw-gradient-3 { background-image: linear-gradient(to right, #0B1A2B, #1E2FA8); }
+
+/* Solid-ink understudy sitting behind each word. */
+.pw-word-cycle-bg-1,
+.pw-word-cycle-bg-2,
+.pw-word-cycle-bg-3 {
+  position: relative;
+}
+
+.pw-word-cycle-bg-1::before,
+.pw-word-cycle-bg-2::before,
+.pw-word-cycle-bg-3::before {
+  content: attr(data-content);
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: var(--color-ink);
+}
+
+@keyframes pw-word-fg-1 {
+  from, 16.667%, to { opacity: 1; }
+  33.333%, 83.333%  { opacity: 0; }
+}
+@keyframes pw-word-fg-2 {
+  from, 16.667%, 66.667%, to { opacity: 0; }
+  33.333%, 50%               { opacity: 1; }
+}
+@keyframes pw-word-fg-3 {
+  from, 50%, to     { opacity: 0; }
+  66.667%, 83.333%  { opacity: 1; }
+}
+
+@keyframes pw-word-bg-1 {
+  from, 16.667%, to { opacity: 0; }
+  25%, 91.667%      { opacity: 1; }
+}
+@keyframes pw-word-bg-2 {
+  from, 25%, 58.333%, to { opacity: 1; }
+  33.333%, 50%           { opacity: 0; }
+}
+@keyframes pw-word-bg-3 {
+  from, 58.333%, 91.667%, to { opacity: 1; }
+  66.667%, 83.333%           { opacity: 0; }
+}
+
+.pw-word-cycle-1 { animation: pw-word-fg-1 8s infinite; }
+.pw-word-cycle-2 { animation: pw-word-fg-2 8s infinite; }
+.pw-word-cycle-3 { animation: pw-word-fg-3 8s infinite; }
+
+.pw-word-cycle-bg-1::before { animation: pw-word-bg-1 8s infinite; }
+.pw-word-cycle-bg-2::before { animation: pw-word-bg-2 8s infinite; }
+.pw-word-cycle-bg-3::before { animation: pw-word-bg-3 8s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pw-word-cycle-1,
+  .pw-word-cycle-2,
+  .pw-word-cycle-3,
+  .pw-word-cycle-bg-1::before,
+  .pw-word-cycle-bg-2::before,
+  .pw-word-cycle-bg-3::before {
+    animation: none !important;
+  }
+  /* Rest state: every word solid ink, no shimmer. */
+  .pw-word-cycle-1,
+  .pw-word-cycle-2,
+  .pw-word-cycle-3 { opacity: 0; }
+  .pw-word-cycle-bg-1::before,
+  .pw-word-cycle-bg-2::before,
+  .pw-word-cycle-bg-3::before { opacity: 1; }
+}
+
+/* ── Legacy 3D text-room hero (kept, not mounted) ─────────────────────────────── */
+@keyframes poem-lane-left {
+  to { margin-left: -54000px; }
+}
+
+@keyframes poem-lane-back {
+  to { margin-left: -54870px; }
+}
+
+@keyframes poem-lane-right {
+  to { margin-left: -55740px; }
+}
+
+@keyframes poem-filter-animation {
+  0%, 100% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(100deg); }
+}
+
+@keyframes poem-zoom-in {
+  from { transform: scale(1); }
+  to { transform: scale(2.5); }
+}
+
+@keyframes poem-blur {
+  from { filter: blur(0); }
+  to { filter: blur(3px); }
+}
+
+@keyframes poem-brightness {
+  from { filter: brightness(1) contrast(1); }
+  to { filter: brightness(0.8) contrast(1.3); }
+}
+
+@keyframes poem-text-glow {
+  0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+  50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+}
+
+.poem-animation {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #05080a;
+}
+
+.poem-animation__sr-heading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.poem-animation__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050505;
+}
+
+.poem-animation__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center;
+  animation: poem-brightness 200s linear infinite alternate;
+}
+
+.poem-animation__scene {
+  position: relative;
+  display: flex;
+  width: 1000px;
+  height: 562px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: scale(1);
+  animation: poem-zoom-in 200s linear infinite alternate;
+}
+
+.poem-animation__background,
+.poem-animation__figures {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+.poem-animation__background {
+  z-index: 0;
+  filter: brightness(0.52) contrast(1.08);
+}
+
+.poem-animation__figures {
+  z-index: 3;
+  object-fit: contain;
+  animation: poem-blur 200s linear infinite alternate;
+}
+
+.poem-animation__hue,
+.poem-animation__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.poem-animation__hue {
+  z-index: 4;
+  opacity: 0.72;
+  mix-blend-mode: overlay;
+  background: radial-gradient(ellipse at center, #123b55 0%, #71cff2 100%);
+  animation: poem-filter-animation 8s ease-in-out infinite;
+}
+
+.poem-animation__vignette {
+  z-index: 5;
+  box-shadow:
+    inset 0 0 120px rgba(0, 0, 0, 0.62),
+    inset 0 -80px 110px rgba(0, 0, 0, 0.35);
+}
+
+.poem-animation__cube-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%);
+}
+
+.poem-animation__cube,
+.poem-animation__face {
+  width: 870px;
+  height: 190px;
+}
+
+.poem-animation__cube {
+  position: relative;
+  perspective: 480px;
+  perspective-origin: 51% 70%;
+  transform-style: preserve-3d;
+}
+
+.poem-animation__face {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  opacity: 0.56;
+}
+
+.poem-animation__face--top,
+.poem-animation__face--bottom {
+  width: 870px;
+  height: 870px;
+}
+
+.poem-animation__face--front {
+  display: none;
+  transform: translateZ(435px);
+}
+
+.poem-animation__face--back {
+  transform: translateZ(-435px) rotateY(180deg) scaleX(-1);
+}
+
+.poem-animation__face--left {
+  transform: translateX(-435px) rotateY(-90deg) scaleX(-1);
+}
+
+.poem-animation__face--right {
+  transform: translateX(435px) rotateY(90deg) scaleX(-1);
+}
+
+.poem-animation__face--top {
+  transform: translateY(-435px) rotateX(90deg) scaleY(-1);
+}
+
+.poem-animation__face--bottom {
+  transform: translateY(-245px) rotateX(-90deg) scaleY(-1);
+}
+
+.poem-animation__text p {
+  margin: 0;
+  padding-top: 20px;
+  overflow: hidden;
+  color: #fff;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  animation: poem-text-glow 4s ease-in-out infinite;
+}
+
+.poem-animation__text strong {
+  font-weight: 700;
+}
+
+.poem-animation__text span {
+  color: #86f7c6;
+}
+
+.poem-animation__face--left p {
+  margin-left: 480px;
+  animation:
+    poem-lane-left 200s linear infinite,
+    poem-text-glow 4s ease-in-out infinite;
+}
+
+.poem-animation__face--back p {
+  margin-left: -390px;
+  animation:
+    poem-lane-back 200s linear infinite,
+    poem-text-glow 4s ease-in-out infinite;
+}
+
+.poem-animation__face--right p {
+  margin-left: -1260px;
+  animation:
+    poem-lane-right 200s linear infinite,
+    poem-text-glow 4s ease-in-out infinite;
+}
+
+.poem-animation__cube-wrap--reflect {
+  z-index: 1;
+  margin-top: 380px;
+  filter: blur(10px);
+  opacity: 0.62;
+}
+
+.poem-animation__cube-wrap--reflect .poem-animation__cube {
+  perspective-origin: 51% -30%;
+}
+
+.poem-animation__cube-wrap--reflect .poem-animation__face--back {
+  transform: translateZ(-435px) rotateY(180deg) scaleX(-1) scaleY(-1);
+}
+
+.poem-animation__cube-wrap--reflect .poem-animation__face--left {
+  transform: translateX(-435px) rotateY(-90deg) scaleX(-1) scaleY(-1);
+}
+
+.poem-animation__cube-wrap--reflect .poem-animation__face--right {
+  transform: translateX(435px) rotateY(90deg) scaleX(-1) scaleY(-1);
+}
+
+.poem-animation__cube-wrap--reflect .poem-animation__text p {
+  transform: scaleY(0.7);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --site-nav-height: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poem-animation__content,
+  .poem-animation__scene,
+  .poem-animation__figures,
+  .poem-animation__hue,
+  .poem-animation__text p {
+    animation: none !important;
+  }
+}
