@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { ArrowRight, Loader2, CheckCircle2, AlertCircle, Mail, MapPin, Clock } from 'lucide-react';
+import { ArrowRight, Loader2, CheckCircle2, AlertCircle, Mail, MapPin, Clock, Phone } from 'lucide-react';
 import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import { NavbarModernBlock } from './navbar-modern';
@@ -91,14 +91,19 @@ function InfoPanel() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'info@pushwebb.com',
-      href: 'mailto:info@pushwebb.com',
+      value: 'pushwebb@gmail.com',
+      href: 'mailto:pushwebb@gmail.com',
     },
     {
       icon: Clock,
       label: 'Response time',
       value: 'Within 24 hours',
     },
+  ];
+
+  const phoneNumbers = [
+    { label: '+91 9560543261', href: 'tel:+919560543261' },
+    { label: '+91 8080455250', href: 'tel:+918080455250' },
   ];
 
   return (
@@ -124,6 +129,24 @@ function InfoPanel() {
           </div>
         );
       })}
+
+      <div className="bg-surface border border-line rounded-lg p-5">
+        <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
+          <Phone className="w-4 h-4 text-ink" />
+        </div>
+        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">Call today</p>
+        <div className="flex flex-col gap-1">
+          {phoneNumbers.map((phone) => (
+            <a
+              key={phone.href}
+              href={phone.href}
+              className="text-ink font-medium text-sm hover:text-accent transition-colors duration-200"
+            >
+              {phone.label}
+            </a>
+          ))}
+        </div>
+      </div>
 
       <div className="bg-surface border border-line rounded-lg p-5">
         <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
@@ -185,7 +208,7 @@ function ContactFormSection() {
       toast({
         type: 'error',
         title: 'Email not configured',
-        message: 'Please try again later or email us at info@pushwebb.com.',
+        message: 'Please try again later or email us at pushwebb@gmail.com.',
       });
       return;
     }
@@ -201,7 +224,7 @@ function ContactFormSection() {
           reply_to: fields.email,
           website: fields.website || '—',
           message: fields.message,
-          to_email: 'info@pushwebb.com',
+          to_email: 'pushwebb@gmail.com',
         },
         { publicKey },
       );
@@ -217,7 +240,7 @@ function ContactFormSection() {
       toast({
         type: 'error',
         title: 'Failed to send',
-        message: 'Something went wrong. Please try again or email info@pushwebb.com.',
+        message: 'Something went wrong. Please try again or email pushwebb@gmail.com.',
       });
     }
   };
