@@ -58,7 +58,7 @@ function MissionSection() {
 
           <div className="relative premium-navy-card border border-white/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-center gap-3.5 overflow-hidden md:col-span-2 shadow-[0_18px_44px_-20px_rgba(6,13,29,0.65)]">
             <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-            <span className="font-display text-xs font-medium tracking-widest text-[#b4b4b4] uppercase mb-1">
+            <span className="font-display text-xs font-semibold tracking-widest text-gold uppercase mb-1 drop-shadow-[0_1px_6px_rgba(243,202,104,0.3)]">
               Ready to Expand?
             </span>
             <h4 className="font-display text-xl font-medium text-white leading-tight mb-2">
@@ -199,7 +199,7 @@ function FrameworkSection() {
                   </div>
 
                   <h3 className="framework-copy font-display text-lg font-medium text-ink mb-1">{s.title}</h3>
-                  <p className="framework-copy text-ink/80 text-[11px] font-semibold tracking-wide uppercase mb-2">{s.tag}</p>
+                  <p className="framework-copy text-gold font-semibold text-[11px] tracking-wide uppercase mb-2">{s.tag}</p>
                 </div>
 
                 <CardDetail text={s.description} className="mt-2" />

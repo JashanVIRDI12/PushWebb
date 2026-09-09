@@ -27,6 +27,17 @@
   --color-line-strong: rgba(11, 26, 43, 0.16);
   --color-accent: #0b1a2b;
   --color-accent-hover: #1e2fa8;
+
+  /* Gold Accent & Metallic System (Paper / Light surface) */
+  --color-gold: #b8860b;
+  --color-gold-light: #d4a340;
+  --color-gold-dark: #8c6208;
+  --color-gold-muted: rgba(184, 134, 11, 0.72);
+  --grad-gold: linear-gradient(135deg, #8c6208 0%, #d4a340 45%, #9c7010 100%);
+  --grad-gold-shimmer: linear-gradient(90deg, #b8860b 0%, #e5b858 50%, #b8860b 100%);
+  --gold-border: rgba(184, 134, 11, 0.25);
+  --gold-bg-subtle: rgba(184, 134, 11, 0.07);
+  --gold-glow: 0 0 16px rgba(184, 134, 11, 0.2);
 }
 
 @theme {
@@ -43,6 +54,10 @@
   --color-line-strong: rgba(11, 26, 43, 0.16);
   --color-accent: #0b1a2b;
   --color-accent-hover: #1e2fa8;
+
+  --color-gold: #b8860b;
+  --color-gold-light: #d4a340;
+  --color-gold-dark: #8c6208;
 }
 
 @keyframes spotlight {
@@ -135,10 +150,46 @@
   .eyebrow {
     font-family: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.6px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-gold);
+  }
+
+  /* Gold typography & metallic gradient utilities */
+  .text-gold {
+    color: var(--color-gold);
+  }
+
+  .text-gold-light {
+    color: var(--color-gold-light);
+  }
+
+  .text-gold-gradient {
+    background-image: var(--grad-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+
+  .text-gold-shimmer {
+    background-image: var(--grad-gold-shimmer);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+
+  .gold-badge {
+    border: 1px solid var(--gold-border);
+    background-color: var(--gold-bg-subtle);
+    color: var(--color-gold);
+    box-shadow: 0 1px 6px -2px var(--gold-border);
+  }
+
+  .border-gold {
+    border-color: var(--gold-border);
   }
 
   /* Deck asterisk mark — small ink badge used as a section anchor */
@@ -186,6 +237,17 @@
   --color-line-strong: rgba(180, 180, 180, 0.32);
   --color-accent: #FFFFFF;
   --color-accent-hover: #b4b4b4;
+
+  /* Gold Accent & Metallic System (Dark Stage / Luminous Gold) */
+  --color-gold: #f3ca68;
+  --color-gold-light: #fff2ce;
+  --color-gold-dark: #c29023;
+  --color-gold-muted: rgba(243, 202, 104, 0.75);
+  --grad-gold: linear-gradient(135deg, #fff3d6 0%, #f3ca68 36%, #dca038 72%, #fdd778 100%);
+  --grad-gold-shimmer: linear-gradient(90deg, #f3ca68 0%, #ffffff 50%, #f3ca68 100%);
+  --gold-border: rgba(243, 202, 104, 0.28);
+  --gold-bg-subtle: rgba(243, 202, 104, 0.10);
+  --gold-glow: 0 0 20px rgba(243, 202, 104, 0.25);
 
   color: var(--color-ink-soft);
 }

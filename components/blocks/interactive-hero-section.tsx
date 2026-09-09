@@ -208,7 +208,7 @@ export function InteractiveHeroSection() {
           {/* Light catches the top edge, the way it would on real glass */}
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#f3ca68]/40 to-transparent"
           />
 
           <div className="grid grid-cols-2 md:grid-cols-4">
@@ -227,14 +227,14 @@ export function InteractiveHeroSection() {
                   ref={(el) => {
                     counterRefs.current[i] = el;
                   }}
-                  className="font-display text-[1.75rem] font-extrabold leading-none tracking-[-0.02em] tabular-nums text-white sm:text-[2.1rem]"
+                  className="font-display text-[1.75rem] font-extrabold leading-none tracking-[-0.02em] tabular-nums text-gold-gradient drop-shadow-[0_2px_12px_rgba(243,202,104,0.3)] sm:text-[2.1rem]"
                 >
                   {stat.value}
                 </span>
 
                 {/* Fixed min-height keeps a two-line label from pushing its
                     cell taller than its neighbours. */}
-                <p className="mt-2 flex min-h-[2.1rem] items-start justify-center font-mono text-[9px] uppercase leading-[1.5] tracking-[0.13em] text-[#b4b4b4] sm:text-[10px]">
+                <p className="mt-2 flex min-h-[2.1rem] items-start justify-center font-mono text-[9px] uppercase leading-[1.5] tracking-[0.13em] text-gold/90 font-medium sm:text-[10px]">
                   {stat.label}
                 </p>
               </div>

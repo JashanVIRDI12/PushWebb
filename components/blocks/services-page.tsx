@@ -31,7 +31,7 @@ function ServicesHero() {
       />
 
       <div className="container relative z-10 mx-auto max-w-5xl px-4 text-center md:px-8">
-        <p id="hero-tagline" className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-ink-muted">
+        <p id="hero-tagline" className="mb-6 font-mono text-[11px] uppercase tracking-[0.3em] text-gold font-bold">
           PUSHWebb / Services
         </p>
         <h1

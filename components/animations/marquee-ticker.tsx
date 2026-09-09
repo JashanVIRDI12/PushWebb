@@ -25,10 +25,10 @@ export function MarqueeTicker({ items = DEFAULT_ITEMS }: { items?: string[] }) {
       <div className="marquee-outer flex w-max">
         {repeated.map((item, i) => (
           <span key={i} className="inline-flex items-center shrink-0">
-            <span className="font-display text-[9px] sm:text-[10px] tracking-[0.38em] uppercase text-[#b4b4b4] px-6 sm:px-8 select-none">
+            <span className="font-display text-[9px] sm:text-[10px] font-bold tracking-[0.38em] uppercase text-gold-gradient px-6 sm:px-8 select-none">
               {item}
             </span>
-            <span className="text-white/25 text-[8px] shrink-0">◆</span>
+            <span className="text-[#f3ca68]/50 text-[8px] shrink-0">◆</span>
           </span>
         ))}
       </div>

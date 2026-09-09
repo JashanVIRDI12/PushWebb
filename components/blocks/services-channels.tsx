@@ -195,8 +195,8 @@ function ChannelSection({ channel, index, reversed }: { channel: Channel; index:
           <div className={cn('md:col-span-7', reversed && 'md:order-2')}>
             <div className="reveal-stagger">
               <p className="anim-eyebrow mb-4 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-ink">
-                <Icon className="h-3.5 w-3.5" />
-                Channel {String(index + 1).padStart(2, '0')} — {channel.name}
+                <Icon className="h-3.5 w-3.5 text-gold" />
+                <span className="text-gold font-bold">Channel {String(index + 1).padStart(2, '0')}</span> — {channel.name}
               </p>
               <h2 className="split-h2 mb-5 font-display text-3xl leading-[1.08] tracking-[-1px] text-ink sm:text-4xl md:text-[2.6rem]">
                 {channel.hook}
@@ -209,7 +209,7 @@ function ChannelSection({ channel, index, reversed }: { channel: Channel; index:
                 ))}
               </div>
 
-              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-ink-muted">What We Cover</p>
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-gold font-bold">What We Cover</p>
               <ul className="mb-8 max-w-xl border-t border-line">
                 {channel.cover.map((item, i) => (
                   <li key={item} className="flex items-baseline gap-4 border-b border-line py-2.5">

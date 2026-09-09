@@ -184,7 +184,7 @@ function ClosingCard() {
           <Sparkles className="h-5 w-5 text-white" />
         </div>
 
-        <span className="mb-3 block font-display text-xs font-medium uppercase tracking-widest text-[#b4b4b4]">
+        <span className="mb-3 block font-display text-xs font-semibold uppercase tracking-widest text-gold">
           Unified Growth Engine
         </span>
 
