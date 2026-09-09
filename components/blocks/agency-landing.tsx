@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from 'react';
+import Image from 'next/image';
 import {
   ArrowRight,
   Compass,
@@ -13,11 +14,14 @@ import {
   MapPin,
   Plus,
   Minus,
+  Quote,
+  Star,
 } from 'lucide-react';
 import { InteractiveHeroSection } from './interactive-hero-section';
 import { NavbarModernBlock } from './navbar-modern';
 import { useGsapScrollAnimations } from '@/components/animations/gsap-scroll-provider';
 import { MarqueeTicker } from '@/components/animations/marquee-ticker';
+import { ClientLogoWall } from './client-logo-wall';
 import { WhatWeDoSection } from './services-scroll-section';
 import { Footer as SiteFooter } from './site-footer';
 import { cn } from '@/lib/utils';
@@ -30,7 +34,7 @@ function MissionSection() {
     <section className="reveal-section relative overflow-hidden border-t border-line bg-paper py-14 md:py-20">
       <div className="container mx-auto max-w-5xl px-4 relative z-10 md:px-8">
         <div className="reveal-stagger grid gap-4 md:grid-cols-5 items-stretch">
-          <div className="bg-surface border border-ink/10 rounded-2xl p-6 sm:p-8 md:p-9 md:col-span-3 flex flex-col sm:flex-row gap-6 backdrop-blur-xl shadow-[0_12px_32px_-18px_rgba(11,26,43,0.24)]">
+          <div className="premium-card bg-surface border border-ink/10 rounded-2xl p-6 sm:p-8 md:p-9 md:col-span-3 flex flex-col sm:flex-row gap-6 backdrop-blur-xl">
             <div className="w-full h-44 sm:w-44 sm:h-auto md:w-52 shrink-0 rounded-xl overflow-hidden border border-ink/10 relative shadow-inner">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -46,36 +50,30 @@ function MissionSection() {
                 <Sparkles className="h-3 w-3 text-ink" />
                 <span>MISSION</span>
               </div>
-              <h3 className="font-display text-xl sm:text-2xl font-medium tracking-tight text-ink mb-3">
+              <h3 className="font-display text-xl sm:text-2xl font-medium tracking-tight text-ink">
                 We Turn Content Into Scalable Business Growth
               </h3>
-              <p className="text-ink-soft text-xs sm:text-sm leading-relaxed mb-3">
-                PUSHWebb is a creative and AI-powered marketing agency helping brands and creators grow through YouTube, short-form content, performance campaigns, and intelligent automation.
-              </p>
-              <p className="text-ink-muted text-xs leading-relaxed">
-                From strategy and production to distribution and optimization, we build content systems designed to perform and scale.
-              </p>
             </div>
           </div>
 
-          <div className="relative bg-ink rounded-2xl p-6 sm:p-8 flex flex-col justify-center gap-3.5 overflow-hidden md:col-span-2 shadow-[0_12px_32px_-18px_rgba(11,26,43,0.24)]">
+          <div className="relative premium-navy-card border border-white/15 rounded-2xl p-6 sm:p-8 flex flex-col justify-center gap-3.5 overflow-hidden md:col-span-2 shadow-[0_18px_44px_-20px_rgba(6,13,29,0.65)]">
             <div className="absolute -right-8 -top-8 w-40 h-40 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-            <span className="font-display text-xs font-medium tracking-widest text-paper/60 uppercase mb-1">
+            <span className="font-display text-xs font-medium tracking-widest text-[#b4b4b4] uppercase mb-1">
               Ready to Expand?
             </span>
-            <h4 className="font-display text-xl font-medium text-paper leading-tight mb-2">
+            <h4 className="font-display text-xl font-medium text-white leading-tight mb-2">
               Let&apos;s Architect Your Content Engine.
             </h4>
             <a
               href="/contact"
-              className="group relative z-10 inline-flex items-center justify-center gap-2 bg-paper hover:bg-white text-ink font-semibold py-3.5 px-5 rounded-xl text-xs font-display transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative z-10 inline-flex items-center justify-center gap-2 bg-white hover:bg-[#eaeaea] text-[#060d1d] font-semibold py-3.5 px-5 rounded-xl text-xs font-display transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>Book a Brainstorming Call</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </a>
             <a
               href="#services"
-              className="group relative z-10 inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-paper font-semibold py-3 px-5 rounded-xl text-xs font-display transition-colors duration-200 hover:bg-white/20 active:scale-[0.98]"
+              className="group relative z-10 inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-semibold py-3 px-5 rounded-xl text-xs font-display transition-colors duration-200 hover:bg-white/20 active:scale-[0.98]"
             >
               <span>Explore Our Disciplines</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -129,6 +127,29 @@ const FRAMEWORK_STEPS = [
   },
 ];
 
+/* Long card copy sits behind a tap rather than on the page — the client's
+   note was that nobody reads paragraphs at this size on a landing page, so
+   cards lead with the heading and open on demand. Same +/- affordance as
+   the FAQ below, so the gesture is learned once. */
+function CardDetail({ text, className }: { text: string; className?: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className={cn('mt-3 border-t border-ink/[0.08] pt-3', className)}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-2 text-left font-display text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-muted transition-colors duration-200 hover:text-ink"
+      >
+        <span>{open ? 'Close' : 'Details'}</span>
+        {open ? <Minus className="h-3 w-3 shrink-0" /> : <Plus className="h-3 w-3 shrink-0" />}
+      </button>
+      {open && <p className="mt-2.5 text-xs leading-relaxed text-ink-soft">{text}</p>}
+    </div>
+  );
+}
+
 function FrameworkSection() {
   return (
     <section id="framework" className="reveal-section relative py-16 md:py-28 overflow-hidden border-t border-line bg-paper">
@@ -141,9 +162,6 @@ function FrameworkSection() {
           <h2 className="split-h2 font-display text-3xl sm:text-4xl md:text-5xl font-medium text-ink leading-[1.08] tracking-[-1.5px] mb-4">
             AI is Changing Marketing.<br />We Help You Use It to Scale.
           </h2>
-          <p className="text-ink-soft text-sm md:text-base max-w-lg mx-auto">
-            A battle-tested 4-step framework engineered for consistent, compounding growth.
-          </p>
         </div>
 
         <div className="framework-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -152,7 +170,7 @@ function FrameworkSection() {
             return (
               <div
                 key={s.step}
-                className="framework-card group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-ink/10 bg-surface p-5 sm:p-6 shadow-[0_12px_32px_-18px_rgba(11,26,43,0.24)] transition-colors duration-300 hover:border-ink/30 hover:bg-surface-hover"
+                className="framework-card premium-card group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-ink/10 bg-surface p-5 sm:p-6 transition-colors duration-300 hover:border-ink/30 hover:bg-surface-hover"
               >
                 {/* Draws across the card head as the step lands */}
                 <span aria-hidden className="framework-rule absolute inset-x-0 top-0 h-px origin-left bg-accent/50" />
@@ -177,35 +195,17 @@ function FrameworkSection() {
                       loading="lazy"
                       className="framework-thumb h-full w-full object-cover scale-105 transition-transform duration-700 ease-out group-hover:scale-115"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent opacity-60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#04091a]/88 via-[#0a1630]/18 to-transparent opacity-75" />
                   </div>
 
                   <h3 className="framework-copy font-display text-lg font-medium text-ink mb-1">{s.title}</h3>
                   <p className="framework-copy text-ink/80 text-[11px] font-semibold tracking-wide uppercase mb-2">{s.tag}</p>
                 </div>
 
-                <p className="text-ink-soft text-xs leading-relaxed mt-2 pt-3 border-t border-ink/[0.08]">{s.description}</p>
+                <CardDetail text={s.description} className="mt-2" />
               </div>
             );
           })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function TrustStripSection() {
-  return (
-    <section className="reveal-section relative py-10 md:py-14 bg-paper border-t border-line">
-      <div className="container mx-auto px-4 md:px-8 max-w-4xl">
-        <p className="anim-eyebrow eyebrow text-center mb-8">Trusted Across Brands, Creators &amp; Businesses</p>
-        <div className="reveal-stagger flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/pushwebb-assets/logos/client-logos-strip-flattened.png"
-            alt="Brands and creators PUSHWebb has worked with"
-            className="max-w-full h-auto opacity-90"
-          />
         </div>
       </div>
     </section>
@@ -216,47 +216,64 @@ function TrustStripSection() {
    STATS — Good Work Gets Seen. Great Work Performs.
 ──────────────────────────────────────────────────────────────── */
 const STATS = [
-  { count: 50, suffix: 'M+', label: 'Views Generated' },
+  { count: 5, suffix: 'B+', label: 'Views Generated Across YouTube & Social' },
   { count: 40, suffix: '+', label: 'Brands & Creators Worked With' },
   { count: 5, suffix: 'K+', label: 'Content Assets Delivered' },
-  { count: 120, suffix: '+', label: 'Projects Completed' },
+  { count: 120, suffix: '+', label: 'Projects & Systems Completed' },
 ];
 
 function StatsSection() {
   return (
-    <section className="reveal-section relative py-16 md:py-28 border-t border-line overflow-hidden">
-      <div className="container mx-auto px-4 md:px-8 max-w-5xl relative z-10">
-        <div className="text-center mb-12">
+    <section className="reveal-section relative overflow-hidden border-t border-line bg-paper py-16 md:py-28">
+      <div className="container relative z-10 mx-auto max-w-5xl px-4 md:px-8">
+        <div className="mb-12 text-center">
           <p className="anim-eyebrow eyebrow mb-3">By The Numbers</p>
-          <h2 className="split-h2 text-3xl sm:text-4xl md:text-5xl text-ink leading-[1.05] tracking-[-1.5px] mb-4">
+          <h2 className="split-h2 mb-4 text-3xl leading-[1.05] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
             Good Work Gets Seen.<br />Great Work Performs.
           </h2>
-          <p className="text-ink-soft text-sm md:text-base max-w-md mx-auto">
-            Great content should do more than just look good; it should perform. Our numbers show our work and performance clearly.
-          </p>
         </div>
 
-        <div className="reveal-stagger grid grid-cols-2 lg:grid-cols-4 lg:auto-rows-[170px] gap-3">
+        {/* White ground, so the cards are white too and the headline number
+            inverts to navy instead — one dark tile carries the focus that a
+            uniform grid of boxes never did. */}
+        <div className="reveal-stagger grid grid-cols-2 gap-3 lg:auto-rows-[170px] lg:grid-cols-4">
           {STATS.map((s, i) => (
             <div
               key={s.label}
               className={cn(
-                'stat-card relative bg-surface hover:bg-surface-hover border border-line rounded-lg p-6 flex flex-col items-center justify-center text-center overflow-hidden transition-colors duration-200',
-                i === 0 && 'lg:col-span-2 lg:row-span-2',
+                'stat-card group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl p-6 text-center transition-shadow duration-500',
+                i === 0
+                  ? 'on-dark premium-navy-card border border-white/10 shadow-[0_22px_50px_-24px_rgba(11,26,43,0.55)] lg:col-span-2 lg:row-span-2'
+                  : 'border border-ink/[0.07] bg-white shadow-[0_12px_32px_-18px_rgba(11,26,43,0.28)] hover:shadow-[0_20px_44px_-20px_rgba(30,47,168,0.32)]',
                 i === 1 && 'lg:col-span-2',
               )}
             >
+              {/* Hairline that draws across the card head as it lands */}
+              <span
+                aria-hidden
+                className={cn(
+                  'absolute inset-x-0 top-0 h-px origin-left scale-x-0 transition-transform duration-700 ease-out group-hover:scale-x-100',
+                  i === 0 ? 'bg-white/30' : 'bg-accent-hover/40',
+                )}
+              />
               <div
                 className={cn(
-                  'stat-number relative font-display text-ink tracking-[-1px] leading-none mb-2',
-                  i === 0 ? 'text-5xl md:text-6xl' : 'text-3xl md:text-4xl',
+                  'stat-number relative mb-2 font-display font-bold leading-none tracking-[-2px] text-ink',
+                  i === 0 ? 'text-6xl md:text-7xl' : 'text-3xl md:text-4xl',
                 )}
                 data-count={String(s.count)}
                 data-suffix={s.suffix}
               >
                 {s.count}{s.suffix}
               </div>
-              <p className="relative text-ink-soft text-xs leading-relaxed">{s.label}</p>
+              <p
+                className={cn(
+                  'relative leading-relaxed text-ink-soft',
+                  i === 0 ? 'max-w-[18ch] text-sm' : 'text-xs',
+                )}
+              >
+                {s.label}
+              </p>
             </div>
           ))}
         </div>
@@ -302,9 +319,6 @@ function WhyPushWebbSection() {
               More Than Content. A System Built to Grow.
             </h2>
           </div>
-          <p className="text-ink-soft text-sm max-w-sm">
-            We bring strategy, production, performance, and technology together so your content works as one connected growth system, not a collection of disconnected deliverables.
-          </p>
         </div>
 
         <div className="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[190px] gap-3 mb-8">
@@ -316,7 +330,7 @@ function WhyPushWebbSection() {
               <div
                 key={item.title}
                 className={cn(
-                  'bg-surface hover:bg-surface-hover border border-line rounded-lg p-6 flex flex-col transition-colors duration-200',
+                  'premium-card bg-surface hover:bg-surface-hover border border-line rounded-xl p-6 flex flex-col',
                   big && 'lg:col-span-2 lg:row-span-2 lg:justify-center',
                   wide && 'lg:col-span-2',
                 )}
@@ -332,7 +346,7 @@ function WhyPushWebbSection() {
                 <h3 className={cn('font-display text-ink font-medium mb-2', big ? 'text-lg' : 'text-sm')}>
                   {item.title}
                 </h3>
-                <p className={cn('text-ink-soft leading-relaxed', big ? 'text-sm' : 'text-xs')}>{item.description}</p>
+                <CardDetail text={item.description} />
               </div>
             );
           })}
@@ -351,8 +365,182 @@ function WhyPushWebbSection() {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   STORIES OF TRUST AND GROWTH (case study proof)
+   STORIES OF TRUST AND GROWTH (client proof)
+   Quotes stay verbatim; the two proof tiles are set in the agency
+   voice like the rest of the deck.
 ──────────────────────────────────────────────────────────────── */
+type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  span: string;
+  /** Real portrait where the client supplied one; the monogram is the
+   *  fallback, not the default. */
+  avatar?: string;
+};
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      'PUSHWebb understood my vision clearly and delivered strategies that exceeded my expectations!',
+    name: 'Dr. Lalit Arora',
+    role: 'Sales Coach',
+    span: 'md:col-span-5',
+    avatar: '/logos/lalit-arora.jpg',
+  },
+  {
+    quote:
+      'PUSHWebb’s content and video editing services gave our brand a fresh edge. They turn ideas into impactful stories.',
+    name: 'Ansh Bhayana',
+    role: 'Capture a Trip',
+    span: 'md:col-span-4',
+    avatar: '/logos/ansh-bhayana.jpg',
+  },
+  {
+    quote:
+      'His design skills are unmatched. He transformed my ideas into a high-performing, visually striking website.',
+    name: 'Karandeep Singh',
+    role: 'Serial Industrialist',
+    span: 'md:col-span-4',
+  },
+  {
+    quote:
+      'Their video editing skills are top-notch. Transformed raw content into polished, impactful visuals that truly stand out.',
+    name: 'FRND',
+    role: 'Company',
+    span: 'md:col-span-5',
+    avatar: '/logos/frnd.webp',
+  },
+];
+
+const PROOF_TILES = [
+  {
+    count: 98,
+    suffix: '%',
+    label: 'Satisfaction Rate',
+    detail: 'We’ve worked with 50+ happy clients',
+  },
+  {
+    count: 200,
+    suffix: '%',
+    label: 'Growth',
+    detail: 'Our work helped clients grow their revenue by 200%',
+  },
+];
+
+/* "Dr. Lalit Arora" → LA. Honorifics are dropped so the monogram
+   reads as the person, not the title. */
+function monogram(name: string) {
+  return name
+    .split(' ')
+    .filter((word) => word.length > 0 && !word.endsWith('.'))
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase();
+}
+
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <div
+      className={cn(
+        'premium-card group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-ink/10 bg-surface p-6 sm:p-7',
+        t.span,
+      )}
+    >
+      {/* Oversized quote glyph, set as a watermark rather than punctuation */}
+      <Quote
+        aria-hidden
+        className="pointer-events-none absolute -right-3 -top-2 h-20 w-20 text-ink/[0.05] transition-colors duration-500 group-hover:text-ink/[0.09]"
+        strokeWidth={1.5}
+      />
+
+      <div className="relative">
+        <div className="mb-4 flex items-center gap-0.5" aria-label="Rated 5 out of 5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star key={i} aria-hidden className="h-3.5 w-3.5 fill-accent-hover text-accent-hover" strokeWidth={0} />
+          ))}
+        </div>
+
+        <p className="text-ink text-sm leading-relaxed sm:text-[15px]">{t.quote}</p>
+      </div>
+
+      <div className="relative mt-6 flex items-center gap-3 border-t border-ink/[0.08] pt-4">
+        {/* Avatars use explicit width/height, not fill+sizes. These cards start
+            at visibility:hidden for the GSAP reveal, and the browser re-resolved
+            srcset on reveal and requested the 3840 variant it never finished —
+            a fixed 40px avatar has no reason to negotiate a size at all. */}
+        {t.avatar ? (
+          <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-ink/10">
+            <Image
+              src={t.avatar}
+              alt={t.name}
+              width={40}
+              height={40}
+              loading="eager"
+              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+            />
+          </span>
+        ) : (
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ink/10 bg-ink font-display text-[11px] font-bold tracking-wide text-paper">
+            {monogram(t.name)}
+          </span>
+        )}
+        <div className="min-w-0">
+          <p className="truncate font-display text-xs font-semibold text-ink">{t.name}</p>
+          <p className="truncate text-[11px] text-ink-muted">{t.role}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TestimonialsSection() {
+  return (
+    <section
+      id="testimonials"
+      className="reveal-section relative overflow-hidden border-t border-line bg-paper py-16 md:py-28"
+    >
+      <div className="container relative z-10 mx-auto max-w-6xl px-4 md:px-8">
+        <div className="mb-12 text-center sm:mb-14">
+          <p className="anim-eyebrow eyebrow mb-3">Client Stories</p>
+          <h2 className="split-h2 mb-4 font-display text-3xl leading-[1.08] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
+            Stories of Trust and Growth
+          </h2>
+        </div>
+
+        <div className="reveal-stagger grid gap-4 md:grid-cols-12">
+          {TESTIMONIALS.slice(0, 2).map((t) => (
+            <TestimonialCard key={t.name} t={t} />
+          ))}
+
+          {PROOF_TILES.map((tile) => (
+            <div
+              key={tile.label}
+              className="premium-navy-card relative flex flex-col justify-center overflow-hidden rounded-2xl border border-white/15 p-6 shadow-[0_18px_44px_-20px_rgba(6,13,29,0.65)] md:col-span-3"
+            >
+              <div aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10 blur-3xl" />
+              <div
+                className="stat-number relative font-display text-4xl font-bold leading-none tracking-[-1px] text-white sm:text-5xl"
+                data-count={String(tile.count)}
+                data-suffix={tile.suffix}
+              >
+                {tile.count}{tile.suffix}
+              </div>
+              <p className="relative mt-2 font-display text-sm font-medium text-white">{tile.label}</p>
+              <p className="relative mt-1 text-[11px] leading-relaxed text-[#b4b4b4]">{tile.detail}</p>
+            </div>
+          ))}
+
+          {TESTIMONIALS.slice(2).map((t) => (
+            <TestimonialCard key={t.name} t={t} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ────────────────────────────────────────────────────────────────
    ABOUT US
 ──────────────────────────────────────────────────────────────── */
@@ -406,20 +594,14 @@ function AboutSection() {
           {/* Left Column: Narrative Card */}
           <div
             id="about-main-card"
-            className="lg:col-span-3 flex flex-col justify-between rounded-3xl border border-ink/10 bg-surface p-7 sm:p-9 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.30)] backdrop-blur-2xl transition-colors duration-300 hover:border-ink/20"
+            className="premium-card lg:col-span-3 flex flex-col justify-between rounded-3xl border border-ink/10 bg-surface p-7 sm:p-9 backdrop-blur-2xl hover:border-ink/20"
           >
             <div className="space-y-4">
               <p className="font-display text-lg sm:text-xl text-ink font-medium leading-relaxed">
                 PUSHWebb is a creative, AI-powered marketing agency providing structured and predictable growth to creators, brands, and enterprise teams.
               </p>
 
-              <p className="text-ink-soft text-sm sm:text-[15px] leading-relaxed">
-                We bridge the gap between creative storytelling, high-velocity production, and performance media. Rather than isolated deliverables, we engineer flexible content engines that link strategy, video, paid acquisition, and automated workflows into one cohesive growth machine.
-              </p>
 
-              <p className="text-ink-muted text-xs sm:text-sm leading-relaxed">
-                From YouTube and Instagram to paid ad campaigns and intelligent AI automation, we help teams create with purpose, test faster, and make every piece of content compound into measurable business revenue.
-              </p>
             </div>
 
             {/* Bottom Founder / Team Trust & Action Row */}
@@ -443,7 +625,7 @@ function AboutSection() {
 
               <a
                 href="/contact"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-2.5 font-display text-xs font-semibold text-paper no-underline shadow-[0_8px_20px_-12px_rgba(11,26,43,0.26)] transition-all duration-200 hover:bg-ink/95 hover:scale-[1.02] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-ink px-5 py-2.5 font-display text-xs font-semibold text-paper no-underline shadow-[0_8px_20px_-12px_rgba(11,26,43,0.3)] transition-all duration-200 hover:bg-ink/90 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>Know More About Us</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -456,7 +638,7 @@ function AboutSection() {
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="stat-card group relative flex-1 flex flex-col justify-center rounded-2xl border border-ink/10 bg-surface p-6 shadow-[0_12px_32px_-18px_rgba(11,26,43,0.24)] backdrop-blur-xl transition-colors duration-300 hover:border-ink/25 hover:bg-surface-hover"
+                className="stat-card premium-card group relative flex-1 flex flex-col justify-center rounded-2xl border border-ink/10 bg-surface p-6 backdrop-blur-xl hover:border-ink/25 hover:bg-surface-hover"
               >
                 <div className="flex items-baseline justify-between mb-1.5">
                   <div
@@ -499,9 +681,6 @@ function LocationsSection() {
           <h2 className="split-h2 font-display text-3xl sm:text-4xl md:text-5xl font-medium text-ink leading-[1.08] tracking-[-1.5px] mb-4 max-w-2xl mx-auto">
             Serving Brands Across India, Dubai &amp; Beyond
           </h2>
-          <p className="text-ink-soft text-sm md:text-base max-w-md mx-auto">
-            PUSHWebb works with brands, creators, and marketing teams across India and the UAE, combining strategy, creative execution, production, and performance-driven content systems.
-          </p>
         </div>
 
         <div className="reveal-stagger grid md:grid-cols-5 gap-6 mb-10">
@@ -513,7 +692,7 @@ function LocationsSection() {
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover scale-100 transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A141A] via-[#0A141A]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#04091a] via-[#0a1630]/72 to-transparent" />
             <div className="relative z-10 h-full flex flex-col justify-end p-7 sm:p-9">
               <div className="w-11 h-11 rounded-2xl bg-white/15 border border-white/25 backdrop-blur-md flex items-center justify-center mb-5">
                 <MapPin className="w-5 h-5 text-white" />
@@ -522,9 +701,6 @@ function LocationsSection() {
                 Headquarters · Studio
               </span>
               <h3 className="font-display text-white font-medium text-2xl mb-2">India</h3>
-              <p className="text-white/80 text-xs sm:text-sm leading-relaxed max-w-md">
-                Creative production, content pipelines, and full-funnel marketing systems built for ambitious brands and creators.
-              </p>
             </div>
           </div>
 
@@ -536,7 +712,7 @@ function LocationsSection() {
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover scale-100 transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A141A] via-[#0A141A]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#04091a] via-[#0a1630]/72 to-transparent" />
             <div className="relative z-10 h-full flex flex-col justify-end p-7 sm:p-9">
               <div className="w-11 h-11 rounded-2xl bg-white/15 border border-white/25 backdrop-blur-md flex items-center justify-center mb-5">
                 <MapPin className="w-5 h-5 text-white" />
@@ -545,9 +721,6 @@ function LocationsSection() {
                 Growing Regional Hub
               </span>
               <h3 className="font-display text-white font-medium text-2xl mb-2">Dubai, UAE</h3>
-              <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
-                Strategic brand storytelling, creator management, and paid media scaling for businesses across the Middle East.
-              </p>
             </div>
           </div>
         </div>
@@ -577,12 +750,9 @@ function FinalCTASection() {
         <h2 className="split-h2 text-3xl sm:text-4xl md:text-5xl text-ink leading-[1.08] tracking-[-1.5px] mb-5">
           Ready to Build a Better Growth System?
         </h2>
-        <p className="text-ink-soft text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-8">
-          The goal is not to post more. It is to take better decisions for what to create, how to reach the right audience, and how to improve what works. PUSHWebb helps turn your content into a better growth system.
-        </p>
         <a
           href="/contact"
-          className="group inline-flex items-center justify-center gap-2 bg-ink hover:bg-ink/90 text-paper font-semibold py-3.5 px-8 rounded-lg text-sm transition-all duration-200 active:scale-[0.98]"
+          className="group inline-flex items-center justify-center gap-2 bg-white hover:bg-[#eaeaea] text-[#060d1d] font-semibold py-3.5 px-8 rounded-lg text-sm transition-all duration-200 active:scale-[0.98]"
         >
           <span>Book a Strategy Call</span>
           <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -657,7 +827,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 function FAQSection() {
   return (
-    <section id="faq" className="reveal-section relative py-16 md:py-32 border-t border-line">
+    <section id="faq" className="reveal-section relative py-16 md:py-32 border-t border-line bg-paper">
       <div className="container mx-auto px-4 md:px-8 max-w-3xl relative z-10">
         <div className="text-center mb-10">
           <p className="anim-eyebrow eyebrow mb-3">FAQs</p>
@@ -695,7 +865,7 @@ export function AgencyLanding() {
           The extra top pull + matching pad lets the black ground reach the
           very top of the viewport (no hairline of page bg above the nav)
           without moving the hero content. */}
-      <div className="on-dark bg-paper pt-7">
+      <div className="on-dark bg-black pt-7">
         <InteractiveHeroSection />
         <MarqueeTicker />
       </div>
@@ -705,20 +875,27 @@ export function AgencyLanding() {
       <WhatWeDoSection />
       <AboutSection />
       <FrameworkSection />
-      <TrustStripSection />
+      <TestimonialsSection />
 
-      {/* Proof band — numbers and method read louder against navy */}
+      {/* Proof runs roster → numbers → method. The numbers break the dark
+          stage on purpose: a white band between two navy ones keeps the
+          headline figures from getting lost inside one long dark stretch. */}
       <div className="on-dark dark-zone">
-        <StatsSection />
+        <ClientLogoWall />
+      </div>
+
+      <StatsSection />
+
+      <div className="on-dark dark-zone">
         <WhyPushWebbSection />
       </div>
 
       <LocationsSection />
+      <FAQSection />
 
       {/* Close — back to the dark room the page opened in */}
       <div className="on-dark dark-zone">
         <FinalCTASection />
-        <FAQSection />
         <SiteFooter />
       </div>
     </div>

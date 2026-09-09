@@ -8,41 +8,41 @@
 :root {
   --site-nav-height: 68px;
 
-  --background: #F4F5F7;
-  --foreground: #0B1A2B;
+  --background: #ffffff;
+  --foreground: #0b1a2b;
 
   /* Surfaces */
-  --color-paper: #F4F5F7;
-  --color-paper-alt: #EAECEF;
-  --color-surface: #FFFFFF;
-  --color-surface-hover: #F0F2F5;
+  --color-paper: #ffffff;
+  --color-paper-alt: #f7f8fa;
+  --color-surface: #f8f9fb;
+  --color-surface-hover: #eef1f5;
 
   /* Ink */
-  --color-ink: #0B1A2B;
-  --color-ink-soft: #3F4C5A;
-  --color-ink-muted: #6C7887;
+  --color-ink: #0b1a2b;
+  --color-ink-soft: #556477;
+  --color-ink-muted: #8c97a5;
 
   /* Lines & accent */
-  --color-line: rgba(11, 26, 43, 0.12);
-  --color-line-strong: rgba(11, 26, 43, 0.24);
-  --color-accent: #1E2FA8;
-  --color-accent-hover: #16217C;
+  --color-line: rgba(11, 26, 43, 0.08);
+  --color-line-strong: rgba(11, 26, 43, 0.16);
+  --color-accent: #0b1a2b;
+  --color-accent-hover: #1e2fa8;
 }
 
 @theme {
-  --color-paper: #F4F5F7;
-  --color-paper-alt: #EAECEF;
-  --color-surface: #FFFFFF;
-  --color-surface-hover: #F0F2F5;
+  --color-paper: #ffffff;
+  --color-paper-alt: #f7f8fa;
+  --color-surface: #f8f9fb;
+  --color-surface-hover: #eef1f5;
 
-  --color-ink: #0B1A2B;
-  --color-ink-soft: #3F4C5A;
-  --color-ink-muted: #6C7887;
+  --color-ink: #0b1a2b;
+  --color-ink-soft: #556477;
+  --color-ink-muted: #8c97a5;
 
-  --color-line: rgba(11, 26, 43, 0.12);
-  --color-line-strong: rgba(11, 26, 43, 0.24);
-  --color-accent: #1E2FA8;
-  --color-accent-hover: #16217C;
+  --color-line: rgba(11, 26, 43, 0.08);
+  --color-line-strong: rgba(11, 26, 43, 0.16);
+  --color-accent: #0b1a2b;
+  --color-accent-hover: #1e2fa8;
 }
 
 @keyframes spotlight {
@@ -173,45 +173,37 @@
    them on a wrapper inverts the whole subtree — no per-element classes.
 ──────────────────────────────────────────────────────────────── */
 .on-dark {
-  --color-paper: #000000;
-  --color-paper-alt: #0B1524;
-  --color-surface: rgba(255, 255, 255, 0.05);
-  --color-surface-hover: rgba(255, 255, 255, 0.09);
+  --color-paper: #060d1d;
+  --color-paper-alt: #0a1428;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
 
   --color-ink: #FFFFFF;
-  --color-ink-soft: rgba(255, 255, 255, 0.74);
-  --color-ink-muted: rgba(255, 255, 255, 0.52);
+  --color-ink-soft: #b4b4b4;
+  --color-ink-muted: rgba(180, 180, 180, 0.60);
 
-  --color-line: rgba(255, 255, 255, 0.14);
-  --color-line-strong: rgba(255, 255, 255, 0.30);
-  --color-accent: #8296FF;
-  --color-accent-hover: #A3B2FF;
+  --color-line: rgba(180, 180, 180, 0.16);
+  --color-line-strong: rgba(180, 180, 180, 0.32);
+  --color-accent: #FFFFFF;
+  --color-accent-hover: #b4b4b4;
 
   color: var(--color-ink-soft);
 }
 
 .on-dark ::selection {
   background: #FFFFFF;
-  color: #05070A;
+  color: #060d1d;
 }
 
 /* Black ground lifted by the deck's navy — used for whole dark bands. */
 .dark-zone {
   background:
-    radial-gradient(120% 70% at 50% 0%, rgba(24, 48, 104, 0.55) 0%, transparent 62%),
-    radial-gradient(90% 60% at 50% 100%, rgba(16, 34, 78, 0.45) 0%, transparent 68%),
-    linear-gradient(180deg, #000000 0%, #070C18 45%, #000000 100%);
+    radial-gradient(120% 70% at 50% 0%, rgba(12, 25, 52, 0.65) 0%, transparent 62%),
+    radial-gradient(90% 60% at 50% 100%, rgba(6, 13, 29, 0.55) 0%, transparent 68%),
+    linear-gradient(180deg, #060d1d 0%, #0a1630 45%, #060d1d 100%);
 }
 
-/* ── Hero robot: deck periwinkle ─────────────────────────────
-   The Spline scene ships with a saturated magenta key that fights the
-   deck's indigo. Rotating that hue directly threw parts of the scene
-   green (surfaces start at different hues), so instead we flatten to
-   luminance first (grayscale + sepia) then tint the whole figure
-   through one hue — landing on the deck's periwinkle accent (#8296FF).
-   saturate stays low (~1.2) so it reads as tinted metal, not neon.
-   Dials: hue-rotate picks the blue (lower = warmer), saturate the
-   strength, brightness how far it sits out of the black. */
+/* ── Hero robot: deck periwinkle/navy tint ────────────────── */
 .robot-tint {
   filter: grayscale(1) sepia(1) hue-rotate(198deg) saturate(1.2) brightness(1.05) contrast(1.02);
 }
@@ -219,8 +211,8 @@
 /* Spline stamps a "Built with Spline" badge into the canvas corner.
    Solid black over it, feathered outward by the shadow so no edge shows. */
 .spline-badge-cover {
-  background: #000;
-  box-shadow: 0 0 34px 20px #000;
+  background: #000000;
+  box-shadow: 0 0 34px 20px #000000;
 }
 
 /* ── SplitText line masks (about page) ────────────────────────
@@ -749,4 +741,169 @@ html {
   .poem-animation__text p {
     animation: none !important;
   }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PREMIUM GRADIENT LAYER
+   The deck stays paper-and-ink; this adds depth on top of it.
+   Every gradient resolves through custom properties, so one class
+   reads as an indigo aurora on paper and a navy lift inside
+   .on-dark — no per-element variants, same rule as the tokens above.
+   The hero is deliberately left out: it owns the black room.
+════════════════════════════════════════════════════════════════ */
+:root {
+  /* Section ground — a wide, low-contrast wash under the paper body */
+  --grad-ground:
+    radial-gradient(120% 86% at 10% -12%, rgba(30, 47, 168, 0.07) 0%, transparent 56%),
+    radial-gradient(100% 78% at 90% 4%, rgba(123, 91, 224, 0.055) 0%, transparent 58%),
+    radial-gradient(130% 96% at 50% 112%, rgba(91, 141, 239, 0.05) 0%, transparent 62%);
+
+  /* Card face — lit top-left corner falling into a cool indigo shadow */
+  --grad-surface:
+    radial-gradient(118% 88% at 0% 0%, rgba(255, 255, 255, 0.95) 0%, transparent 55%),
+    linear-gradient(152deg, rgba(30, 47, 168, 0.055) 0%, rgba(123, 91, 224, 0.035) 46%, rgba(91, 141, 239, 0.07) 100%);
+
+  /* Hairline that catches light at the head and cools toward the foot */
+  --grad-ring:
+    linear-gradient(150deg,
+      rgba(255, 255, 255, 0.90) 0%,
+      rgba(30, 47, 168, 0.22) 34%,
+      rgba(11, 26, 43, 0.06) 70%,
+      rgba(123, 91, 224, 0.18) 100%);
+
+  --card-shadow: 0 14px 38px -22px rgba(11, 26, 43, 0.32), 0 1px 2px rgba(11, 26, 43, 0.04);
+  --card-shadow-hover: 0 26px 60px -26px rgba(30, 47, 168, 0.38), 0 2px 6px rgba(11, 26, 43, 0.06);
+}
+
+.on-dark {
+  --grad-ground:
+    radial-gradient(120% 84% at 8% -10%, rgba(38, 64, 150, 0.34) 0%, transparent 60%),
+    radial-gradient(100% 78% at 94% 2%, rgba(84, 58, 168, 0.22) 0%, transparent 62%),
+    radial-gradient(140% 100% at 50% 110%, rgba(10, 22, 48, 0.55) 0%, transparent 66%);
+
+  --grad-surface:
+    radial-gradient(118% 88% at 0% 0%, rgba(255, 255, 255, 0.10) 0%, transparent 56%),
+    linear-gradient(152deg, rgba(48, 78, 176, 0.20) 0%, rgba(84, 58, 168, 0.12) 48%, rgba(6, 13, 29, 0.35) 100%);
+
+  --grad-ring:
+    linear-gradient(150deg,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(96, 132, 232, 0.28) 36%,
+      rgba(255, 255, 255, 0.05) 70%,
+      rgba(140, 110, 240, 0.24) 100%);
+
+  --card-shadow: 0 18px 44px -24px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-shadow-hover: 0 30px 66px -26px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+@layer utilities {
+  /* Paper grounds pick up the aurora. Form controls stay flat — a wash
+     behind an input reads as a filled/disabled field. */
+  .bg-paper:not(input):not(textarea):not(select) {
+    background-image: var(--grad-ground);
+  }
+
+  /* Every token-driven card face gains depth, in both scopes. */
+  .bg-surface {
+    background-image: var(--grad-surface);
+  }
+
+  /* Feature cards: gradient face + a masked 1px gradient frame that
+     follows whatever radius the card was given. */
+  .premium-card {
+    position: relative;
+    background-image: var(--grad-surface);
+    box-shadow: var(--card-shadow);
+    transition:
+      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .premium-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--grad-ring);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.85;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .premium-card:hover {
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .premium-card:hover::after {
+    opacity: 1;
+  }
+
+  /* Opt-in hover lift. Kept off .premium-card itself because GSAP drives
+     the transform on some of those cards, and a CSS transition on transform
+     smears every frame it writes. */
+  .premium-lift {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+
+  /* The one card that inverts: navy glass sitting on paper. */
+  .premium-navy-card {
+    background-image:
+      radial-gradient(110% 82% at 100% 0%, rgba(72, 108, 214, 0.38) 0%, transparent 58%),
+      radial-gradient(92% 80% at 0% 100%, rgba(96, 58, 190, 0.28) 0%, transparent 62%),
+      linear-gradient(150deg, #101f45 0%, #0a152c 46%, #060d1d 100%);
+  }
+
+  /* Ticker band — the hero's black room and navy blobs, laid on its
+     side so the glow reads across a 46px strip instead of a viewport. */
+  .marquee-band {
+    background-color: #000000;
+    background-image:
+      radial-gradient(56% 180% at -4% 50%, rgba(24, 48, 110, 0.55) 0%, transparent 70%),
+      radial-gradient(56% 180% at 104% 50%, rgba(20, 42, 98, 0.48) 0%, transparent 70%),
+      radial-gradient(46% 160% at 50% 50%, rgba(18, 38, 88, 0.42) 0%, transparent 72%);
+  }
+}
+
+/* Dark bands: richer than the flat navy sweep, still the deck's palette.
+   Redefined here (unlayered, later) so it supersedes the rule above. */
+.dark-zone {
+  background:
+    radial-gradient(78% 56% at 12% 0%, rgba(36, 60, 146, 0.40) 0%, transparent 62%),
+    radial-gradient(72% 56% at 88% 6%, rgba(84, 58, 168, 0.26) 0%, transparent 64%),
+    radial-gradient(96% 62% at 50% 102%, rgba(6, 12, 28, 0.78) 0%, transparent 70%),
+    linear-gradient(180deg, #04091a 0%, #0a1630 46%, #050b1c 100%);
+}
+
+/* Light island inside a dark band.
+   The mirror of .on-dark: it puts the paper tokens back so a white card
+   can sit on the navy stage and still use text-ink / border-line like
+   everything else, instead of hardcoding hex per element. */
+.on-light {
+  --color-paper: #ffffff;
+  --color-paper-alt: #f7f8fa;
+  --color-surface: #f8f9fb;
+  --color-surface-hover: #eef1f5;
+
+  --color-ink: #0b1a2b;
+  --color-ink-soft: #556477;
+  --color-ink-muted: #8c97a5;
+
+  --color-line: rgba(11, 26, 43, 0.08);
+  --color-line-strong: rgba(11, 26, 43, 0.16);
+  --color-accent: #0b1a2b;
+  --color-accent-hover: #1e2fa8;
+
+  color: var(--color-ink-soft);
+}
+
+.on-light ::selection {
+  background: var(--color-ink);
+  color: #ffffff;
 }

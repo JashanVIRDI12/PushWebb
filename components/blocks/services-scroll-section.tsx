@@ -118,7 +118,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   const Icon = service.icon;
 
   return (
-    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-surface p-6 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.30)] backdrop-blur-2xl transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover hover:shadow-[0_22px_48px_-22px_rgba(11,26,43,0.35)] sm:w-[370px] sm:p-7 md:w-[390px]">
+    <div className="service-card premium-card premium-lift group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-surface p-6 backdrop-blur-2xl hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover sm:w-[370px] sm:p-7 md:w-[390px]">
       {/* Ambient aura */}
       <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-ink/[0.04] opacity-40 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
@@ -147,7 +147,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
             loading="lazy"
             className="card-media-img h-full w-full scale-125 object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#04091a]/88 via-[#0a1630]/18 to-transparent opacity-75" />
         </div>
 
         <h3 className="mb-2 font-display text-xl font-medium tracking-tight text-ink sm:text-2xl">
@@ -176,23 +176,23 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
 function ClosingCard() {
   return (
-    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl bg-ink p-7 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.45)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_-24px_rgba(11,26,43,0.6)] sm:w-[370px] sm:p-8 md:w-[390px]">
+    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl bg-[#0a152c] border border-white/15 p-7 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.6)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_-24px_rgba(0,0,0,0.8)] sm:w-[370px] sm:p-8 md:w-[390px]">
       <div className="pointer-events-none absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
 
       <div className="relative z-10">
-        <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/25 bg-white/10 text-paper transition-transform duration-300 group-hover:scale-110">
-          <Sparkles className="h-5 w-5 text-paper" />
+        <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/25 bg-white/10 text-white transition-transform duration-300 group-hover:scale-110">
+          <Sparkles className="h-5 w-5 text-white" />
         </div>
 
-        <span className="mb-3 block font-display text-xs font-medium uppercase tracking-widest text-paper/60">
+        <span className="mb-3 block font-display text-xs font-medium uppercase tracking-widest text-[#b4b4b4]">
           Unified Growth Engine
         </span>
 
-        <h3 className="mb-4 font-display text-2xl font-medium leading-tight text-paper sm:text-3xl">
+        <h3 className="mb-4 font-display text-2xl font-medium leading-tight text-white sm:text-3xl">
           Every Growth Lever, Connected as One.
         </h3>
 
-        <p className="text-xs leading-relaxed text-paper/70 sm:text-sm">
+        <p className="text-xs leading-relaxed text-[#b4b4b4] sm:text-sm">
           We connect video, distribution, performance ads, and automation into a single scalable
           growth system.
         </p>
@@ -201,7 +201,7 @@ function ClosingCard() {
       <div className="relative z-10 border-t border-white/15 pt-4">
         <a
           href="/contact"
-          className="group/btn flex w-full items-center justify-center gap-2 rounded-2xl bg-paper py-3.5 font-display text-sm font-semibold text-ink no-underline transition-all duration-200 hover:scale-[1.02] hover:bg-white active:scale-[0.98]"
+          className="group/btn flex w-full items-center justify-center gap-2 rounded-2xl bg-white py-3.5 font-display text-sm font-semibold text-[#060d1d] no-underline transition-all duration-200 hover:scale-[1.02] hover:bg-[#eaeaea] active:scale-[0.98]"
         >
           <span>Book a Brainstorming Call</span>
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
@@ -386,10 +386,6 @@ export function WhatWeDoSection() {
                 We Turn Creative Ideas Into Growth Systems
               </h2>
 
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-soft">
-                Six connected disciplines. Take one on its own, or run them together as a single
-                growth system.
-              </p>
             </div>
 
             {/* Progress + manual nav */}

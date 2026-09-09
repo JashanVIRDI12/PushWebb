@@ -120,17 +120,17 @@ function InfoPanel() {
           </>
         );
         return item.href ? (
-          <a key={item.label} href={item.href} className="bg-surface hover:bg-surface-hover border border-line rounded-lg p-5 transition-colors duration-200">
+          <a key={item.label} href={item.href} className="premium-card bg-surface hover:bg-surface-hover border border-line rounded-xl p-5">
             {content}
           </a>
         ) : (
-          <div key={item.label} className="bg-surface border border-line rounded-lg p-5">
+          <div key={item.label} className="premium-card bg-surface border border-line rounded-xl p-5">
             {content}
           </div>
         );
       })}
 
-      <div className="bg-surface border border-line rounded-lg p-5">
+      <div className="premium-card bg-surface border border-line rounded-xl p-5">
         <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
           <Phone className="w-4 h-4 text-ink" />
         </div>
@@ -148,7 +148,7 @@ function InfoPanel() {
         </div>
       </div>
 
-      <div className="bg-surface border border-line rounded-lg p-5">
+      <div className="premium-card bg-surface border border-line rounded-xl p-5">
         <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
           <MapPin className="w-4 h-4 text-ink" />
         </div>
@@ -159,7 +159,7 @@ function InfoPanel() {
         </div>
       </div>
 
-      <div className="bg-surface border border-line rounded-lg p-5">
+      <div className="premium-card bg-surface border border-line rounded-xl p-5">
         <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-3">Follow along</p>
         <div className="flex gap-4 text-ink-soft text-sm">
           <a href="#" className="hover:text-ink transition-colors duration-200">Instagram</a>
@@ -256,7 +256,7 @@ function ContactFormSection() {
             <InfoPanel />
           </div>
 
-          <div className="md:col-span-3 order-1 md:order-2 bg-surface border border-line rounded-lg p-6 sm:p-8 md:p-10">
+          <div className="premium-card md:col-span-3 order-1 md:order-2 bg-surface border border-line rounded-2xl p-6 sm:p-8 md:p-10">
             <p className="anim-eyebrow eyebrow mb-4">Tell Us About Your Brand</p>
             <h2 className="text-2xl sm:text-3xl text-ink leading-[1.1] tracking-[-1px] mb-7">
               Start a Conversation

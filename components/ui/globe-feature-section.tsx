@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
  */
 export default function Featured_05() {
   return (
-    <section className="relative mx-auto w-full overflow-hidden rounded-3xl border border-line bg-surface px-6 py-16 shadow-[0_18px_50px_-24px_rgba(11,26,43,0.30)] md:px-16 md:py-24">
+    <section className="premium-card relative mx-auto w-full overflow-hidden rounded-3xl border border-line bg-surface px-6 py-16 md:px-16 md:py-24">
       <div className="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
         <div className="z-10 max-w-xl text-left">
           <h3 className="font-display text-3xl font-semibold tracking-tight text-ink">
