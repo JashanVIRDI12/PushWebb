@@ -301,12 +301,83 @@ html {
   position: relative;
 }
 
+#trusted,
 #services,
+#work,
 #about,
 #framework,
+#testimonials,
+#clients,
+#scale,
 #locations,
 #faq {
   scroll-margin-top: calc(var(--site-nav-height) + 16px);
+}
+
+/* Case studies on /work are linked straight from the home cards. */
+.case-study {
+  scroll-margin-top: calc(var(--site-nav-height) + 24px);
+}
+
+/* ── Trusted-behind logo strip ───────────────────────────────────
+   The row is rendered twice; -50% lands exactly on the seam because
+   every chip carries its own right margin. Hover pauses it so a name
+   can actually be read. */
+@keyframes logo-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.logo-marquee-track {
+  animation: logo-marquee 55s linear infinite;
+  will-change: transform;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── Built-for-scale workflow chain ──────────────────────────────
+   One highlight walks the nine steps a second apart and loops, so the
+   chain reads as a cycle. Each step holds the light for ~1s of 9s.
+   No fill mode on purpose: during its start delay a step keeps its
+   resting style instead of borrowing the lit first keyframe. */
+@keyframes workflow-walk {
+  0%, 15%, 100% { background-color: #ffffff; color: var(--color-ink); border-color: var(--color-line-strong); }
+  3%, 9%        { background-color: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink); }
+}
+
+/* Gold-dark on both states: plain --color-gold sits under 4.5:1 at this size. */
+@keyframes workflow-walk-loop {
+  0%, 15%, 100% { background-color: var(--gold-bg-subtle); color: var(--color-gold-dark); }
+  3%, 9%        { background-color: var(--color-gold-dark); color: #ffffff; }
+}
+
+.workflow-step {
+  animation: workflow-walk 9s linear infinite;
+}
+
+.workflow-step--loop {
+  animation-name: workflow-walk-loop;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track,
+  .workflow-step {
+    animation: none !important;
+  }
+  /* Static fallback: the first copy of the strip, wrapped and centred. */
+  .logo-marquee-track {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+    padding-inline: 1rem;
+    transform: none;
+  }
+  .logo-marquee-track > [aria-hidden='true'] {
+    display: none;
+  }
 }
 
 /* Service channels are linked directly from the nav */
@@ -419,6 +490,20 @@ html {
 
 .channel-rail-item.is-active .channel-rail-tag {
   color: var(--color-ink);
+}
+
+/* The name sits muted until its section is in view, so the rail reads as
+   one active service rather than six competing labels. */
+.channel-rail-item .channel-rail-label {
+  color: var(--color-ink-muted);
+  opacity: 0.55;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.channel-rail-item:hover .channel-rail-label,
+.channel-rail-item.is-active .channel-rail-label {
+  color: var(--color-ink);
+  opacity: 1;
 }
 
 /* ── Animated gradient ring accent ──────────────────────────── */

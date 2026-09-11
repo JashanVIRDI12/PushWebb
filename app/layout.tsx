@@ -17,32 +17,35 @@ const archivo = Archivo({
   display: "swap",
 });
 
+const SITE_TITLE = "PUSHWebb | Content, Creative, Performance & AI Agency";
+const SITE_DESCRIPTION =
+  "PUSHWebb helps brands and creators scale through content strategy, YouTube, short form video, social media, performance marketing and AI powered content systems. 5B+ views generated.";
+
+// Site-wide defaults. They are also the home page's own values; every other
+// route overrides title/description with its own.
 export const metadata: Metadata = {
   metadataBase: new URL("https://pushwebb.com"),
-  title: "PUSHWebb — Content. Creative. Performance. AI.",
-  description:
-    "PUSHWebb is a creative and AI-powered marketing agency helping brands and creators grow through YouTube, short-form content, performance campaigns, and intelligent automation.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
     type: "website",
     url: "/",
     siteName: "PUSHWebb",
-    title: "PUSHWebb — Content. Creative. Performance. AI.",
-    description:
-      "We turn content into business growth through creative strategy, performance marketing, and AI-powered systems.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "PUSHWebb — We Turn Content into Business Growth",
+        alt: "PUSHWebb — We Build Content Systems That Turn Attention Into Business Growth",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PUSHWebb — Content. Creative. Performance. AI.",
-    description:
-      "We turn content into business growth through creative strategy, performance marketing, and AI-powered systems.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/og.png"],
   },
 };

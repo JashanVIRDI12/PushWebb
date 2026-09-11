@@ -2,12 +2,25 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { ArrowRight, Loader2, CheckCircle2, AlertCircle, Mail, MapPin, Clock, Phone } from 'lucide-react';
+import {
+  ArrowRight,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Mail,
+  MapPin,
+  Clock,
+  Phone,
+  Eye,
+  Clapperboard,
+} from 'lucide-react';
 import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import { NavbarModernBlock } from './navbar-modern';
 import { Footer } from './agency-landing';
 import { useGsapScrollAnimations } from '@/components/animations/gsap-scroll-provider';
+import { CalendlyInline } from '@/components/ui/calendly-inline';
+import { CALENDLY_URL, CONTACT_EMAIL, PHONES, SOCIAL } from '@/lib/site';
 
 function ContactHeader() {
   return (
@@ -22,14 +35,20 @@ function ContactHeader() {
       />
       <div className="container relative z-10 mx-auto max-w-3xl px-4 text-center md:px-8">
         <p id="hero-tagline" className="eyebrow mb-5">Contact</p>
-        <h1
-          id="hero-headline"
-          className="mb-5 text-[clamp(2rem,5.4vw,3.9rem)] leading-[0.96] tracking-[-0.02em] text-ink"
-        >
-          Let&apos;s Turn Your Idea Into Action.
+        {/* The display line carries the positioning; the H1 states the page
+            plainly so search engines and AI systems read it unambiguously. */}
+        <h1 className="mb-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-ink-muted">
+          Contact PUSHWebb
         </h1>
+        <p
+          id="hero-headline"
+          className="mb-5 font-display text-[clamp(2rem,5.4vw,3.9rem)] font-medium leading-[0.96] tracking-[-0.02em] text-ink"
+        >
+          Let&apos;s Build the Right Growth System for It.
+        </p>
         <p className="mx-auto max-w-xl text-sm leading-relaxed text-ink-soft md:text-base">
-          Tell us your goal, mission, and problem, and we&apos;ll help you turn it into a clear growth plan.
+          Tell us what you&apos;re building, where growth is getting stuck, and what you want content
+          to achieve. We&apos;ll help map the right next step.
         </p>
       </div>
     </section>
@@ -41,16 +60,18 @@ function ContactHeader() {
 ──────────────────────────────────────────────────────────────── */
 const NEXT_STEPS = [
   {
-    title: 'Discovery call',
-    description: 'We learn about your business, audience, priorities, and challenges.',
+    title: "Tell Us What You're Building",
+    description: 'Share your business, goals, current content setup and where you need support.',
+  },
+  {
+    title: 'We Review the Fit',
+    description:
+      'Our team reviews your requirements and identifies where PUSHWebb can create the most value.',
   },
   {
     title: 'Build the Roadmap',
-    description: 'We shape a clear strategy around your objectives and requirements.',
-  },
-  {
-    title: 'Bring It to Life',
-    description: 'Our team moves into execution with a clear process and complete visibility.',
+    description:
+      "If there's a fit, we get on a strategy call, define the right scope and map the path from strategy to execution.",
   },
 ];
 
@@ -62,7 +83,7 @@ function WhatHappensNext() {
           <div className="mb-10 text-center md:mb-14">
             <p className="anim-eyebrow eyebrow mb-3">What Happens Next</p>
             <h2 className="split-h2 text-3xl leading-[1.06] tracking-[-0.02em] text-ink sm:text-4xl">
-              Three Steps From Hello to Live.
+              Three Simple Steps. No Sales Maze.
             </h2>
           </div>
 
@@ -86,24 +107,42 @@ function WhatHappensNext() {
   );
 }
 
+/** Scale figures sit beside the form, where someone is deciding whether to
+ *  hand over their details. Brand book numbers, same as the About page. */
+const FORM_PROOF = [
+  {
+    icon: Eye,
+    value: '5B+',
+    label: 'Views Generated',
+    note: 'Across content and channels worked on by our team',
+  },
+  {
+    icon: Clapperboard,
+    value: '1,500+',
+    label: 'Videos Per Month',
+    note: 'Built through structured production systems',
+  },
+];
+
 function InfoPanel() {
   const items = [
     {
       icon: Mail,
       label: 'Email',
-      value: 'pushwebb@gmail.com',
-      href: 'mailto:pushwebb@gmail.com',
+      value: CONTACT_EMAIL,
+      href: `mailto:${CONTACT_EMAIL}`,
     },
     {
       icon: Clock,
       label: 'Response time',
-      value: 'Within 24 hours',
+      value: 'Reply within 24 hours',
     },
   ];
 
-  const phoneNumbers = [
-    { label: '+91 9560543261', href: 'tel:+919560543261' },
-    { label: '+91 8080455250', href: 'tel:+918080455250' },
+  const socials: { label: string; href: string | null }[] = [
+    { label: 'Instagram', href: SOCIAL.instagram },
+    { label: 'LinkedIn', href: SOCIAL.linkedin },
+    { label: 'YouTube', href: SOCIAL.youtube },
   ];
 
   return (
@@ -130,41 +169,79 @@ function InfoPanel() {
         );
       })}
 
-      <div className="premium-card bg-surface border border-line rounded-xl p-5">
-        <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
-          <Phone className="w-4 h-4 text-ink" />
+      {/* Proof, not more contact detail — this is the moment someone decides
+          whether to submit their details. */}
+      {FORM_PROOF.map((proof) => {
+        const Icon = proof.icon;
+        return (
+          <div key={proof.value} className="premium-card bg-surface border border-line rounded-xl p-5">
+            <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
+              <Icon className="w-4 h-4 text-ink" />
+            </div>
+            <p className="font-display text-3xl font-semibold leading-none tracking-[-0.03em] text-ink">
+              {proof.value}
+            </p>
+            <p className="text-ink font-medium text-sm mt-1.5">{proof.label}</p>
+            <p className="text-ink-muted text-[11px] leading-relaxed mt-2">{proof.note}</p>
+          </div>
+        );
+      })}
+
+      {/* Numbers are hidden for now; the card returns when PHONES has entries. */}
+      {PHONES.length > 0 ? (
+        <div className="premium-card bg-surface border border-line rounded-xl p-5">
+          <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
+            <Phone className="w-4 h-4 text-ink" />
+          </div>
+          <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">Speak with our team</p>
+          <div className="flex flex-col gap-1">
+            {PHONES.map((phone) => (
+              <a
+                key={phone.href}
+                href={phone.href}
+                className="text-ink font-medium text-sm hover:text-accent transition-colors duration-200"
+              >
+                {phone.label}
+              </a>
+            ))}
+          </div>
         </div>
-        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">Call today</p>
-        <div className="flex flex-col gap-1">
-          {phoneNumbers.map((phone) => (
-            <a
-              key={phone.href}
-              href={phone.href}
-              className="text-ink font-medium text-sm hover:text-accent transition-colors duration-200"
-            >
-              {phone.label}
-            </a>
-          ))}
-        </div>
-      </div>
+      ) : null}
 
       <div className="premium-card bg-surface border border-line rounded-xl p-5">
         <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
           <MapPin className="w-4 h-4 text-ink" />
         </div>
-        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">Where we work</p>
+        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">
+          Dubai · Global Delivery
+        </p>
         <div className="flex flex-wrap gap-2">
-          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">India</span>
           <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Dubai, UAE</span>
+          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Global markets</span>
         </div>
       </div>
 
       <div className="premium-card bg-surface border border-line rounded-xl p-5">
-        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-3">Follow along</p>
+        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-3">Follow PUSHWebb</p>
         <div className="flex gap-4 text-ink-soft text-sm">
-          <a href="#" className="hover:text-ink transition-colors duration-200">Instagram</a>
-          <a href="#" className="hover:text-ink transition-colors duration-200">LinkedIn</a>
-          <a href="#" className="hover:text-ink transition-colors duration-200">YouTube</a>
+          {socials.map((social) =>
+            social.href ? (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-ink transition-colors duration-200"
+              >
+                {social.label}
+              </a>
+            ) : (
+              // No profile URL yet — the name stays, the link doesn't.
+              <span key={social.label} className="text-ink-muted">
+                {social.label}
+              </span>
+            ),
+          )}
         </div>
       </div>
     </div>
@@ -173,7 +250,13 @@ function InfoPanel() {
 
 function ContactFormSection() {
   const { toast } = useToast();
-  const [fields, setFields] = useState({ name: '', email: '', website: '', message: '' });
+  const [fields, setFields] = useState({
+    name: '',
+    email: '',
+    brand: '',
+    website: '',
+    message: '',
+  });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   useEffect(() => {
@@ -208,7 +291,7 @@ function ContactFormSection() {
       toast({
         type: 'error',
         title: 'Email not configured',
-        message: 'Please try again later or email us at pushwebb@gmail.com.',
+        message: `Please try again later or email us at ${CONTACT_EMAIL}.`,
       });
       return;
     }
@@ -222,14 +305,15 @@ function ContactFormSection() {
           from_name: fields.name,
           from_email: fields.email,
           reply_to: fields.email,
+          brand: fields.brand || '—',
           website: fields.website || '—',
           message: fields.message,
-          to_email: 'pushwebb@gmail.com',
+          to_email: CONTACT_EMAIL,
         },
         { publicKey },
       );
       setStatus('success');
-      setFields({ name: '', email: '', website: '', message: '' });
+      setFields({ name: '', email: '', brand: '', website: '', message: '' });
       toast({
         type: 'success',
         title: 'Message sent!',
@@ -240,12 +324,13 @@ function ContactFormSection() {
       toast({
         type: 'error',
         title: 'Failed to send',
-        message: 'Something went wrong. Please try again or email pushwebb@gmail.com.',
+        message: `Something went wrong. Please try again or email ${CONTACT_EMAIL}.`,
       });
     }
   };
 
   const inputCls = "bg-paper border border-line rounded-lg px-4 py-3 text-sm text-ink placeholder:text-ink-muted outline-none focus:border-ink focus:bg-white transition-colors duration-200";
+  const labelCls = "text-[10px] text-ink-muted tracking-[0.2em] uppercase font-medium";
 
   return (
     <section id="contact" className="relative bg-paper border-t border-line pb-16 md:pb-32">
@@ -257,15 +342,22 @@ function ContactFormSection() {
           </div>
 
           <div className="premium-card md:col-span-3 order-1 md:order-2 bg-surface border border-line rounded-2xl p-6 sm:p-8 md:p-10">
-            <p className="anim-eyebrow eyebrow mb-4">Tell Us About Your Brand</p>
+            {/* Who we work with, stated before the first field, so a visitor
+                knows whether they fit before investing any effort. */}
+            <p className="anim-eyebrow eyebrow mb-2">
+              Working across Dubai · Global markets
+            </p>
+            <p className="mb-5 text-[11px] text-ink-muted">
+              Creators · Brands · Marketing Teams · Agencies
+            </p>
             <h2 className="text-2xl sm:text-3xl text-ink leading-[1.1] tracking-[-1px] mb-7">
               Start a Conversation
             </h2>
 
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="form-field grid grid-cols-2 gap-4">
+              <div className="form-field grid gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-ink-muted tracking-[0.2em] uppercase font-medium">Name</label>
+                  <label className={labelCls}>Your name</label>
                   <input
                     type="text"
                     name="name"
@@ -277,7 +369,7 @@ function ContactFormSection() {
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-ink-muted tracking-[0.2em] uppercase font-medium">Email</label>
+                  <label className={labelCls}>Work email</label>
                   <input
                     type="email"
                     name="email"
@@ -290,26 +382,39 @@ function ContactFormSection() {
                 </div>
               </div>
 
-              <div className="form-field flex flex-col gap-1.5">
-                <label className="text-[10px] text-ink-muted tracking-[0.2em] uppercase font-medium">Website or social link</label>
-                <input
-                  type="text"
-                  name="website"
-                  value={fields.website}
-                  onChange={handleChange}
-                  placeholder="https://yourbrand.com or @yourhandle"
-                  className={inputCls}
-                />
+              <div className="form-field grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <label className={labelCls}>Brand / company</label>
+                  <input
+                    type="text"
+                    name="brand"
+                    value={fields.brand}
+                    onChange={handleChange}
+                    placeholder="Brand or company name"
+                    className={inputCls}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className={labelCls}>Website or social profile</label>
+                  <input
+                    type="text"
+                    name="website"
+                    value={fields.website}
+                    onChange={handleChange}
+                    placeholder="yourbrand.com or @handle"
+                    className={inputCls}
+                  />
+                </div>
               </div>
 
               <div className="form-field flex flex-col gap-1.5">
-                <label className="text-[10px] text-ink-muted tracking-[0.2em] uppercase font-medium">What do you need?</label>
+                <label className={labelCls}>Tell us a little more</label>
                 <textarea
                   rows={4}
                   name="message"
                   value={fields.message}
                   onChange={handleChange}
-                  placeholder="YouTube, short-form content, ad campaigns, AI automation — tell us what you're looking for..."
+                  placeholder="What's happening today, what would you like to improve, and what does success look like?"
                   required
                   className={`${inputCls} resize-none`}
                 />
@@ -344,16 +449,72 @@ function ContactFormSection() {
                     </>
                   ) : (
                     <>
-                      <span>Send Message</span>
+                      <span>Start the Conversation</span>
                       <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                     </>
                   )}
                 </button>
-                <p className="text-ink-muted text-[10px] text-center mt-3">We reply within 24 hours. No pitch — just a real conversation.</p>
+                <p className="text-ink-muted text-[11px] leading-relaxed text-center mt-3">
+                  We&apos;ll review your brief and reply within 24 hours. If there&apos;s a fit,
+                  we&apos;ll map the smartest next step together.
+                </p>
+
+                {/* Second conversion path: high-intent visitors skip the
+                    qualification form and go straight to the calendar. */}
+                {CALENDLY_URL ? (
+                  <div className="mt-5 border-t border-line pt-5 text-center">
+                    <p className="text-ink-soft text-xs">Already know what you need?</p>
+                    <a
+                      href="#book"
+                      className="mt-1.5 inline-flex items-center gap-1.5 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-accent"
+                    >
+                      Book a Strategy Call
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                ) : null}
               </div>
             </form>
           </div>
 
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BookingSection() {
+  if (!CALENDLY_URL) {
+    // Nothing to show publicly until the link is configured; in development
+    // the gap would be silent, so say why it is empty.
+    return process.env.NODE_ENV === 'development' ? (
+      <section className="border-t border-line bg-paper py-16">
+        <div className="container mx-auto max-w-3xl px-4 md:px-8">
+          <p className="rounded-xl border border-dashed border-line p-6 text-center text-sm text-ink-muted">
+            Calendly booking section is hidden — set{' '}
+            <code className="font-mono text-ink">NEXT_PUBLIC_CALENDLY_URL</code> in{' '}
+            <code className="font-mono text-ink">.env.local</code> to enable it.
+          </p>
+        </div>
+      </section>
+    ) : null;
+  }
+
+  return (
+    <section id="book" className="scroll-mt-28 border-t border-line bg-paper py-16 md:py-24">
+      <div className="container mx-auto max-w-5xl px-4 md:px-8">
+        <div className="mb-8 text-center md:mb-12">
+          <p className="eyebrow mb-3">Straight to the calendar</p>
+          <h2 className="text-3xl leading-[1.06] tracking-[-0.02em] text-ink sm:text-4xl">
+            Book a Strategy Call
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-ink-soft">
+            Pick a time that works for you. We&apos;ll come prepared with questions about your
+            content, your channels and where growth is getting stuck.
+          </p>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+          <CalendlyInline url={CALENDLY_URL} />
         </div>
       </div>
     </section>
@@ -370,6 +531,7 @@ export function ContactPage() {
       <ContactHeader />
       <ContactFormSection />
       <WhatHappensNext />
+      <BookingSection />
       <div className="on-dark dark-zone">
         <Footer />
       </div>

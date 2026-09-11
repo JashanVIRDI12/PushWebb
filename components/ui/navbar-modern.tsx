@@ -4,18 +4,16 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Layers, Home, UserCheck, Mail, ChevronDown } from "lucide-react";
+import { ArrowRight, Layers, Home, UserCheck, BriefcaseBusiness, ChevronDown } from "lucide-react";
 import { BrandMark } from "@/components/ui/brand-mark";
+import { SERVICE_CHANNELS, serviceHref } from "@/lib/services";
+import { CTA_HREF, CTA_LABEL } from "@/lib/site";
 
 /** Every channel that has its own section on /services. */
-const SERVICE_LINKS = [
-  { label: "YAAS: YouTube as a Service", href: "/services#yaas" },
-  { label: "Microcontent Mastery", href: "/services#microcontent" },
-  { label: "ROI-Driven Ad Campaigns", href: "/services#ad-campaigns" },
-  { label: "Social Media Marketing", href: "/services#social-media" },
-  { label: "Performance Marketing", href: "/services#performance-marketing" },
-  { label: "AI Automation", href: "/services#ai-automation" },
-];
+const SERVICE_LINKS = SERVICE_CHANNELS.map((channel) => ({
+  label: channel.name,
+  href: serviceHref(channel.id),
+}));
 
 export function NavbarModern() {
   const pathname = usePathname();
@@ -25,11 +23,14 @@ export function NavbarModern() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
+  const isActiveItem = (item: { href: string }) =>
+    item.href === "/" ? pathname === "/" : pathname === item.href;
+
   const navItems = [
     { label: "Home", href: "/", icon: Home, children: null },
     { label: "Services", href: "/services", icon: Layers, children: SERVICE_LINKS },
+    { label: "Work", href: "/work", icon: BriefcaseBusiness, children: null },
     { label: "About", href: "/about", icon: UserCheck, children: null },
-    { label: "Contact", href: "/contact", icon: Mail, children: null },
   ];
 
   // Detect scroll state for subtle glass reaction
@@ -109,12 +110,7 @@ export function NavbarModern() {
           }}
         >
           {navItems.map((item, index) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : item.href.startsWith("/#")
-                ? false
-                : pathname === item.href;
+            const isActive = isActiveItem(item);
 
             return (
               <Link
@@ -197,17 +193,20 @@ export function NavbarModern() {
         </nav>
 
         {/* Right Section: Call to Action & Mobile Menu Toggle */}
-        <div className="flex items-center gap-2">
-          {/* Pill Call-To-Action Button */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Pill Call-To-Action Button. The full "Book a Strategy Call"
+              label is longer than the old "Book a Call", so on phones the
+              pill tightens and drops its arrow rather than crowding the
+              wordmark; below 360px it hides and the menu carries it. */}
           <Link
-            href="/contact"
-            className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2 overflow-hidden rounded-full bg-[#0B1A2B] px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-semibold text-white shadow-[0_4px_14px_rgba(11,26,43,0.25)] transition-all duration-300 hover:bg-[#1E2FA8] hover:scale-[1.03] active:scale-[0.98]"
+            href={CTA_HREF}
+            className="group relative hidden min-[360px]:inline-flex items-center justify-center gap-1.5 sm:gap-2 overflow-hidden whitespace-nowrap rounded-full bg-[#0B1A2B] px-3 py-1.5 sm:px-5 sm:py-2 text-[11px] sm:text-sm font-semibold text-white shadow-[0_4px_14px_rgba(11,26,43,0.25)] transition-all duration-300 hover:bg-[#1E2FA8] hover:scale-[1.03] active:scale-[0.98]"
           >
             {/* Shimmer sweep ray */}
             <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
 
-            <span className="relative z-10 font-display">Book a Call</span>
-            <ArrowRight className="relative z-10 h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            <span className="relative z-10 font-display">{CTA_LABEL}</span>
+            <ArrowRight className="relative z-10 hidden h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1 sm:block" />
           </Link>
 
           {/* Mobile Menu Toggle Button */}
@@ -256,12 +255,7 @@ export function NavbarModern() {
               <div className="flex flex-col gap-1">
                 {navItems.map((item, index) => {
                   const Icon = item.icon;
-                  const isActive =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : item.href.startsWith("/#")
-                      ? false
-                      : pathname === item.href;
+                  const isActive = isActiveItem(item);
 
                   return (
                     <motion.div
@@ -332,11 +326,11 @@ export function NavbarModern() {
               {/* Mobile Bottom CTA */}
               <div className="mt-3 pt-3 border-t border-black/[0.06] flex flex-col gap-2">
                 <Link
-                  href="/contact"
+                  href={CTA_HREF}
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-xl bg-[#0B1A2B] py-3 text-center font-display text-sm font-semibold text-white transition-all hover:bg-[#1E2FA8] active:scale-98"
                 >
-                  <span>Book a Brainstorming Call</span>
+                  <span>{CTA_LABEL}</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>

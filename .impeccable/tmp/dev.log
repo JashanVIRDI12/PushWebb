@@ -1,0 +1,21 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+▲ Next.js 16.2.5 (Turbopack)
+- Local:         http://localhost:3100
+- Network:       http://192.168.29.141:3100
+- Environments: .env.local
+✓ Ready in 3.2s
+
+ GET /work 200 in 2.1s (next.js: 1660ms, application-code: 469ms)
+ GET /work 200 in 118ms (next.js: 3ms, application-code: 115ms)
+✓ Compiled in 123ms
+✓ Compiled in 93ms
+✓ Compiled in 136ms
+ GET /work 200 in 367ms (next.js: 45ms, application-code: 322ms)
+ GET / 200 in 241ms (next.js: 26ms, application-code: 215ms)
+ GET /work 200 in 127ms (next.js: 3ms, application-code: 124ms)
+ GET / 200 in 84ms (next.js: 3ms, application-code: 82ms)
+✓ Compiled in 117ms
+✓ Compiled in 79ms
+✓ Compiled in 101ms
+ GET /about 200 in 504ms (next.js: 53ms, application-code: 450ms)
+ GET / 200 in 198ms (next.js: 41ms, application-code: 157ms)

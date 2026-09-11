@@ -1,143 +1,36 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Link from 'next/link';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import {
   ArrowRight,
   SquarePlay,
   Clapperboard,
-  Target,
   Bot,
   Share2,
   BarChart3,
+  Film,
+  ShieldCheck,
   type LucideIcon,
 } from 'lucide-react';
+import { SERVICE_CHANNELS, serviceHref, type ServiceChannel } from '@/lib/services';
 import { cn } from '@/lib/utils';
 
-type Channel = {
-  id: string;
-  name: string;
-  icon: LucideIcon;
-  hook: string;
-  description: string[];
-  cover: string[];
-  image: string;
-};
+type Channel = ServiceChannel;
 
-/* Unsplash placeholders — swap for real production photography later. */
-const CHANNELS: Channel[] = [
-  {
-    id: 'yaas',
-    name: 'YAAS: YouTube as a Service',
-    icon: SquarePlay,
-    hook: 'Turn Your YouTube Channel Into a Growth Engine',
-    description: [
-      'We manage the complete YouTube ecosystem, from strategy and scripting to production, publishing, and ongoing optimisation.',
-      'The focus is beyond just uploading videos. We build content around stronger retention, higher watch time, higher click-through rate, and consistent channel growth.',
-    ],
-    cover: [
-      'YouTube strategy and content planning',
-      'Scripting, production, and editing',
-      'Thumbnails, publishing, and optimisation',
-      'Analytics and performance insights',
-    ],
-    image: '/pushwebb-assets/generated/youtube-studio.jpg',
-  },
-  {
-    id: 'microcontent',
-    name: 'Microcontent Mastery',
-    icon: Clapperboard,
-    hook: 'Short-Form Content Built to Earn Attention.',
-    description: [
-      'We create platform-driven microcontent designed for the way people actually consume content on Instagram Reels and YouTube Shorts.',
-      'From the opening hook to the final edit, every piece is structured to capture viewers’ attention.',
-    ],
-    cover: [
-      'Short-form strategy and ideation',
-      'Hook-first storytelling',
-      'High-volume video editing',
-      'Long-form and podcast repurposing',
-      'Performance-led optimisation',
-    ],
-    image: '/pushwebb-assets/generated/microcontent-shoot.jpg',
-  },
-  {
-    id: 'ad-campaigns',
-    name: 'ROI-Driven Ad Campaigns',
-    icon: Target,
-    hook: 'Campaigns Built With a Clear Objective.',
-    description: [
-      'We combine campaign strategy, audience targeting, and strong creative to build paid campaigns around specific marketing goals.',
-      'From awareness to conversion, every campaign is structured around reaching the right audience with the right content.',
-    ],
-    cover: [
-      'Campaign strategy',
-      'Creative development',
-      'Audience targeting',
-      'Full-funnel campaign planning',
-      'Campaign testing and optimization',
-      'Meta, Google, and YouTube campaigns',
-    ],
-    image: '/pushwebb-assets/generated/paid-campaign-review.jpg',
-  },
-  {
-    id: 'ai-automation',
-    name: 'AI Automation',
-    icon: Bot,
-    hook: 'Automate the Repetitive. Focus on What Actually Needs You.',
-    description: [
-      'We use AI to streamline marketing and content workflows, helping teams work more efficiently without removing the human thinking behind strategy and creative.',
-      'The goal is to reduce manual work, simplify processes, and create workflows that are easier to scale.',
-    ],
-    cover: [
-      'Content repurposing workflows',
-      'Scheduling and publishing workflows',
-      'Repetitive marketing task automation',
-      'Content operations',
-      'Data and reporting workflows',
-      'AI-assisted insights and decision support',
-    ],
-    image: '/pushwebb-assets/generated/ai-workflow.jpg',
-  },
-  {
-    id: 'social-media',
-    name: 'Social Media Marketing',
-    icon: Share2,
-    hook: 'Build a Social Presence With More Purpose.',
-    description: [
-      'Social media should not just keep your account active.',
-      'We help brands create a consistent presence through content planning, platform-focused creative, and ongoing performance results.',
-    ],
-    cover: [
-      'Social media strategy building',
-      'Content calendars and planning',
-      'Content scheduling, publishing, and caption writing',
-      'Platform-related content',
-      'Creative execution',
-      'Performance monitoring and optimisation',
-    ],
-    image: '/pushwebb-assets/generated/social-strategy.jpg',
-  },
-  {
-    id: 'performance-marketing',
-    name: 'Performance Marketing',
-    icon: BarChart3,
-    hook: 'Turn Media Into a Smarter Growth Channel.',
-    description: [
-      'Performance marketing requires constant learning, not a set-and-forget approach.',
-      'We manage and optimise paid campaigns using performance insights, testing, and creative data to look into what is working and where improvements are required.',
-    ],
-    cover: [
-      'Paid media strategy',
-      'Meta, Google, and YouTube campaigns',
-      'Creative testing',
-      'Audience testing',
-      'Performance tracking',
-      'Ongoing campaign optimization',
-    ],
-    image: '/pushwebb-assets/generated/performance-analytics.jpg',
-  },
-];
+/* The channel copy lives in lib/services so the navbar, the home cards and
+   the Dubai page link to exactly these sections. Icons stay here. */
+const CHANNELS = SERVICE_CHANNELS;
+
+const CHANNEL_ICONS: Record<string, LucideIcon> = {
+  yaas: SquarePlay,
+  'short-form': Clapperboard,
+  'video-production': Film,
+  'ai-content': Bot,
+  'social-media': Share2,
+  performance: BarChart3,
+};
 
 /** A framed image that drifts subtly within its frame as the page scrolls past it. */
 function ChannelFrame({ src, alt }: { src: string; alt: string }) {
@@ -186,10 +79,10 @@ function ChannelFrame({ src, alt }: { src: string; alt: string }) {
 }
 
 function ChannelSection({ channel, index, reversed }: { channel: Channel; index: number; reversed: boolean }) {
-  const Icon = channel.icon;
+  const Icon = CHANNEL_ICONS[channel.id] ?? SquarePlay;
 
   return (
-    <section id={channel.id} className="channel-section reveal-section relative border-t border-line py-16 md:py-24">
+    <section id={channel.id} className="channel-section reveal-section relative scroll-mt-28 border-t border-line py-16 md:py-24">
       <div className="container mx-auto max-w-5xl px-4 md:px-8">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
           <div className={cn('md:col-span-7', reversed && 'md:order-2')}>
@@ -221,18 +114,50 @@ function ChannelSection({ channel, index, reversed }: { channel: Channel; index:
                 ))}
               </ul>
 
-              <a
-                href="/contact"
+              {/* Named delivery models — the deck's own structure for how
+                  this capability is actually produced. */}
+              {channel.frameworks?.map((framework) => (
+                <div key={framework.label} className="mb-8 max-w-xl">
+                  <p className="mb-3 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-gold">
+                    {framework.label}
+                  </p>
+                  <dl className="border-t border-line">
+                    {framework.items.map((item) => (
+                      <div key={item.name} className="border-b border-line py-3">
+                        <dt className="font-display text-sm font-bold uppercase tracking-[-0.01em] text-ink">
+                          {item.name}
+                        </dt>
+                        <dd className="mt-1.5 text-sm leading-relaxed text-ink-soft">{item.detail}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ))}
+
+              {/* One substantiated proof line, where there is one — the
+                  answer to "why believe PUSHWebb is good at this". */}
+              {channel.proof ? (
+                <p className="mb-6 flex items-start gap-2.5 text-sm text-ink">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-gold" strokeWidth={2} />
+                  <span className="font-medium">{channel.proof}</span>
+                </p>
+              ) : null}
+
+              {/* Contextual link rather than a sixth identical booking
+                  button; Book a Strategy Call stays in the navbar, the
+                  hero, the mid-page block and the final CTA. */}
+              <Link
+                href={serviceHref(channel.id)}
                 className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:bg-surface-hover"
               >
-                Book a Call
+                {channel.cta}
                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </a>
+              </Link>
             </div>
           </div>
 
           <div className={cn('md:col-span-5', reversed && 'md:order-1')}>
-            <ChannelFrame src={channel.image} alt={channel.name} />
+            <ChannelFrame src={channel.image} alt={channel.imageAlt} />
           </div>
         </div>
       </div>
@@ -240,12 +165,14 @@ function ChannelSection({ channel, index, reversed }: { channel: Channel; index:
   );
 }
 
-/** Fixed left-edge index of channels — visible only alongside the channel list, highlights whichever section is centred in view. */
+/** Fixed left-edge service navigator — visible only alongside the channel
+ *  list, highlights whichever section is centred in view. Numbers and names
+ *  both show, so it navigates instead of just marking position. */
 function ChannelRail() {
   return (
     <nav
-      aria-label="Service channels"
-      className="channel-rail pointer-events-none fixed left-8 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-5 opacity-0 transition-opacity duration-300 xl:flex"
+      aria-label="Services"
+      className="channel-rail pointer-events-none fixed left-8 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-4 opacity-0 transition-opacity duration-300 xl:flex"
     >
       {CHANNELS.map((channel, i) => (
         <a
@@ -257,7 +184,10 @@ function ChannelRail() {
         >
           <span className="channel-rail-dot h-1.5 w-1.5 rounded-full" />
           <span className="channel-rail-tag font-mono text-[10px] tracking-widest">
-            CH.{String(i + 1).padStart(2, '0')}
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span className="channel-rail-label font-display text-xs font-semibold tracking-[-0.01em]">
+            {channel.navLabel}
           </span>
         </a>
       ))}
@@ -265,7 +195,9 @@ function ChannelRail() {
   );
 }
 
-export function ServicesChannelList() {
+/** `midBlock` lands after the third service — the brief keeps one booking
+ *  prompt mid-page, between the modules rather than after all six. */
+export function ServicesChannelList({ midBlock }: { midBlock?: React.ReactNode }) {
   const scopeRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -309,7 +241,10 @@ export function ServicesChannelList() {
       <ChannelRail />
       <div id="channel-rail-zone">
         {CHANNELS.map((channel, i) => (
-          <ChannelSection key={channel.id} channel={channel} index={i} reversed={i % 2 === 1} />
+          <React.Fragment key={channel.id}>
+            <ChannelSection channel={channel} index={i} reversed={i % 2 === 1} />
+            {i === 2 ? midBlock : null}
+          </React.Fragment>
         ))}
       </div>
     </div>

@@ -34,6 +34,8 @@ export type LiveStats = {
 
 export type Client = {
   name: string;
+  /** Which page of the roster slider the card sits on. */
+  group: 'brand' | 'creator';
   /** Researched, and load-bearing — it says what the name alone doesn't. */
   category: string;
   src: string;
@@ -51,6 +53,7 @@ export type Client = {
 export const CLIENTS: Client[] = [
   {
     name: 'BookMyShow',
+    group: 'brand',
     category: 'Ticketing Platform',
     src: '/logos/bookmyshow.png',
     kind: 'mark',
@@ -62,6 +65,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'AppsForBharat',
+    group: 'brand',
     category: 'Faith-Tech Platform',
     src: '/logos/apps-for-bharat.jpg',
     kind: 'mark',
@@ -72,6 +76,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Sri Mandir',
+    group: 'brand',
     category: 'Devotional App',
     src: '/logos/sri-mandir.png',
     kind: 'tile',
@@ -86,6 +91,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Blaupunkt',
+    group: 'brand',
     category: 'Electronics',
     src: '/logos/blaupunkt.png',
     kind: 'mark',
@@ -95,6 +101,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'The Lalit',
+    group: 'brand',
     category: 'Luxury Hospitality',
     src: '/logos/the-lalit.png',
     kind: 'mark',
@@ -104,6 +111,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'FRND',
+    group: 'brand',
     category: 'Social App',
     src: '/logos/frnd.webp',
     kind: 'tile',
@@ -115,6 +123,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Veda Mandir',
+    group: 'brand',
     category: 'Online Puja App',
     src: '/logos/vedamandir.jpg',
     kind: 'tile',
@@ -125,6 +134,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'TribeVibe',
+    group: 'brand',
     category: 'Live Events + Campus',
     src: '/logos/tribevibe.jpg',
     kind: 'mark',
@@ -136,6 +146,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Baadshah',
+    group: 'creator',
     category: 'Film Commentary',
     src: '/logos/baadshah.jpg',
     kind: 'tile',
@@ -147,6 +158,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'BeerBiceps',
+    group: 'creator',
     category: 'Creator + Podcast',
     src: '/logos/beerbiceps.jpg',
     kind: 'tile',
@@ -156,6 +168,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Supertalks',
+    group: 'creator',
     category: 'Long-Form Podcast',
     src: '/logos/supertalks.jpg',
     kind: 'tile',
@@ -165,6 +178,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'The Creator Room',
+    group: 'creator',
     category: 'Creator Business',
     src: '/logos/the-creator-room.jpg',
     kind: 'tile',
@@ -172,6 +186,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Misfit Humans',
+    group: 'creator',
     category: 'Interview Podcast',
     src: '/logos/misfit-humans.jpg',
     kind: 'mark',
@@ -179,6 +194,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Sarthak Sachdeva',
+    group: 'creator',
     category: 'Short-Form Creator',
     src: '/logos/sarthak-sachdeva.jpg',
     kind: 'tile',
@@ -186,6 +202,7 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Shreya Godhawat',
+    group: 'creator',
     category: 'Digital Creator',
     src: '/logos/shreya-godhawat.jpg',
     kind: 'tile',
@@ -194,11 +211,29 @@ export const CLIENTS: Client[] = [
   },
   {
     name: 'Simply Pankaj',
+    group: 'creator',
     category: 'Digital Creator',
     src: '/logos/simply-pankaj.jpg',
     kind: 'tile',
     youtube: { handle: 'simplypankaj' },
   },
+];
+
+/** The lighter proof strip under the hero leads with the most recognisable
+ *  names (the brief's recommended first row), then runs through the rest. */
+const FEATURED_ORDER = [
+  'BeerBiceps',
+  'Sri Mandir',
+  'BookMyShow',
+  'TribeVibe',
+  'The Lalit',
+  'Sarthak Sachdeva',
+  'Supertalks',
+];
+
+export const FEATURED_CLIENTS: Client[] = [
+  ...FEATURED_ORDER.map((name) => CLIENTS.find((c) => c.name === name)!),
+  ...CLIENTS.filter((c) => !FEATURED_ORDER.includes(c.name)),
 ];
 
 /** 8_250_000 → "8.25M", 4_119_778_516 → "4.12B". Keeps M/K/B rather than

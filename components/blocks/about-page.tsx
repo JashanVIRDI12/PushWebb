@@ -5,8 +5,8 @@ import {
   BarChart3,
   Bot,
   Eye,
-  MapPin,
   Plus,
+  RefreshCw,
   TrendingUp,
   Users,
   Workflow,
@@ -14,74 +14,140 @@ import {
 import { NavbarModernBlock } from './navbar-modern';
 import { Footer } from './site-footer';
 import { Globe, type GlobeConfig } from '@/components/ui/globe-feature-section';
-import { TextColor } from '@/components/ui/text-color';
 import { ExpandButton } from '@/components/ui/expand-button';
+import { CLIENTS } from '@/lib/clients';
+import { CTA_HREF, CTA_LABEL, DUBAI_ADDRESS_LINE, FOUNDER, SCALE_PROOF } from '@/lib/site';
+import { cn } from '@/lib/utils';
+
+/* ────────────────────────────────────────────────────────────────
+   ABOUT — built as PUSHWebb's production document rather than an
+   agency manifesto: ruled register sheets (label left, value right),
+   hairlines instead of card borders, one navy band, and the crew,
+   the loop and the client slate all named on one page.
+──────────────────────────────────────────────────────────────── */
+
+/** The masthead fact sheet — the header block of a call sheet. */
+const MASTHEAD_FACTS = [
+  { label: 'Operating base', value: 'Dubai, UAE' },
+  { label: 'Studio', value: 'India' },
+  { label: 'Team', value: '16+ specialists' },
+  { label: 'Output', value: '1,500+ videos / month' },
+];
 
 const DIFFERENTIATORS = [
   {
     icon: Eye,
-    title: 'Audience-led content',
+    title: 'Audience Before Output',
     description: 'We start with what people will actually choose to watch, engage with, and remember.',
   },
   {
     icon: Workflow,
-    title: 'Strategy meets execution',
+    title: 'Strategy + Execution, Together',
     description: 'The thinking behind the work stays connected to the team responsible for creating and delivering it.',
   },
   {
     icon: TrendingUp,
-    title: 'Designed for growth',
+    title: 'Built for High Volume',
     description: 'We build repeatable workflows that support higher content output while maintaining consistency and quality.',
   },
   {
     icon: BarChart3,
-    title: 'Data behind creativity',
+    title: 'Performance Feeds Creativity',
     description: 'Performance insights help us understand what is working and make better decisions about what comes next.',
   },
   {
     icon: Bot,
-    title: 'AI that brings value',
+    title: 'AI Where It Actually Helps',
     description: 'We use AI to reduce repetitive work, improve efficiency, and strengthen workflows without replacing human strategy and creative judgment.',
   },
   {
     icon: Users,
-    title: 'End-to-end ownership',
+    title: 'One Team. One Owner.',
     description: 'From planning and production to publishing and optimisation, we keep the process connected so there are fewer gaps between strategy and execution.',
   },
 ];
 
+/** The loop every engagement runs on — the visible form of the Scaling System. */
+const OPERATING_LOOP = [
+  'Strategy',
+  'Research',
+  'Script',
+  'Produce',
+  'Edit',
+  'QA',
+  'Publish',
+  'Analyse',
+];
+
+const TEAM = [
+  {
+    name: FOUNDER.name,
+    role: FOUNDER.role,
+    bio: 'Spent over six years at BeerBiceps leading end-to-end content and YouTube operations across research, planning, production, post production, publishing and channel growth. That experience shaped the systems behind PUSHWebb.',
+  },
+  {
+    name: 'Pragyansh',
+    role: 'Co-Founder',
+    bio: 'Six years alongside Mrigank inside the same BeerBiceps content operation. Keeps research, scripting, editing, design and publishing moving through one pipeline rather than separate handoffs.',
+  },
+  {
+    name: 'Bhavishya',
+    role: 'Operations',
+    bio: 'Runs the day-to-day: scheduling, resourcing and the quality checks every piece of content passes through before it reaches a client.',
+  },
+];
+
+/** Selective proof — context for the team's experience, not the full roster.
+ *  Logos come from the shared roster so a name is never duplicated here. */
+const BUILT_ALONGSIDE = [
+  'BeerBiceps',
+  'Sri Mandir',
+  'Sarthak Sachdeva',
+  'TribeVibe',
+  'BookMyShow',
+  'The Lalit',
+].map((name) => CLIENTS.find((client) => client.name === name)!);
+
 const FAQS = [
   {
-    question: 'What does PUSHWebb do?',
-    answer: 'PUSHWebb is a creative and AI-powered marketing agency working across YouTube, short-form content, social media marketing, paid campaigns, performance marketing, and AI automation.',
+    question: 'What exactly does PUSHWebb do?',
+    answer: 'PUSHWebb is a content, creative, performance and AI agency working across YouTube management, short-form content, video and post production, podcast production, content clipping, social media marketing, paid campaigns, performance marketing and AI automation.',
   },
   {
-    question: 'Does PUSHWebb handle both strategy and execution?',
-    answer: 'Yes. PUSHWebb combines strategy, planning, production, editing, publishing, campaign execution, and optimisation under one roof to support growth.',
+    question: 'Who does PUSHWebb typically work with?',
+    answer: 'Creators, brands, businesses, marketing teams and agencies — from founders building a first channel to in-house teams that need more output than they can produce internally.',
   },
   {
-    question: 'Does PUSHWebb provide complete YouTube management?',
-    answer: 'Yes. Our YouTube as a Service offering can cover strategy, scripting, production, editing, thumbnails, publishing, optimisation, and analytics.',
+    question: 'What makes PUSHWebb different from a traditional content agency?',
+    answer: 'Most agencies sell deliverables. We build the operating system behind them, so strategy, production, distribution, performance and technology run as one connected process instead of separate teams handing work to each other.',
   },
   {
-    question: 'Does PUSHWebb create short-form and social media content?',
-    answer: 'Yes. We create short-form content for platforms including Instagram Reels, YouTube Shorts, and TikTok, along with broader social media planning and creative execution.',
+    question: 'Can PUSHWebb manage strategy and execution together?',
+    answer: 'Yes. Strategy, planning, production, editing, publishing, campaign execution and optimisation sit under one roof, which is what keeps the thinking connected to the work.',
   },
   {
-    question: 'Does PUSHWebb work with clients outside India?',
-    answer: 'Yes. PUSHWebb works with clients across markets and is expanding its presence in Dubai to work more closely with brands and creators across the UAE.',
+    question: 'Can PUSHWebb manage our complete YouTube operation?',
+    answer: 'Yes. Our YouTube as a Service offering covers strategy, scripting, production, editing, thumbnails, publishing, optimisation and analytics.',
   },
   {
-    question: 'How does PUSHWebb use AI?',
-    answer: 'We use AI to improve suitable content and marketing workflows, including research, repurposing, publishing, repetitive tasks, reporting, and decision support.',
+    question: 'Does PUSHWebb handle high volume video production?',
+    answer: 'Yes. Our team delivers more than 1,500 videos a month through structured production workflows, with human review and quality control before anything is delivered.',
   },
   {
-    question: 'Can we work with PUSHWebb for only one service?',
-    answer: 'Yes. Clients can work with us for an individual service or combine multiple services depending on their brand goals and internal capabilities.',
+    question: 'How does PUSHWebb use AI without compromising creative quality?',
+    answer: 'AI handles the repetitive layer — research support, repurposing, publishing, reporting and decision support. Strategy, storytelling and final judgment stay with people, and every output is reviewed before it goes out.',
   },
   {
-    question: 'How do we start working with PUSHWebb?',
-    answer: 'Start with a strategy call. We first understand your goals, current setup, and challenges, then recommend the most relevant service or working model.',
+    question: 'Does PUSHWebb work with clients in Dubai and the UAE?',
+    answer: 'Yes. PUSHWebb operates across India and Dubai, UAE, and works with brands, creators and marketing teams throughout the Middle East and international markets.',
+  },
+  {
+    question: 'Can we hire PUSHWebb for one service only?',
+    answer: 'Yes. Clients can work with us for an individual service or combine several, depending on brand goals and what the internal team already covers.',
+  },
+  {
+    question: 'How does a PUSHWebb engagement begin?',
+    answer: 'Start with a strategy call. We first understand your goals, current setup and challenges, then recommend the most relevant service or working model.',
   },
 ];
 
@@ -99,8 +165,8 @@ const GLOBE_CONFIG: GlobeConfig = {
   markerColor: [30 / 255, 47 / 255, 168 / 255],
   glowColor: [0.85, 0.88, 0.95],
   markers: [
-    { location: [19.076, 72.8777], size: 0.12 },
-    { location: [25.2048, 55.2708], size: 0.1 },
+    { location: [25.2048, 55.2708], size: 0.12 },
+    { location: [19.076, 72.8777], size: 0.1 },
     { location: [28.6139, 77.209], size: 0.06 },
     { location: [12.9716, 77.5946], size: 0.055 },
     { location: [51.5074, -0.1278], size: 0.045 },
@@ -109,183 +175,266 @@ const GLOBE_CONFIG: GlobeConfig = {
   ],
 };
 
-function AboutHero() {
+/** Small mono label used as a register heading throughout the document. */
+function SheetLabel({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <section className="relative overflow-hidden border-b border-line bg-paper pb-16 pt-14 md:pb-24 md:pt-20">
-      {/* Faint scanline texture — broadcast/monitor atmosphere, kept subtle */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, #0B1A2B 0px, #0B1A2B 1px, transparent 1px, transparent 3px)',
-        }}
-      />
-
-      <div className="container relative z-10 mx-auto max-w-5xl px-4 text-center md:px-8">
-        <p className="mb-8 font-mono text-[11px] uppercase tracking-[0.3em] text-gold font-bold">
-          PUSHWebb / About &nbsp;·&nbsp; India — Dubai
-        </p>
-
-        <TextColor words={['Strategy.', 'Story.', 'Growth.']} />
-
-        <div className="mx-auto mt-10 max-w-xl space-y-3">
-          <p className="text-sm leading-relaxed text-ink-soft md:text-base">
-            PUSHWebb is a creative and AI-driven marketing agency built for brands, creators, and
-            businesses that want more than content — they want growth.
-          </p>
-          <p className="text-sm leading-relaxed text-ink-soft md:text-base">
-            We do not just produce content. We build it around a clear purpose, bringing together
-            strategy, storytelling, production, performance, and technology as one connected system.
-          </p>
-        </div>
-
-        <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          <Link
-            href="/contact"
-            className="inline-flex h-[54px] select-none items-center justify-center gap-2.5 rounded-lg bg-ink px-8 text-sm font-semibold text-paper no-underline transition-all duration-200 hover:bg-ink/90 active:scale-[0.97]"
-          >
-            Book a Strategy Call
-            <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
-          </Link>
-          <ExpandButton href="/#services" label="Explore Our Work" />
-        </div>
-      </div>
-    </section>
+    <p className={cn('font-mono text-[10px] uppercase tracking-[0.28em] text-ink-soft', className)}>
+      {children}
+    </p>
   );
 }
-function ConnectedSystemSection() {
+
+function AboutMasthead() {
   return (
-    <section className="bg-paper px-5 py-24 sm:px-8 md:py-32">
-      <div className="mx-auto grid max-w-[1240px] gap-12 md:grid-cols-12 md:gap-10">
-        <div className="space-y-6 md:col-span-5">
-          <p className="text-base leading-relaxed text-ink-soft">
-            Our focus is on creating flexible content systems that link ideas, execution, data, and AI-driven workflows into one process, going beyond isolated deliverables.
-          </p>
-          <p className="text-base leading-relaxed text-ink-soft">
-            From YouTube and Instagram to podcasts, social media, and paid campaigns, we help teams plan better, create more consistently, and make every piece of content work harder across platforms.
-          </p>
-          <p className="text-base leading-relaxed text-ink-soft">
-            Your content needs to grow with your brand. That is where we bring clearer workflows, smarter execution, and systems that are easier to manage. The aim is to build a smart content engine that scales over time without losing quality, creativity, or consistency.
-          </p>
+    <header className="relative border-b border-line bg-paper">
+      <div className="mx-auto max-w-[1240px] px-5 pb-14 pt-12 sm:px-8 md:pb-20 md:pt-16">
+        {/* Document title line, then the statement, then the fact sheet. */}
+        <div className="flex items-baseline justify-between gap-6 border-b border-line pb-4">
+          <SheetLabel>About</SheetLabel>
+          <SheetLabel className="text-right">Dubai · Global delivery</SheetLabel>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 md:col-span-7">
-          <div className="relative min-h-[460px] overflow-hidden rounded-2xl sm:row-span-2">
-            <Image
-              src="/pushwebb-assets/generated/video-production.jpg"
-              alt="A PUSHWebb video production in progress"
-              fill
-              sizes="(max-width: 768px) 100vw, 30vw"
-              className="object-cover"
-            />
+        <div className="grid gap-12 pt-10 md:grid-cols-12 md:gap-10 md:pt-14">
+          <div className="md:col-span-7">
+            <h1 className="max-w-[24ch] font-display text-base font-bold normal-case leading-[1.35] tracking-[-0.01em] text-ink-soft sm:text-lg">
+              PUSHWebb: A Content, Creative, Performance &amp; AI Agency
+            </h1>
+
+            {/* The brand line, ruled like a slate rather than set as gradient
+                type: three statements, each on its own rule. */}
+            <p className="mt-9 border-t border-line-strong">
+              {['Strategy.', 'Story.', 'Growth.'].map((word, i) => (
+                <span
+                  key={word}
+                  className={cn(
+                    'display-caps block border-b border-line py-2.5 font-display text-[clamp(2.75rem,9vw,5.75rem)] leading-[0.92] tracking-[-0.035em]',
+                    i === 2 ? 'text-accent-hover' : 'text-ink',
+                  )}
+                >
+                  {word}
+                </span>
+              ))}
+            </p>
+
+            <div className="mt-9 max-w-[64ch] space-y-4">
+              <p className="text-base leading-relaxed text-ink-soft">
+                PUSHWebb is a content, creative, performance and AI agency built by operators who
+                have spent years managing high-volume content ecosystems for creators, brands and
+                digital businesses.
+              </p>
+              <p className="text-base leading-relaxed text-ink-soft">
+                From strategy and production to distribution, performance and AI, we connect the
+                entire content operation under one system.
+              </p>
+            </div>
+
+            <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
+              <Link
+                href="/work"
+                className="inline-flex h-[54px] select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-hover focus-visible:ring-offset-2 focus-visible:ring-offset-paper  items-center justify-center gap-2.5 rounded-lg bg-ink px-8 text-sm font-semibold text-paper no-underline transition-colors duration-200 hover:bg-accent-hover"
+              >
+                Explore Our Work
+                <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
+              </Link>
+              <ExpandButton href={CTA_HREF} label={CTA_LABEL} />
+            </div>
           </div>
-          <div className="relative min-h-[220px] overflow-hidden rounded-2xl">
-            <Image
-              src="/pushwebb-assets/generated/strategy-blueprint.jpg"
-              alt="A content strategy blueprint being developed"
-              fill
-              sizes="(max-width: 640px) 100vw, 30vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="relative min-h-[220px] overflow-hidden rounded-2xl">
-            <Image
-              src="/pushwebb-assets/generated/performance-analytics.jpg"
-              alt="A marketing performance review"
-              fill
-              sizes="(max-width: 640px) 100vw, 30vw"
-              className="object-cover"
-            />
-          </div>
+
+          {/* Fact sheet + one plate of the studio at work */}
+          <aside className="md:col-span-4 md:col-start-9">
+            <dl className="border-t border-line-strong">
+              {MASTHEAD_FACTS.map((fact) => (
+                <div
+                  key={fact.label}
+                  className="flex items-baseline justify-between gap-4 border-b border-line py-3.5"
+                >
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+                    {fact.label}
+                  </dt>
+                  <dd className="font-display text-sm font-semibold tracking-[-0.01em] text-ink">
+                    {fact.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+
+            <figure className="mt-6">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+                <Image
+                  src="/pushwebb-assets/generated/team-studio.jpg"
+                  alt="The PUSHWebb team reviewing footage in the studio"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 380px"
+                  loading="eager"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+                Review — every cut is checked by a person
+              </figcaption>
+            </figure>
+          </aside>
         </div>
       </div>
-    </section>
+    </header>
   );
 }
 
-function VisionSection() {
+function BuiltByOperatorsSection() {
   return (
-    <section className="px-5 py-24 sm:px-8 md:py-32">
-      <div className="mx-auto grid max-w-[1240px] gap-12 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-5">
-          <h2 className="max-w-[10ch] text-[clamp(2.8rem,5.8vw,5.5rem)] leading-[0.88] tracking-[-0.035em] text-ink">
-            You ask. We answer.
-          </h2>
-        </div>
-
-        <div className="space-y-6 border-t border-line pt-7 md:col-span-6 md:col-start-7">
-          <p className="text-base leading-relaxed text-ink-soft">
-            We believe the brands that grow consistently are the ones that bring together strong creative thinking with clear systems behind it.
-          </p>
-          <p className="text-base leading-relaxed text-ink-soft">
-            Our vision is to help brands move away from scattered execution, unorganised teams, and one-off content. Instead, we build structured ecosystems where strategy, creative, performance, and technology work together with a clear goal.
-          </p>
-          <p className="text-base leading-relaxed text-ink-soft">
-            This helps teams create with more purpose, understand what is working, improve what is not, and build repeatable processes around the ideas that perform best.
-          </p>
-          <p className="text-base font-semibold leading-relaxed text-ink">
-            The goal is not simply to produce more content. It is to create better, learn faster, work smarter, and build systems that can grow with the brand over time.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function MomentumPlane() {
-  return (
-    <section
-      className="border-t border-line px-5 py-24 sm:px-8 md:py-36"
-      aria-label="How momentum grows"
-    >
-      <div className="mx-auto max-w-[1100px]">
-        <p className="mb-10 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-ink-muted">
-          How momentum grows
-        </p>
-        <h2 className="mx-auto max-w-[18ch] text-center text-[clamp(2.25rem,5vw,4.25rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-ink">
-          We build systems that help brands grow.{' '}
-          <span className="text-accent">Strategy</span> becomes{' '}
-          <span className="text-accent">story</span>. Story becomes{' '}
-          <span className="text-accent">momentum</span>.
-        </h2>
-      </div>
-    </section>
-  );
-}
-
-function MissionSection() {
-  return (
-    <section className="bg-paper px-5 py-24 sm:px-8 md:py-32">
+    <section className="border-b border-line bg-paper px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1240px]">
-        <div className="grid gap-10 md:grid-cols-12 md:gap-12">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
-            <h2 className="max-w-[10ch] text-[clamp(2.8rem,5.6vw,5.25rem)] leading-[0.88] tracking-[-0.035em] text-ink">
-              Create better. Grow smarter.
+            <SheetLabel className="mb-6">Built by operators</SheetLabel>
+            <h2 className="max-w-[14ch] font-display text-[clamp(2.1rem,4.4vw,3.6rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+              We learned content by operating it at scale.
             </h2>
           </div>
-          <div className="space-y-6 md:col-span-6 md:col-start-7">
+
+          <div className="max-w-[68ch] space-y-5 md:col-span-6 md:col-start-7">
             <p className="text-base leading-relaxed text-ink-soft">
-              Our mission is to remove unnecessary complexity from content and marketing so brands can work with more clarity, consistency, and purpose. We bring structure to the process, from planning and creative execution to publishing, performance, and ongoing optimisation.
+              Before PUSHWebb, our founders spent over six years at BeerBiceps inside high-volume
+              creator and YouTube operations, working across research, planning, production, post
+              production, publishing and channel growth.
             </p>
             <p className="text-base leading-relaxed text-ink-soft">
-              We build clearer workflows, stronger creative systems, and more efficient ways of working across platforms. The aim is to help teams spend less time managing disconnected processes and more time creating work that helps the brand grow.
-            </p>
-            <p className="text-base leading-relaxed text-ink-soft">
-              By combining creativity with data, technology, and AI-powered processes, we make execution faster and more informed without losing the judgment, storytelling, and strategic thinking that strong content depends on.
+              That experience shaped how PUSHWebb works today: fewer disconnected teams, clearer
+              workflows, stronger quality control and systems designed to scale without creating
+              operational chaos.
             </p>
           </div>
         </div>
 
-        <div className="relative mt-16 aspect-[16/7] min-h-[320px] w-full overflow-hidden rounded-2xl">
-          <Image
-            src="/pushwebb-assets/generated/ai-workflow.jpg"
-            alt="The PUSHWebb team working through an AI-assisted content workflow"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
+        {/* Figures as a measured register, not four cards */}
+        <dl className="mt-14 grid grid-cols-2 gap-px border-y border-line-strong bg-line-strong lg:grid-cols-4">
+          {SCALE_PROOF.map((item) => (
+            <div key={item.label} className="bg-paper px-5 py-7 sm:px-7">
+              <dt className="font-display text-[clamp(2.2rem,4.4vw,3.25rem)] font-extrabold leading-none tracking-[-0.04em] text-ink">
+                {item.value}
+              </dt>
+              <dd className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+                {item.label}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+function AskAnswerBand() {
+  return (
+    <div className="on-dark dark-zone">
+      <section className="px-5 py-20 sm:px-8 md:py-28">
+        <div className="mx-auto grid max-w-[1240px] gap-10 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-6">
+            <SheetLabel className="mb-6">You ask</SheetLabel>
+            <h2 className="max-w-[18ch] font-display text-[clamp(2.1rem,4.6vw,3.75rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.035em] text-ink">
+              Why does content get harder as you scale?
+            </h2>
+          </div>
+
+          <div className="md:col-span-5 md:col-start-8">
+            <SheetLabel className="mb-6">We answer</SheetLabel>
+            <div className="max-w-[66ch] space-y-5 border-t border-line pt-6">
+              <p className="text-base leading-relaxed text-ink-soft">
+                Because more content usually means more people, more tools, more approvals and more
+                room for things to break.
+              </p>
+              <p className="text-base font-semibold leading-relaxed text-ink">
+                PUSHWebb builds the operating system behind the work, connecting strategy,
+                production, distribution, performance and technology so scale creates momentum
+                instead of complexity.
+              </p>
+            </div>
+          </div>
         </div>
+
+        {/* The page's quiet beat before the loop */}
+        <div className="mx-auto mt-20 max-w-[1240px] border-t border-line pt-14 md:mt-28 md:pt-20">
+          <h2 className="mx-auto max-w-[22ch] text-center font-display text-[clamp(1.9rem,4.4vw,3.4rem)] font-extrabold uppercase leading-[1] tracking-[-0.035em] text-ink">
+            Strategy becomes story. Story becomes momentum.
+          </h2>
+          <p className="mx-auto mt-8 max-w-[62ch] text-center text-base leading-relaxed text-ink-soft">
+            We turn strategy into repeatable content workflows, then use performance to make every
+            cycle smarter. The result is more consistent execution without sacrificing creativity,
+            judgment or quality.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function OperatingSystemSection() {
+  return (
+    <section className="border-b border-line bg-paper px-5 py-20 sm:px-8 md:py-28">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-6">
+            <SheetLabel className="mb-6">The system</SheetLabel>
+            <h2 className="max-w-[13ch] font-display text-[clamp(2.1rem,4.4vw,3.6rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+              The PUSHWebb Operating System
+            </h2>
+          </div>
+          <div className="max-w-[64ch] md:col-span-5 md:col-start-8 md:self-end">
+            <p className="text-base leading-relaxed text-ink-soft">
+              Every output is part of the same loop. Performance from one cycle informs the strategy
+              behind the next.
+            </p>
+          </div>
+        </div>
+
+        {/* The loop, with the highlight walking the stages on a shared clock —
+            the page's one authored motion moment. Reduced motion stops it. */}
+        <ol
+          aria-label="The PUSHWebb operating loop"
+          className="mt-12 flex flex-wrap items-center gap-x-1.5 gap-y-2.5 border-t border-line-strong pt-10"
+        >
+          {OPERATING_LOOP.map((stage, i) => (
+            <li key={stage} className="flex items-center gap-1.5">
+              <span
+                className="workflow-step rounded-full border border-line-strong bg-white px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.12em] text-ink sm:px-3.5 sm:text-xs"
+                style={{ animationDelay: `${i}s` }}
+              >
+                {stage}
+              </span>
+              <ArrowRight aria-hidden className="h-3.5 w-3.5 text-ink-soft" />
+            </li>
+          ))}
+          <li>
+            <span
+              className="workflow-step workflow-step--loop inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1.5 font-display text-[11px] font-bold uppercase tracking-[0.12em] text-gold-dark sm:px-3.5 sm:text-xs"
+              style={{ animationDelay: `${OPERATING_LOOP.length}s` }}
+            >
+              <RefreshCw aria-hidden className="h-3 w-3" />
+              Repeat
+            </span>
+          </li>
+        </ol>
+
+        <figure className="mt-12 grid gap-4 sm:grid-cols-12">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl sm:col-span-8 sm:aspect-[16/9]">
+            <Image
+              src="/pushwebb-assets/generated/ai-workflow.jpg"
+              alt="PUSHWebb editors working through an AI-assisted content workflow"
+              fill
+              sizes="(max-width: 640px) 100vw, 60vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="relative aspect-[16/10] overflow-hidden rounded-2xl sm:col-span-4 sm:aspect-auto">
+            <Image
+              src="/pushwebb-assets/generated/strategy-blueprint.jpg"
+              alt="A PUSHWebb content strategy blueprint being developed"
+              fill
+              sizes="(max-width: 640px) 100vw, 30vw"
+              className="object-cover"
+            />
+          </div>
+        </figure>
       </div>
     </section>
   );
@@ -293,36 +442,47 @@ function MissionSection() {
 
 function DifferentSection() {
   return (
-    <section className="border-y border-line bg-surface px-5 py-24 sm:px-8 md:py-32">
+    <section className="border-b border-line bg-surface px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1240px]">
         <div className="grid gap-10 md:grid-cols-12 md:gap-12">
           <div className="md:col-span-5">
-            <h2 className="max-w-[12ch] text-[clamp(2.7rem,5.2vw,5rem)] leading-[0.9] tracking-[-0.035em] text-ink">
-              More than an agency. A system behind the work.
-            </h2>
-            <p className="mt-7 max-w-md text-base leading-relaxed text-ink-soft">
-              We bring strategy, production, performance, and technology together so your content works as one connected growth system, not a collection of disconnected deliverables.
-            </p>
-            <Link
-              href="/services"
-              className="mt-8 inline-flex items-center gap-2 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              Explore our services
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="md:sticky md:top-28">
+              <h2 className="max-w-[12ch] font-display text-[clamp(2.1rem,4.6vw,3.75rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+                More than an agency. A system behind the work.
+              </h2>
+              <p className="mt-7 max-w-[56ch] text-base leading-relaxed text-ink-soft">
+                We bring strategy, production, performance, and technology together so your content
+                works as one connected growth system, not a collection of disconnected deliverables.
+              </p>
+              <Link
+                href="/services"
+                className="mt-8 inline-flex items-center gap-2 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-hover"
+              >
+                Explore our services
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
-          <div className="border-t border-line md:col-span-6 md:col-start-7">
+          <div className="border-t border-line-strong md:col-span-6 md:col-start-7">
             {DIFFERENTIATORS.map((item) => {
               const Icon = item.icon;
               return (
-                <article key={item.title} className="grid gap-4 border-b border-line py-7 sm:grid-cols-[44px_1fr] sm:gap-6 md:py-8">
-                  <Icon className="h-5 w-5 text-accent" strokeWidth={1.8} />
-                  <div className="grid gap-3 lg:grid-cols-2 lg:gap-8">
-                    <h3 className="font-display text-xl font-semibold tracking-[-0.02em] text-ink">
+                <article
+                  key={item.title}
+                  className="group grid gap-3 border-b border-line py-6 sm:grid-cols-[28px_1fr] sm:gap-5"
+                >
+                  <Icon
+                    className="mt-1 h-4 w-4 text-ink-soft transition-colors duration-200 group-hover:text-accent-hover"
+                    strokeWidth={2}
+                  />
+                  <div>
+                    <h3 className="font-display text-lg font-bold uppercase tracking-[-0.01em] text-ink">
                       {item.title}
                     </h3>
-                    <p className="text-sm leading-relaxed text-ink-soft">{item.description}</p>
+                    <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-ink-soft">
+                      {item.description}
+                    </p>
                   </div>
                 </article>
               );
@@ -334,52 +494,170 @@ function DifferentSection() {
   );
 }
 
+function CrewSection() {
+  return (
+    <section id="team" className="border-b border-line bg-paper px-5 py-20 sm:px-8 md:py-28">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-7">
+            <SheetLabel className="mb-6">The people behind PUSHWebb</SheetLabel>
+            <h2 className="max-w-[15ch] font-display text-[clamp(2.1rem,4.4vw,3.6rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+              Built by people who have led content at scale.
+            </h2>
+          </div>
+          <div className="max-w-[58ch] md:col-span-4 md:col-start-9 md:self-end">
+            <p className="text-base leading-relaxed text-ink-soft">
+              16+ specialists across strategy, research, writing, editing, design, social media,
+              YouTube and AI production.
+            </p>
+          </div>
+        </div>
+
+        {/* Crew list, not portrait cards — the monogram holds the slot until
+            real photography lands, rather than standing in with stock. */}
+        <div className="mt-14 border-t border-line-strong">
+          {TEAM.map((person) => (
+            <article
+              key={person.name}
+              className="grid gap-4 border-b border-line py-7 md:grid-cols-12 md:items-baseline md:gap-8"
+            >
+              <div className="flex items-center gap-4 md:col-span-4">
+                <span
+                  aria-hidden
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line-strong font-display text-xs font-bold tracking-[0.04em] text-ink-soft"
+                >
+                  {person.name
+                    .split(' ')
+                    .map((part) => part[0])
+                    .join('')}
+                </span>
+                <h3 className="font-display text-xl font-bold uppercase tracking-[-0.02em] text-ink sm:text-2xl">
+                  {person.name}
+                </h3>
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold-dark md:col-span-3">
+                {person.role}
+              </p>
+              <p className="max-w-[62ch] text-sm leading-relaxed text-ink-soft md:col-span-5">
+                {person.bio}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BuiltAlongsideSection() {
+  return (
+    <section className="border-b border-line bg-surface px-5 py-20 sm:px-8 md:py-24">
+      <div className="mx-auto max-w-[1240px]">
+        <div className="flex flex-col gap-5 border-b border-line pb-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <SheetLabel className="mb-5">Built alongside</SheetLabel>
+            <h2 className="max-w-[20ch] font-display text-[clamp(1.6rem,3.2vw,2.5rem)] font-extrabold uppercase leading-[1] tracking-[-0.03em] text-ink">
+              The channels and brands our team has operated.
+            </h2>
+          </div>
+          <Link
+            href="/work"
+            className="group inline-flex shrink-0 items-center gap-2 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-hover focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
+          >
+            See our work
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+
+        {/* A slate of real logos — the proof the names alone can't carry. */}
+        <ul className="grid gap-px bg-line-strong sm:grid-cols-2 lg:grid-cols-3">
+          {BUILT_ALONGSIDE.map((client) => (
+            <li key={client.name} className="group bg-surface transition-colors duration-200 hover:bg-surface-hover">
+              <div className="flex items-center gap-4 px-4 py-5 sm:px-6 sm:py-6">
+                <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-line bg-white">
+                  <Image
+                    src={client.src}
+                    alt={`${client.name} logo`}
+                    width={48}
+                    height={48}
+                    className={cn(
+                      'h-full w-full transition-transform duration-500 ease-out group-hover:scale-105',
+                      client.kind === 'mark' ? 'object-contain p-[8%]' : 'object-cover',
+                    )}
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-bold uppercase tracking-[-0.01em] text-ink sm:text-base">
+                    {client.name}
+                  </p>
+                  <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft">
+                    {client.category}
+                  </p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function LocationsSection() {
   return (
-    <section id="locations" className="overflow-hidden bg-paper px-5 py-24 sm:px-8 md:py-32">
+    <section id="locations" className="overflow-hidden border-b border-line bg-paper px-5 py-20 sm:px-8 md:py-28">
       <div className="mx-auto max-w-[1240px]">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
-            <h2 className="text-[clamp(2.4rem,5vw,4.8rem)] leading-[0.92] tracking-[-0.03em] text-ink">
-              Built in India. Growing through Dubai. Working beyond both.
+            <SheetLabel className="mb-6">Where we operate</SheetLabel>
+            <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.6rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+              Operating in Dubai. Working globally.
             </h2>
-            <p className="mt-7 max-w-md text-sm leading-relaxed text-ink-soft md:text-base">
-              PUSHWebb works with brands, creators, and marketing teams across India and the UAE, with a connected model built to travel across markets and platforms.
+            <p className="mt-7 max-w-[58ch] text-base leading-relaxed text-ink-soft">
+              PUSHWebb works with brands, creators, and marketing teams across the UAE and
+              international markets, with a connected model built to travel across markets and
+              platforms.
             </p>
-            <p className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-ink-muted">
-              <MapPin className="h-4 w-4 text-accent" /> Drag the globe to explore
-            </p>
+
+            <dl className="mt-9 border-t border-line-strong">
+              <div className="border-b border-line py-4">
+                <dt className="font-display text-sm font-bold uppercase tracking-[-0.01em] text-ink">
+                  Dubai, UAE
+                  <span className="ml-3 font-mono text-[10px] font-normal tracking-[0.16em] text-gold-dark">
+                    Operating base
+                  </span>
+                </dt>
+                <dd className="mt-2 max-w-[56ch] text-sm leading-relaxed text-ink-soft">
+                  A regional hub for brand storytelling, creator work, and paid media across the
+                  Middle East.
+                </dd>
+                <dd className="mt-2 font-mono text-[11px] leading-relaxed text-ink-soft">
+                  <address className="not-italic">{DUBAI_ADDRESS_LINE}</address>
+                </dd>
+              </div>
+            </dl>
           </div>
 
-          <div className="relative mx-auto aspect-square w-full max-w-[560px] md:col-span-7">
-            <Globe config={GLOBE_CONFIG} />
+          {/* Globe renders absolutely positioned, so the caption sits outside
+              its square or it paints over the sphere. */}
+          <div className="md:col-span-6 md:col-start-7">
+            <div className="relative mx-auto aspect-square w-full max-w-[540px]">
+              <Globe config={GLOBE_CONFIG} />
+            </div>
+            <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+              Drag the globe to explore
+            </p>
           </div>
         </div>
 
-        <div className="mt-12 grid border-t border-line sm:grid-cols-2">
-          <div className="border-b border-line py-7 sm:border-b-0 sm:border-r sm:pr-8">
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">India</h3>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-soft">
-                  Headquarters and studio for creative production, content pipelines, and full-funnel marketing systems.
-                </p>
-              </div>
-              <span className="text-xs font-semibold text-accent">HQ</span>
-            </div>
-          </div>
-          <div className="py-7 sm:pl-8">
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">Dubai, UAE</h3>
-                <p className="mt-2 max-w-md text-sm leading-relaxed text-ink-soft">
-                  A growing regional hub for brand storytelling, creator work, and paid media across the Middle East.
-                </p>
-              </div>
-              <span className="text-xs font-semibold text-accent">UAE</span>
-            </div>
-          </div>
-        </div>
+        {/* Plain-language entity statement — written for search engines and AI
+            systems rather than for the visual hierarchy. */}
+        <p className="mt-14 max-w-[72ch] border-t border-line pt-8 text-sm leading-relaxed text-ink-soft">
+          PUSHWebb is a content, creative, performance and AI agency operating across India and
+          Dubai, UAE. The company works with creators, brands, businesses and marketing teams across
+          YouTube, short-form content, video production, social media, paid performance and AI
+          content workflows in India, the Middle East and international markets.
+        </p>
       </div>
     </section>
   );
@@ -387,25 +665,27 @@ function LocationsSection() {
 
 function FaqSection() {
   return (
-    <section id="faq" className="border-t border-line bg-paper px-5 py-24 sm:px-8 md:py-32">
-      <div className="mx-auto grid max-w-[1240px] gap-12 md:grid-cols-12 md:gap-14">
+    <section id="faq" className="bg-paper px-5 py-20 sm:px-8 md:py-28">
+      <div className="mx-auto grid max-w-[1240px] gap-10 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-4">
-          <h2 className="text-[clamp(2.8rem,5vw,4.8rem)] leading-[0.9] tracking-[-0.03em] text-ink">
-            Questions, answered.
-          </h2>
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-ink-soft">
-            Everything you need to know before we start building your growth system.
-          </p>
+          <div className="md:sticky md:top-28">
+            <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.4rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
+              Questions, answered.
+            </h2>
+            <p className="mt-6 max-w-[46ch] text-sm leading-relaxed text-ink-soft">
+              Everything you need to know before we start building your growth system.
+            </p>
+          </div>
         </div>
 
-        <div className="border-t border-line md:col-span-7 md:col-start-6">
+        <div className="border-t border-line-strong md:col-span-7 md:col-start-6">
           {FAQS.map((item) => (
             <details key={item.question} className="group border-b border-line">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-lg font-semibold tracking-[-0.01em] text-ink focus-visible:outline-none focus-visible:text-accent [&::-webkit-details-marker]:hidden sm:text-xl">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-display text-base font-bold uppercase tracking-[-0.01em] text-ink transition-colors duration-200 hover:text-accent-hover focus-visible:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-hover focus-visible:ring-offset-2 focus-visible:ring-offset-paper [&::-webkit-details-marker]:hidden sm:text-lg">
                 {item.question}
-                <Plus className="h-5 w-5 shrink-0 text-ink-muted transition-transform duration-200 group-open:rotate-45 group-open:text-accent" />
+                <Plus className="h-4 w-4 shrink-0 text-ink-soft transition-transform duration-200 group-open:rotate-45 group-open:text-accent-hover" />
               </summary>
-              <p className="max-w-2xl pb-7 pr-10 text-sm leading-relaxed text-ink-soft md:text-[15px]">
+              <p className="max-w-[68ch] pb-6 pr-8 text-sm leading-relaxed text-ink-soft md:text-[15px]">
                 {item.answer}
               </p>
             </details>
@@ -419,43 +699,46 @@ function FaqSection() {
 function AboutClose() {
   return (
     <div className="on-dark dark-zone">
-      <section className="relative isolate min-h-[720px] overflow-hidden px-5 py-24 sm:px-8 md:flex md:items-end md:py-32">
+      <section className="relative isolate overflow-hidden px-5 py-20 sm:px-8 md:py-28">
         <Image
           src="/pushwebb-assets/generated/paid-campaign-review.jpg"
           alt=""
           aria-hidden
           fill
           sizes="100vw"
-          className="-z-20 object-cover opacity-25 grayscale"
+          className="-z-20 object-cover opacity-40 grayscale"
         />
         <div aria-hidden className="absolute inset-0 -z-10 bg-black/55" />
 
         <div className="mx-auto w-full max-w-[1240px]">
-          <h2 className="max-w-[13ch] text-[clamp(3rem,7vw,6rem)] leading-[0.86] tracking-[-0.035em] text-ink">
-            Ready to build a better growth system?
+          <h2 className="max-w-[20ch] font-display text-[clamp(2.25rem,6vw,4.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.035em] text-ink">
+            Ready to build a content system that can scale with your business?
           </h2>
-          <div className="mt-10 grid gap-8 border-t border-line pt-7 md:grid-cols-12">
-            <div className="space-y-4 md:col-span-7">
-              <p className="max-w-2xl text-sm leading-relaxed text-ink-soft md:text-base">
-                Great content is not just about posting more. It is about knowing what to create, how to reach the right audience, and how to improve what works.
-              </p>
-              <p className="max-w-2xl text-sm font-semibold leading-relaxed text-ink md:text-base">
-                PUSHWebb helps turn your content into a better growth system.
-              </p>
-            </div>
-            <div className="md:col-span-4 md:col-start-9 md:text-right">
+
+          <div className="mt-12 grid gap-8 border-t border-line pt-8 md:grid-cols-12">
+            <p className="max-w-[62ch] text-base leading-relaxed text-ink-soft md:col-span-7">
+              Whether you need one capability or the full content operation, we can build around
+              where your business is today and where it needs to go next.
+            </p>
+            <div className="flex flex-col items-start gap-4 md:col-span-4 md:col-start-9 md:items-end">
               <Link
-                href="/contact"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-ink px-6 font-display text-sm font-semibold text-paper no-underline transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                href={CTA_HREF}
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-white px-6 font-display text-sm font-semibold text-[#060d1d] no-underline transition-colors duration-200 hover:bg-[#eaeaea] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               >
-                Book a strategy call
+                {CTA_LABEL}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/work"
+                className="inline-flex items-center gap-2 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                Explore Our Work
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
         </div>
       </section>
-      <Footer />
     </div>
   );
 }
@@ -465,21 +748,23 @@ export function AboutPage() {
     <div className="bg-paper">
       <NavbarModernBlock />
       <main>
-        <AboutHero />
-        <ConnectedSystemSection />
-
-        {/* Navy band — the same dark-zone treatment the home and contact pages use */}
-        <div className="on-dark dark-zone">
-          <VisionSection />
-          <MomentumPlane />
-        </div>
-
-        <MissionSection />
+        <AboutMasthead />
+        <BuiltByOperatorsSection />
+        <AskAnswerBand />
+        <OperatingSystemSection />
         <DifferentSection />
+        <CrewSection />
+        <BuiltAlongsideSection />
         <LocationsSection />
         <FaqSection />
         <AboutClose />
       </main>
+      {/* Outside <main> so the footer stays the contentinfo landmark. Flat
+          ground rather than a second dark-zone: stacking two restarts the
+          gradient and seams where the bands meet. */}
+      <div className="on-dark bg-[#050b1c]">
+        <Footer />
+      </div>
     </div>
   );
 }

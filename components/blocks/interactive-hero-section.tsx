@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { SplineSceneLazy } from '@/components/ui/splite';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { CTA_HREF, CTA_LABEL } from '@/lib/site';
 
 const ROBOT_SCENE_URL = 'https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode';
 
@@ -11,26 +12,30 @@ const HERO_STATS = [
   {
     value: '5B+',
     count: 5,
+    decimals: 0,
     suffix: 'B+',
     label: 'Views Generated',
   },
   {
     value: '40+',
     count: 40,
+    decimals: 0,
     suffix: '+',
-    label: 'Brands & Creators Scaled',
+    label: 'Brands & Creators Worked With',
   },
   {
-    value: '5K+',
-    count: 5,
+    value: '1.5K+',
+    count: 1.5,
+    decimals: 1,
     suffix: 'K+',
-    label: 'High-Retention Video Assets',
+    label: 'Videos Produced Monthly',
   },
   {
-    value: '120+',
-    count: 120,
+    value: '7+',
+    count: 7,
+    decimals: 0,
     suffix: '+',
-    label: 'Campaigns & Systems Scaled',
+    label: 'Years in Content',
   },
 ];
 
@@ -45,6 +50,7 @@ export function InteractiveHeroSection() {
       if (!root) return;
 
       const headline = root.querySelector('.hero-headline');
+      const copy = root.querySelector('.hero-copy');
       const statsBar = root.querySelector('.hero-stats-bar');
       const statItems = root.querySelectorAll('.hero-stat-item');
       const ctas = root.querySelectorAll('.hero-cta-btn');
@@ -62,6 +68,10 @@ export function InteractiveHeroSection() {
         },
         0.1,
       );
+
+      if (copy) {
+        tl.fromTo(copy, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.18);
+      }
 
       // Animate stats bar
       if (statsBar) {
@@ -111,6 +121,7 @@ export function InteractiveHeroSection() {
         const el = counterRefs.current[idx];
         if (!el) return;
         const targetVal = stat.count;
+        const step = 10 ** stat.decimals;
         const obj = { val: 0 };
         gsap.to(obj, {
           val: targetVal,
@@ -118,7 +129,8 @@ export function InteractiveHeroSection() {
           ease: 'power2.out',
           delay: 0.25 + idx * 0.06,
           onUpdate: () => {
-            el.textContent = `${Math.ceil(obj.val)}${stat.suffix}`;
+            const shown = Math.ceil(obj.val * step) / step;
+            el.textContent = `${shown.toFixed(stat.decimals)}${stat.suffix}`;
           },
         });
       });
@@ -133,8 +145,15 @@ export function InteractiveHeroSection() {
       aria-label="PUSHWebb Hero Section"
     >
       {/* ── 3D Robot Background (Unobstructed & Free to Interact) ────── */}
+      {/* Phones get their own stacking: the robot's canvas is pinned to a
+          fixed band at the top instead of the whole (now taller) hero, so it
+          sits above the headline — robot, headline, copy, metrics, CTAs —
+          rather than behind four lines of type. The scene sizes the robot
+          by canvas width and centres it vertically, so the band height only
+          sets where it lands: 720px puts the head just under the top rail.
+          From sm up it fills the section as before. */}
       <div
-        className="robot-tint absolute inset-0 z-10 pointer-events-auto"
+        className="robot-tint absolute inset-x-0 top-0 z-10 h-[720px] pointer-events-auto sm:inset-0 sm:h-auto"
         style={{ transform: 'translateY(-12%) scale(1.15)', transformOrigin: 'top center' }}
       >
         <SplineSceneLazy
@@ -180,24 +199,36 @@ export function InteractiveHeroSection() {
         </div>
 
         <div className="hidden sm:block text-right">
-          <p className="text-[10px] uppercase tracking-[0.22em] text-[#b4b4b4]/70">Operating from</p>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white">India &middot; Dubai</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white">Dubai &middot; Global Delivery</p>
         </div>
       </div>
 
       {/* ── Center Empty Space Dedicated to the 3D Bot ─────────────── */}
-      <div className="flex-1 pointer-events-none min-h-[120px] sm:min-h-[220px]" />
+      <div className="flex-1 pointer-events-none min-h-[280px] sm:min-h-[220px]" />
 
       {/* ── Bottom Stack (Minimal, Clean & Unobstructed) ───────────── */}
-      <div className="relative z-30 w-full max-w-5xl mx-auto px-4 sm:px-8 pb-10 sm:pb-12 flex flex-col items-center text-center">
-        
-        {/* Headline */}
-        <h1 className="hero-headline font-display text-[clamp(2.1rem,5.5vw,4.4rem)] font-extrabold leading-[0.94] tracking-[-0.02em] uppercase text-white mb-6 text-balance drop-shadow-lg">
-          We Turn Content Into{' '}
+      <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-8 pb-10 sm:pb-12 flex flex-col items-center text-center">
+
+        {/* Headline — sizes are set per breakpoint rather than left to a
+            single clamp. From lg up the first line ("…That Turn") is the
+            longest run and has to fit the container: it measures ~22.6× the
+            font size, so 2.6rem clears 960px at 1024 and 3.2rem clears
+            1216px at 1280. Below lg the break is dropped and text-balance
+            evens out three or four lines instead. */}
+        <h1 className="hero-headline font-display text-[1.8rem] sm:text-[2.2rem] md:text-[2.5rem] lg:text-[2.6rem] xl:text-[3.2rem] font-extrabold leading-[0.98] tracking-[-0.02em] uppercase text-white mb-4 sm:mb-5 text-balance drop-shadow-lg">
+          We Build Content Systems That Turn{' '}
+          <br className="hidden lg:block" />
+          Attention Into{' '}
           <span className="bg-gradient-to-r from-white via-[#dedede] to-[#b4b4b4] bg-clip-text text-transparent">
             Business Growth.
           </span>
         </h1>
+
+        <p className="hero-copy mb-6 sm:mb-7 max-w-2xl text-[13px] leading-relaxed text-[#c4c4c4] sm:text-[15px] drop-shadow">
+          PUSHWebb is a full stack content and creative growth agency helping brands and creators
+          scale through strategy, video, YouTube, social media, performance marketing and AI powered
+          content systems.
+        </p>
 
         {/* ── Stats readout ─────────────────────────────────────────
             Built as a rule-separated instrument panel rather than four
@@ -245,15 +276,17 @@ export function InteractiveHeroSection() {
         {/* ── Action CTAs ────────────────────────────────────────── */}
         <div className="pointer-events-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <a
-            href="/contact"
+            href={CTA_HREF}
             className="hero-cta-btn group inline-flex h-[48px] sm:h-[50px] select-none items-center justify-center gap-2 rounded-xl bg-white px-7 text-xs sm:text-sm font-semibold text-[#060d1d] no-underline shadow-[0_12px_28px_-10px_rgba(255,255,255,0.4)] transition-all duration-200 hover:scale-[1.02] hover:bg-[#f0f0f0] active:scale-[0.98]"
           >
-            <span>Book a Brainstorming Call</span>
+            <span>{CTA_LABEL}</span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" strokeWidth={2.4} />
           </a>
 
+          {/* Secondary action now lands on real work — the Selected Work
+              section — instead of the services row. */}
           <a
-            href="#services"
+            href="#work"
             className="hero-cta-btn inline-flex h-[48px] sm:h-[50px] select-none items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/[0.05] px-6 text-xs sm:text-sm font-medium text-white backdrop-blur-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] no-underline transition-all duration-200 hover:bg-white/[0.10] hover:border-white/35 active:scale-[0.98]"
           >
             <span>Explore Our Work</span>

@@ -7,118 +7,117 @@ import {
   ArrowUpRight,
   SquarePlay,
   Clapperboard,
-  Target,
   Bot,
   Share2,
   BarChart3,
+  Film,
   ChevronLeft,
   ChevronRight,
   Sparkles,
   type LucideIcon,
 } from 'lucide-react';
+import { SERVICE_CHANNELS, serviceHref } from '@/lib/services';
+import { CTA_HREF, CTA_LABEL } from '@/lib/site';
 
 type Service = {
   icon: LucideIcon;
   title: string;
   category: string;
   image: string;
+  alt: string;
+  /** The capability's own indexable page. */
+  href: string;
   description: string;
   bullets: string[];
   cta: string;
 };
 
-const SERVICES: Service[] = [
-  {
+/* Six cards, one per capability on /services, in the same order. The copy
+   here is the short version — the full scope lives on the service section
+   each card links to. */
+const CARD_MEDIA: Record<string, { icon: LucideIcon; category: string; description: string; bullets: string[] }> = {
+  yaas: {
     icon: SquarePlay,
-    title: 'YAAS — YouTube as a Service',
     category: 'Channel Growth',
-    image: '/pushwebb-assets/generated/youtube-studio.jpg',
     description:
-      'Complete YouTube ecosystem management from scripting to production, publishing, and SEO optimization so that audience growth becomes structured and predictable.',
+      'YouTube managed from strategy to publishing — research, scripting, production, editing, thumbnails and performance optimisation.',
     bullets: [
-      'High-retention structure & packaging',
+      'Channel strategy & positioning',
       'End-to-end production & thumbnails',
-      'Continuous algorithmic optimization',
+      'Analytics and optimisation',
     ],
-    cta: 'Explore YouTube as a Service',
   },
-  {
+  'short-form': {
     icon: Clapperboard,
-    title: 'Microcontent Mastery',
     category: 'Short-Form Video',
-    image: '/pushwebb-assets/generated/microcontent-shoot.jpg',
     description:
-      'Platform-native short-form content engineered to capture attention in the first 3 seconds, maximize watch time, and drive rapid organic reach across Reels & Shorts.',
+      'Platform-native Reels and Shorts built around the mechanics that drive attention: the hook, pacing, storytelling and retention.',
     bullets: [
-      'Hook-driven narrative engineering',
-      'High-velocity editing & pacing',
-      'Data-backed format experimentation',
+      'Hook development & ideation',
+      'Reels and Shorts editing',
+      'Podcast and long-form clipping',
     ],
-    cta: 'Explore Microcontent Mastery',
   },
-  {
-    icon: Target,
-    title: 'ROI-Driven Ad Campaigns',
-    category: 'Paid Performance',
-    image: '/pushwebb-assets/generated/paid-campaign-review.jpg',
+  'video-production': {
+    icon: Film,
+    category: 'Production Pipeline',
     description:
-      'High-performing paid media campaigns combining creative storytelling with rigorous targeting, multivariate testing, and full-funnel optimization.',
+      'Production and post production across podcasts, branded films, documentaries, trailers and creator content, run as one workflow.',
     bullets: [
-      'Full-funnel Meta, Google & YouTube ads',
-      'Dynamic creative testing & iteration',
-      'Obsessive ROAS & CAC optimization',
+      'Pre-production & podcast production',
+      'Editing and post production',
+      'Motion graphics, colour and sound',
     ],
-    cta: 'Explore ROI-Driven Ad Campaigns',
   },
-  {
+  'ai-content': {
     icon: Bot,
-    title: 'AI Automation',
     category: 'Intelligent Workflows',
-    image: '/pushwebb-assets/generated/ai-workflow.jpg',
     description:
-      'Building automated AI systems for content repurposing, metadata generation, distribution workflows, and real-time performance analytics.',
+      'AI content production plus workflow automation, so teams create faster and repurpose smarter without lowering the bar.',
     bullets: [
-      'Automated repurposing pipelines',
-      'AI-powered scheduling & publishing',
-      'Real-time predictive growth data',
+      'AI filmmaking & visual production',
+      'Repurposing and publishing automation',
+      'Human quality control',
     ],
-    cta: 'Explore AI Automation',
   },
-  {
+  'social-media': {
     icon: Share2,
-    title: 'Social Media Marketing',
     category: 'Brand Strategy',
-    image: '/pushwebb-assets/generated/social-strategy.jpg',
     description:
-      'Cultivating high-trust brand authority across social channels through cohesive visual direction, structured content calendars, and community engagement.',
+      'The complete social content cycle — strategy, planning, creative, publishing and performance optimisation across platforms.',
     bullets: [
-      'Cohesive omnichannel positioning',
-      'Multi-platform content execution',
-      'Audience conversion architecture',
+      'Content pillars and calendars',
+      'Publishing & platform management',
+      'Reporting and optimisation',
     ],
-    cta: 'Explore Social Media Marketing',
   },
-  {
+  performance: {
     icon: BarChart3,
-    title: 'Performance Marketing',
-    category: 'Growth & Scaling',
-    image: '/pushwebb-assets/generated/performance-analytics.jpg',
+    category: 'Paid Performance',
     description:
-      'Managing media budgets with surgical precision, measuring cross-channel attribution, and aggressively scaling top-performing customer acquisition funnels.',
+      'Creative development, media buying and performance data connected, so campaigns keep improving as they run.',
     bullets: [
-      'Comprehensive budget efficiency modeling',
-      'Multi-touch attribution tracking',
-      'Scalable paid acquisition engines',
+      'Meta, Google & YouTube campaigns',
+      'Audience and creative testing',
+      'Attribution & continuous optimisation',
     ],
-    cta: 'Explore Performance Marketing',
   },
-];
+};
+
+const SERVICES: Service[] = SERVICE_CHANNELS.map((channel) => ({
+  ...CARD_MEDIA[channel.id],
+  title: channel.name,
+  image: channel.image,
+  alt: channel.imageAlt,
+  href: serviceHref(channel.id),
+  cta: channel.cta,
+}));
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const Icon = service.icon;
 
   return (
-    <div className="service-card premium-card premium-lift group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-surface p-6 backdrop-blur-2xl hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover sm:w-[370px] sm:p-7 md:w-[390px]">
+    <div className="service-card premium-card premium-lift group relative flex h-[490px] w-[min(340px,calc(100vw-3rem))] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-surface p-6 backdrop-blur-2xl hover:-translate-y-1 hover:border-ink/30 hover:bg-surface-hover sm:w-[370px] sm:p-7 md:w-[390px]">
       {/* Ambient aura */}
       <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-ink/[0.04] opacity-40 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
@@ -143,7 +142,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={service.image}
-            alt={service.title}
+            alt={service.alt}
             loading="lazy"
             className="card-media-img h-full w-full scale-125 object-cover"
           />
@@ -161,7 +160,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
       <div className="relative z-10 border-t border-ink/[0.08] pt-4">
         <a
-          href="/contact"
+          href={service.href}
           className="group/cta inline-flex w-full items-center justify-between font-display text-xs font-medium text-ink no-underline transition-colors duration-200 sm:text-sm"
         >
           <span className="tracking-wide">{service.cta}</span>
@@ -176,7 +175,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
 function ClosingCard() {
   return (
-    <div className="service-card group relative flex h-[490px] w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-3xl bg-[#0a152c] border border-white/15 p-7 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.6)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_-24px_rgba(0,0,0,0.8)] sm:w-[370px] sm:p-8 md:w-[390px]">
+    <div className="service-card group relative flex h-[490px] w-[min(340px,calc(100vw-3rem))] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl bg-[#0a152c] border border-white/15 p-7 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.6)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_26px_60px_-24px_rgba(0,0,0,0.8)] sm:w-[370px] sm:p-8 md:w-[390px]">
       <div className="pointer-events-none absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
 
       <div className="relative z-10">
@@ -189,21 +188,21 @@ function ClosingCard() {
         </span>
 
         <h3 className="mb-4 font-display text-2xl font-medium leading-tight text-white sm:text-3xl">
-          Every Growth Lever, Connected as One.
+          Strategy. Content. Distribution. Performance. One System.
         </h3>
 
         <p className="text-xs leading-relaxed text-[#b4b4b4] sm:text-sm">
-          We connect video, distribution, performance ads, and automation into a single scalable
-          growth system.
+          PUSHWebb connects the teams and workflows behind modern content growth, so every channel
+          strengthens the next.
         </p>
       </div>
 
       <div className="relative z-10 border-t border-white/15 pt-4">
         <a
-          href="/contact"
+          href={CTA_HREF}
           className="group/btn flex w-full items-center justify-center gap-2 rounded-2xl bg-white py-3.5 font-display text-sm font-semibold text-[#060d1d] no-underline transition-all duration-200 hover:scale-[1.02] hover:bg-[#eaeaea] active:scale-[0.98]"
         >
-          <span>Book a Brainstorming Call</span>
+          <span>{CTA_LABEL}</span>
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
         </a>
       </div>
@@ -379,13 +378,17 @@ export function WhatWeDoSection() {
             <div>
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-ink/[0.06] px-4 py-1 text-xs font-medium text-ink shadow-[inset_0_1px_0_rgba(11,26,43,0.15)] backdrop-blur-md">
                 <Sparkles className="h-3.5 w-3.5 text-ink" />
-                <span>WHAT WE DO · 6 CORE DISCIPLINES</span>
+                <span>ONE TEAM · SIX GROWTH CAPABILITIES</span>
               </div>
 
-              <h2 className="split-h2 max-w-3xl font-display text-3xl font-medium leading-[1.08] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
-                We Turn Creative Ideas Into Growth Systems
+              <h2 className="split-h2 max-w-3xl font-display text-[1.75rem] font-medium leading-[1.08] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
+                One Team. Every Content Growth Lever.
               </h2>
 
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft md:text-base">
+                From strategy and production to distribution, paid performance and AI, PUSHWebb
+                connects the disciplines required to build consistent growth.
+              </p>
             </div>
 
             {/* Progress + manual nav */}
@@ -434,7 +437,7 @@ export function WhatWeDoSection() {
         <div className="services-track-viewport w-full overflow-hidden">
           <div
             ref={trackRef}
-            className="services-track no-scrollbar flex gap-6 overflow-x-auto scroll-smooth px-4 pt-8 pb-20 will-change-transform sm:px-8 lg:overflow-visible lg:px-12"
+            className="services-track no-scrollbar flex snap-x snap-mandatory scroll-pl-4 gap-6 overflow-x-auto scroll-smooth px-4 pt-8 pb-20 will-change-transform sm:scroll-pl-8 sm:px-8 lg:snap-none lg:overflow-visible lg:px-12"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {SERVICES.map((service, index) => (

@@ -2,8 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { CLIENTS, formatCount, type Client, type LiveStats, type Stat } from '@/lib/clients';
+import { cn } from '@/lib/utils';
+
+/* The roster is two slides of eight rather than one sixteen-card wall:
+   brands first, creators second. Same cards, half the scroll — and the
+   split gives each slide a name instead of an arbitrary page number. */
+const SLIDES = [
+  { id: 'brand', label: 'Brands' },
+  { id: 'creator', label: 'Creators' },
+] as const;
 
 /* ────────────────────────────────────────────────────────────────
    CLIENT ROSTER
@@ -86,10 +96,10 @@ function ClientCard({ client, live }: { client: Client; live?: LiveStats }) {
           <div className="relative h-[4.5rem] w-[4.5rem] overflow-hidden rounded-full border border-line transition-transform duration-500 ease-out group-hover:scale-[1.06] sm:h-20 sm:w-20">
             {client.kind === 'mark' ? (
               <span className="absolute inset-0 bg-white">
-                <Image src={client.src} alt={client.name} fill sizes="80px" className="object-contain p-[6%]" />
+                <Image src={client.src} alt={`${client.name} logo`} fill sizes="80px" className="object-contain p-[6%]" />
               </span>
             ) : (
-              <Image src={client.src} alt={client.name} fill sizes="80px" className="object-cover" />
+              <Image src={client.src} alt={`${client.name} logo`} fill sizes="80px" className="object-cover" />
             )}
           </div>
         </div>
@@ -131,7 +141,39 @@ function ClientCard({ client, live }: { client: Client; live?: LiveStats }) {
 
 export function ClientLogoWall() {
   const sectionRef = useRef<HTMLElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const [channels, setChannels] = useState<Record<string, LiveStats>>({});
+  const [slide, setSlide] = useState(0);
+
+  // The track is a native scroll-snap row, so swipe, trackpad and keyboard
+  // scrolling all work for free; this only mirrors its position back into
+  // the tabs and arrows.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let frame = 0;
+    const sync = () => {
+      frame = 0;
+      setSlide(Math.round(track.scrollLeft / Math.max(1, track.clientWidth)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(sync);
+    };
+    track.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      track.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const goTo = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const next = Math.max(0, Math.min(SLIDES.length - 1, index));
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    track.scrollTo({ left: next * track.clientWidth, behavior: reduced ? 'auto' : 'smooth' });
+    setSlide(next);
+  };
 
   // Fetched after mount rather than server-rendered: the roster is inside a
   // client tree, and a failed or unconfigured lookup must never block paint.
@@ -153,25 +195,29 @@ export function ClientLogoWall() {
       const section = sectionRef.current;
       if (!section) return;
 
-      const grid = section.querySelector<HTMLElement>('.client-grid');
+      const track = section.querySelector<HTMLElement>('.client-track');
+      const grids = gsap.utils.toArray<HTMLElement>('.client-grid', section);
       const cards = gsap.utils.toArray<HTMLElement>('.client-card', section);
-      if (!grid || !cards.length) return;
+      if (!track || !grids.length || !cards.length) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      // ── Entrance: the grid deals itself out from the middle, so the eye
-      //    lands mid-roster and the corners resolve last.
-      gsap.set(grid, { perspective: 1100 });
+      // ── Entrance: each slide deals itself out from its own middle, so the
+      //    eye lands mid-roster and the corners resolve last. Staggering per
+      //    slide keeps the off-screen slide from skewing the visible order.
+      gsap.set(grids, { perspective: 1100 });
       gsap.set(cards, { autoAlpha: 0, y: 46, scale: 0.9, rotateX: -14, transformOrigin: '50% 0%' });
 
-      gsap.to(cards, {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        rotateX: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: { grid: 'auto', from: 'center', amount: 0.7 },
-        scrollTrigger: { trigger: grid, start: 'top 82%', once: true },
+      grids.forEach((grid) => {
+        gsap.to(grid.querySelectorAll('.client-card'), {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          stagger: { grid: 'auto', from: 'center', amount: 0.6 },
+          scrollTrigger: { trigger: track, start: 'top 82%', once: true },
+        });
       });
 
       // ── Hover: the card tilts toward the pointer. Pointer-only, and the
@@ -225,19 +271,84 @@ export function ClientLogoWall() {
       className="reveal-section relative overflow-hidden py-16 md:py-24"
     >
       <div className="container relative z-10 mx-auto max-w-6xl px-4 md:px-8">
-        <div className="mb-10 sm:mb-14">
-          <p className="anim-eyebrow eyebrow mb-3">Trusted By</p>
-          <h2 className="split-h2 font-display text-3xl leading-[1.05] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
-            The Brands and Creators
-            <br className="hidden sm:block" /> We Build With
-          </h2>
+        <div className="mb-8 flex flex-col gap-6 sm:mb-10 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="anim-eyebrow eyebrow mb-3">Client Roster</p>
+            <h2 className="split-h2 font-display text-[1.75rem] leading-[1.05] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
+              The Brands and Creators
+              <br className="hidden sm:block" /> We Build With
+            </h2>
+          </div>
+
+          {/* Slide controls: named tabs say what's on the other slide; the
+              arrows are the familiar fallback. */}
+          <div className="flex shrink-0 items-center gap-3">
+            <div className="flex rounded-full border border-line bg-surface p-1">
+              {SLIDES.map((s, i) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-pressed={slide === i}
+                  aria-controls={`roster-${s.id}`}
+                  className={cn(
+                    'rounded-full px-4 py-1.5 font-display text-xs font-semibold tracking-wide transition-colors duration-200',
+                    slide === i ? 'bg-white text-[#060d1d]' : 'text-ink-soft hover:text-ink',
+                  )}
+                >
+                  {s.label}
+                  <span className={cn('ml-1.5 tabular-nums', slide === i ? 'text-[#060d1d]/50' : 'text-ink-muted')}>
+                    {String(CLIENTS.filter((c) => c.group === s.id).length).padStart(2, '0')}
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => goTo(slide - 1)}
+                disabled={slide === 0}
+                aria-label="Previous clients"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-white hover:text-[#060d1d] disabled:pointer-events-none disabled:opacity-35"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo(slide + 1)}
+                disabled={slide === SLIDES.length - 1}
+                aria-label="Next clients"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink transition-colors hover:bg-white hover:text-[#060d1d] disabled:pointer-events-none disabled:opacity-35"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* 2 and 4 both divide the roster evenly — a 3- or 5-wide grid
-            strands the last card alone on its own row. */}
-        <div className="client-grid grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-          {CLIENTS.map((client) => (
-            <ClientCard key={client.name} client={client} live={channels[client.name]} />
+        {/* Vertical padding inside the scroller leaves room for the card
+            lift and shadow, which the overflow box would otherwise clip. */}
+        <div
+          ref={trackRef}
+          className="client-track no-scrollbar -my-3 flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain py-3"
+        >
+          {SLIDES.map((s, i) => (
+            <div
+              key={s.id}
+              id={`roster-${s.id}`}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${s.label}, ${i + 1} of ${SLIDES.length}`}
+              className="w-full shrink-0 snap-start px-1"
+            >
+              {/* 2 and 4 both divide a slide of eight evenly — a 3-wide grid
+                  would strand the last card alone on its own row. */}
+              <div className="client-grid grid grid-cols-2 gap-3 pb-5 sm:gap-4 md:grid-cols-4">
+                {CLIENTS.filter((c) => c.group === s.id).map((client) => (
+                  <ClientCard key={client.name} client={client} live={channels[client.name]} />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

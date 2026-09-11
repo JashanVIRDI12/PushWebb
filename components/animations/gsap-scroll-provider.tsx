@@ -107,8 +107,16 @@ export function useGsapScrollAnimations(scope: RefObject<HTMLElement | null>) {
       selectAll<HTMLElement>('.stat-number[data-count]').forEach((element) => {
         const count = Number.parseFloat(element.dataset.count ?? '0');
         const suffix = element.dataset.suffix ?? '';
+        const decimals = Number.parseInt(element.dataset.decimals ?? '0', 10) || 0;
         if (Number.isNaN(count)) return;
-        element.textContent = `0${suffix}`;
+        // Grouped like the static markup ("1,500+"), so the figure never
+        // changes shape between the roll-up and its resting state.
+        const step = 10 ** decimals;
+        const format = (n: number) => `${n.toLocaleString('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        })}${suffix}`;
+        element.textContent = format(0);
 
         watch(element, () => {
           const value = { current: 0 };
@@ -117,7 +125,7 @@ export function useGsapScrollAnimations(scope: RefObject<HTMLElement | null>) {
             duration: 1.6,
             ease: 'power2.out',
             onUpdate: () => {
-              element.textContent = `${Math.ceil(value.current)}${suffix}`;
+              element.textContent = format(Math.ceil(value.current * step) / step);
             },
           });
         }, '0px 0px -8% 0px');

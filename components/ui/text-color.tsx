@@ -6,6 +6,8 @@ import { Plus } from "lucide-react";
 type TextColorProps = {
   /** Exactly three words — each takes a turn lighting up with a gradient. */
   words?: [string, string, string];
+  /** Drop to a non-heading when the page already states its own H1. */
+  as?: 'h1' | 'h2' | 'div';
   className?: string;
 };
 
@@ -16,6 +18,7 @@ type TextColorProps = {
  */
 export function TextColor({
   words = ["Strategy.", "Story.", "Growth."],
+  as: Wordmark = "h1",
   className = "",
 }: TextColorProps) {
   const fg = ["pw-word-cycle-1", "pw-word-cycle-2", "pw-word-cycle-3"];
@@ -30,7 +33,7 @@ export function TextColor({
         <Plus className="absolute -right-4 -top-4 h-8 w-8 text-accent" aria-hidden />
         <Plus className="absolute -bottom-4 -right-4 h-8 w-8 text-accent" aria-hidden />
 
-        <h1 className="flex select-none flex-col items-center justify-center text-center text-[clamp(2.5rem,10vw,5rem)] font-extrabold leading-[0.95] tracking-tighter">
+        <Wordmark className="flex select-none flex-col items-center justify-center text-center text-[clamp(2.5rem,10vw,5rem)] font-extrabold leading-[0.95] tracking-tighter">
           {words.map((word, i) => (
             <span key={word} data-content={word} className={`relative ${bg[i]}`}>
               <span
@@ -40,7 +43,7 @@ export function TextColor({
               </span>
             </span>
           ))}
-        </h1>
+        </Wordmark>
       </div>
     </div>
   );

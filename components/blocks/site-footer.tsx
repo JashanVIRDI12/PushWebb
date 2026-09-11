@@ -1,6 +1,7 @@
 import type { ReactElement, SVGProps } from 'react';
 import Link from 'next/link';
 import { BrandMark } from '@/components/ui/brand-mark';
+import { CONTACT_EMAIL, CTA_HREF, CTA_LABEL, DUBAI_ADDRESS_LINE, PHONES, SOCIAL } from '@/lib/site';
 
 type IconComponent = (props: SVGProps<SVGSVGElement>) => ReactElement;
 
@@ -40,26 +41,23 @@ const YouTubeIcon: IconComponent = (props) => (
 const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: 'Locations',
-    links: [
-      { label: 'India', href: null },
-      { label: 'Dubai, UAE', href: null },
-    ],
+    links: [{ label: 'Dubai, UAE', href: '/dubai' }],
   },
   {
     title: 'Contact',
     links: [
-      { label: 'pushwebb@gmail.com', href: 'mailto:pushwebb@gmail.com' },
-      { label: '+91 9560543261', href: 'tel:+919560543261' },
-      { label: '+91 8080455250', href: 'tel:+918080455250' },
-      { label: 'Book a Strategy Call', href: '/contact' },
+      { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
+      ...PHONES,
+      { label: CTA_LABEL, href: CTA_HREF },
     ],
   },
   {
     title: 'Social',
     links: [
-      { label: 'Instagram', href: 'https://www.instagram.com/pushwebb/', icon: InstagramIcon },
-      { label: 'LinkedIn', href: '#', icon: LinkedInIcon },
-      { label: 'YouTube', href: 'https://www.youtube.com/@mriganksharma6487', icon: YouTubeIcon },
+      { label: 'Instagram', href: SOCIAL.instagram, icon: InstagramIcon },
+      // No LinkedIn URL yet — the link stays inert until SOCIAL.linkedin is set.
+      { label: 'LinkedIn', href: SOCIAL.linkedin ?? '#', icon: LinkedInIcon },
+      { label: 'YouTube', href: SOCIAL.youtube, icon: YouTubeIcon },
     ],
   },
   {
@@ -128,6 +126,9 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-line pt-6 text-center">
+          <address className="mb-2 text-xs not-italic text-ink-soft sm:text-sm">
+            {DUBAI_ADDRESS_LINE}
+          </address>
           <p className="text-xs text-ink-muted sm:text-sm">
             &copy; Copyright {new Date().getFullYear()}. All rights reserved by PUSHWEBB.
           </p>

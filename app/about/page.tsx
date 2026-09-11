@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import { AboutPage } from "@/components/blocks/about-page";
 
+const TITLE = "About PUSHWebb | Content, Creative, Performance & AI Agency";
+const DESCRIPTION =
+  "Meet PUSHWebb, a content, creative, performance and AI agency built by operators experienced in high volume content, YouTube, social media and scalable growth systems.";
+
 export const metadata: Metadata = {
-  title: "About PUSHWebb — We Build Systems That Help Brands Grow",
-  description:
-    "PUSHWebb is a creative and AI-driven marketing agency building flexible content systems that link strategy, storytelling, production, performance, and technology into one process.",
+  title: TITLE,
+  description: DESCRIPTION,
   openGraph: {
     type: "website",
     url: "/about",
     siteName: "PUSHWebb",
-    title: "About PUSHWebb — We Build Systems That Help Brands Grow",
-    description:
-      "Strategy, storytelling, production, performance, and technology in one connected growth system.",
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/og.png"],
   },
 };
