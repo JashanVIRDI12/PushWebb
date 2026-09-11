@@ -1,13 +1,10 @@
 'use client';
 
-const DEFAULT_ITEMS = [
-  'YAAS',
-  'MICROCONTENT MASTERY',
-  'AD CAMPAIGNS',
-  'AI AUTOMATION',
-  'SOCIAL MEDIA MARKETING',
-  'PERFORMANCE MARKETING',
-];
+import { SERVICE_CHANNELS } from '@/lib/services';
+
+// The six capabilities under their brief names, read from the same list as
+// the /services sections so the ticker can't drift back to retired ones.
+const DEFAULT_ITEMS = SERVICE_CHANNELS.map((channel) => channel.name.toUpperCase());
 
 export function MarqueeTicker({ items = DEFAULT_ITEMS }: { items?: string[] }) {
   // Tripled for a truly seamless loop at all viewport widths

@@ -213,9 +213,10 @@ function InfoPanel() {
           <MapPin className="w-4 h-4 text-ink" />
         </div>
         <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">
-          Dubai · Global Delivery
+          India · Dubai · Global Delivery
         </p>
         <div className="flex flex-wrap gap-2">
+          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">India</span>
           <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Dubai, UAE</span>
           <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Global markets</span>
         </div>
@@ -345,7 +346,7 @@ function ContactFormSection() {
             {/* Who we work with, stated before the first field, so a visitor
                 knows whether they fit before investing any effort. */}
             <p className="anim-eyebrow eyebrow mb-2">
-              Working across Dubai · Global markets
+              Working across India · Dubai · Global markets
             </p>
             <p className="mb-5 text-[11px] text-ink-muted">
               Creators · Brands · Marketing Teams · Agencies

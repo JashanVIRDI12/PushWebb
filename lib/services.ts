@@ -1,19 +1,23 @@
 /* ────────────────────────────────────────────────────────────────
-   SERVICES — six capabilities, one system. Each lives as a section
-   on /services, anchored by its `id`. The navbar's Services panel,
-   the home service cards, the Dubai page and the structured data all
-   link to those anchors, so this list is the one place a service is
-   named, described or added.
+   SERVICES — six capabilities, one system. Each has a section on the
+   /services hub, anchored by its `id`, and its own page at
+   /services/<slug>. The navbar's Services panel, the home service
+   cards, the hub's Explore links, the Dubai page and the structured
+   data all link to those pages, so this list is the one place a
+   service is named, described or added.
 
    The revision brief consolidates what used to be nine separate
    services into six: clipping now sits inside short form, podcast
    production inside video production, and the two paid-media entries
-   are one performance capability.
+   are one performance capability. The older keyword URLs from the
+   brief redirect to these pages (next.config.ts).
 ──────────────────────────────────────────────────────────────── */
 
 export type ServiceChannel = {
   /** Section anchor on /services — keep stable, links point at it. */
   id: string;
+  /** The dedicated page, /services/<slug>, as named in the brief. */
+  slug: string;
   name: string;
   hook: string;
   description: string[];
@@ -27,6 +31,12 @@ export type ServiceChannel = {
   /** Named delivery models from the capability deck — how the work is
    *  actually structured, not another list of what we cover. */
   frameworks?: { label: string; items: { name: string; detail: string }[] }[];
+  /** Search topics the brief lists for the service's own page. */
+  topics?: string[];
+  /** Case studies whose "What We Managed" is this capability. */
+  caseStudies?: string[];
+  /** Questions from the shared FAQ list (lib/faqs) shown on the page. */
+  faqs: string[];
   image: string;
   imageAlt: string;
 };
@@ -34,6 +44,7 @@ export type ServiceChannel = {
 export const SERVICE_CHANNELS: ServiceChannel[] = [
   {
     id: 'yaas',
+    slug: 'youtube-growth',
     name: 'YAAS: YouTube as a Service',
     navLabel: 'YouTube',
     hook: 'Turn Your YouTube Channel Into a Growth Engine',
@@ -51,11 +62,23 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
     ],
     cta: 'Explore YouTube Growth',
     proof: '5B+ views generated',
+    topics: [
+      'YouTube channel management',
+      'YouTube content strategy',
+      'YouTube video production',
+      'thumbnail strategy',
+      'YouTube editing',
+      'channel analytics',
+      'YouTube for founders',
+      'YouTube for brands',
+    ],
+    faqs: ['youtube', 'high-volume', 'single-campaign', 'dubai'],
     image: '/pushwebb-assets/generated/youtube-studio.jpg',
     imageAlt: 'PUSHWebb YouTube podcast production team filming creator interview',
   },
   {
     id: 'short-form',
+    slug: 'short-form-content',
     name: 'Short Form Content & Reels',
     navLabel: 'Short Form',
     hook: 'Short Form Content Built to Earn Attention.',
@@ -95,11 +118,13 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
         ],
       },
     ],
+    faqs: ['high-volume', 'white-label', 'single-campaign', 'dubai'],
     image: '/pushwebb-assets/generated/microcontent-shoot.jpg',
     imageAlt: 'PUSHWebb short form content production shoot',
   },
   {
     id: 'video-production',
+    slug: 'video-production',
     name: 'Video Production & Post Production',
     navLabel: 'Production',
     hook: 'Video Production and Post Production, Run as One Pipeline.',
@@ -158,11 +183,15 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
         ],
       },
     ],
+    // Podcast and documentary production, per each study's own record.
+    caseStudies: ['beerbiceps', 'sri-mandir', 'supertalks', 'the-creator-room'],
+    faqs: ['editing', 'white-label', 'high-volume', 'dubai'],
     image: '/pushwebb-assets/generated/video-production.jpg',
     imageAlt: 'PUSHWebb video production crew filming on set',
   },
   {
     id: 'ai-content',
+    slug: 'ai-content-automation',
     name: 'AI Content & Automation',
     navLabel: 'AI',
     hook: 'Use AI to Increase Output. Not Lower the Bar.',
@@ -180,11 +209,14 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
     ],
     cta: 'Explore AI Content & Automation',
     proof: 'AI production + human quality control',
+    caseStudies: ['divine-sparks'],
+    faqs: ['ai', 'high-volume', 'single-campaign', 'dubai'],
     image: '/pushwebb-assets/generated/ai-workflow.jpg',
     imageAlt: 'PUSHWebb editors working through an AI-assisted content workflow',
   },
   {
     id: 'social-media',
+    slug: 'social-media-management',
     name: 'Social Media Management',
     navLabel: 'Social',
     hook: 'Turn Social Media Into a Consistent Growth System.',
@@ -202,11 +234,13 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
     ],
     cta: 'Explore Social Media Management',
     proof: 'Multi platform operations across 15+ clients',
+    faqs: ['organic-and-paid', 'brands-and-creators', 'single-campaign', 'dubai'],
     image: '/pushwebb-assets/generated/social-strategy.jpg',
     imageAlt: 'PUSHWebb social media team reviewing printed content for a posting calendar',
   },
   {
     id: 'performance',
+    slug: 'performance-creative',
     name: 'Performance Creative & Paid Media',
     navLabel: 'Performance',
     hook: 'Creative That Learns. Media That Performs.',
@@ -225,13 +259,18 @@ export const SERVICE_CHANNELS: ServiceChannel[] = [
     cta: 'Explore Performance Creative',
     // No proof line: the brief asks for a real campaign metric, and the house
     // rule is to publish no figure that cannot be substantiated.
+    faqs: ['organic-and-paid', 'full-service', 'single-campaign', 'dubai'],
     image: '/pushwebb-assets/generated/paid-campaign-review.jpg',
     imageAlt: 'PUSHWebb performance marketing team reviewing campaign analytics',
   },
 ];
 
-/** Deep link to a service's section on /services. */
-export const serviceHref = (id: string) => `/services#${id}`;
+/** A service's own page. Takes the section id so call sites stay unchanged. */
+export const serviceHref = (id: string) =>
+  `/services/${SERVICE_CHANNELS.find((channel) => channel.id === id)?.slug ?? ''}`;
+
+export const getServiceBySlug = (slug: string) =>
+  SERVICE_CHANNELS.find((channel) => channel.slug === slug);
 
 /** The PUSHWebb Scaling System — the four steps every engagement runs
  *  through. The home page adds icons and imagery on top of this copy. */

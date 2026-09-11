@@ -8,7 +8,7 @@ import { CTA_HREF, CTA_LABEL, OPERATING_PROOF, WHY_POINTS } from '@/lib/site';
 
 /* ────────────────────────────────────────────────────────────────
    /dubai — the location page for UAE searches. Every service it
-   lists links to that service's section on /services.
+   lists links to that service's own page.
 ──────────────────────────────────────────────────────────────── */
 
 const FAQS = [

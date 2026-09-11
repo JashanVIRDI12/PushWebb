@@ -23,8 +23,11 @@ export function NavbarModern() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
+  // A section stays lit on its sub-pages too, e.g. Services on /services/youtube-growth.
   const isActiveItem = (item: { href: string }) =>
-    item.href === "/" ? pathname === "/" : pathname === item.href;
+    item.href === "/"
+      ? pathname === "/"
+      : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
   const navItems = [
     { label: "Home", href: "/", icon: Home, children: null },

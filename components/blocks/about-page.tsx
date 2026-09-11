@@ -87,7 +87,7 @@ const TEAM = [
   },
   {
     name: 'Pragyansh',
-    role: 'Co-Founder',
+    role: 'Co Founder',
     bio: 'Six years alongside Mrigank inside the same BeerBiceps content operation. Keeps research, scripting, editing, design and publishing moving through one pipeline rather than separate handoffs.',
   },
   {
@@ -111,7 +111,7 @@ const BUILT_ALONGSIDE = [
 const FAQS = [
   {
     question: 'What exactly does PUSHWebb do?',
-    answer: 'PUSHWebb is a content, creative, performance and AI agency working across YouTube management, short-form content, video and post production, podcast production, content clipping, social media marketing, paid campaigns, performance marketing and AI automation.',
+    answer: 'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from India and Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
   },
   {
     question: 'Who does PUSHWebb typically work with?',
@@ -219,7 +219,7 @@ function AboutMasthead() {
             <div className="mt-9 max-w-[64ch] space-y-4">
               <p className="text-base leading-relaxed text-ink-soft">
                 PUSHWebb is a content, creative, performance and AI agency built by operators who
-                have spent years managing high-volume content ecosystems for creators, brands and
+                have spent years managing high volume content ecosystems for creators, brands and
                 digital businesses.
               </p>
               <p className="text-base leading-relaxed text-ink-soft">
@@ -294,9 +294,9 @@ function BuiltByOperatorsSection() {
 
           <div className="max-w-[68ch] space-y-5 md:col-span-6 md:col-start-7">
             <p className="text-base leading-relaxed text-ink-soft">
-              Before PUSHWebb, our founders spent over six years at BeerBiceps inside high-volume
-              creator and YouTube operations, working across research, planning, production, post
-              production, publishing and channel growth.
+              Before PUSHWebb, our founders spent years inside high volume creator and YouTube
+              operations, working across research, planning, production, post production,
+              publishing and channel growth.
             </p>
             <p className="text-base leading-relaxed text-ink-soft">
               That experience shaped how PUSHWebb works today: fewer disconnected teams, clearer
@@ -554,17 +554,14 @@ function BuiltAlongsideSection() {
     <section className="border-b border-line bg-surface px-5 py-20 sm:px-8 md:py-24">
       <div className="mx-auto max-w-[1240px]">
         <div className="flex flex-col gap-5 border-b border-line pb-8 md:flex-row md:items-end md:justify-between">
-          <div>
-            <SheetLabel className="mb-5">Built alongside</SheetLabel>
-            <h2 className="max-w-[20ch] font-display text-[clamp(1.6rem,3.2vw,2.5rem)] font-extrabold uppercase leading-[1] tracking-[-0.03em] text-ink">
-              The channels and brands our team has operated.
-            </h2>
-          </div>
+          <h2 className="max-w-[20ch] font-display text-[clamp(1.6rem,3.2vw,2.5rem)] font-extrabold uppercase leading-[1] tracking-[-0.03em] text-ink">
+            Built Alongside
+          </h2>
           <Link
             href="/work"
             className="group inline-flex shrink-0 items-center gap-2 font-display text-sm font-semibold text-ink no-underline transition-colors hover:text-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-hover focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
           >
-            See our work
+            See Our Work
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
         </div>
@@ -611,12 +608,11 @@ function LocationsSection() {
           <div className="md:col-span-5">
             <SheetLabel className="mb-6">Where we operate</SheetLabel>
             <h2 className="font-display text-[clamp(2.1rem,4.4vw,3.6rem)] font-extrabold uppercase leading-[0.95] tracking-[-0.035em] text-ink">
-              Operating in Dubai. Working globally.
+              Operating in Dubai
             </h2>
             <p className="mt-7 max-w-[58ch] text-base leading-relaxed text-ink-soft">
-              PUSHWebb works with brands, creators, and marketing teams across the UAE and
-              international markets, with a connected model built to travel across markets and
-              platforms.
+              PUSHWebb works with creators, brands, agencies and marketing teams across the UAE and
+              international markets through a connected production and growth model.
             </p>
 
             <dl className="mt-9 border-t border-line-strong">
@@ -655,8 +651,8 @@ function LocationsSection() {
         <p className="mt-14 max-w-[72ch] border-t border-line pt-8 text-sm leading-relaxed text-ink-soft">
           PUSHWebb is a content, creative, performance and AI agency operating across India and
           Dubai, UAE. The company works with creators, brands, businesses and marketing teams across
-          YouTube, short-form content, video production, social media, paid performance and AI
-          content workflows in India, the Middle East and international markets.
+          YouTube, short form content, video production, social media, paid performance and AI
+          content workflows.
         </p>
       </div>
     </section>

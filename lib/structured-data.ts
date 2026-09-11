@@ -1,5 +1,5 @@
 import { CASE_STUDIES } from '@/lib/case-studies';
-import { SERVICE_CHANNELS, serviceHref } from '@/lib/services';
+import { SERVICE_CHANNELS, serviceHref, type ServiceChannel } from '@/lib/services';
 import { CONTACT_EMAIL, DUBAI_ADDRESS, FOUNDER, PHONES, SITE_URL, SOCIAL } from '@/lib/site';
 
 /* ────────────────────────────────────────────────────────────────
@@ -101,6 +101,44 @@ export function organizationJsonLd() {
         },
       })),
     },
+  };
+}
+
+/** A service page: the Service itself, provided by the organization, and
+ *  the breadcrumb trail back to the hub. */
+export function serviceJsonLd(service: ServiceChannel) {
+  const url = `${SITE_URL}${serviceHref(service.id)}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        name: service.name,
+        serviceType: service.name,
+        description: service.description.join(' '),
+        url,
+        image: `${SITE_URL}${service.image}`,
+        provider: { '@type': 'Organization', '@id': ORG_ID, name: 'PUSHWebb', url: SITE_URL },
+        areaServed: 'Worldwide',
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: `${service.name} — what we cover`,
+          itemListElement: service.cover.map((item) => ({
+            '@type': 'Offer',
+            itemOffered: { '@type': 'Service', name: item },
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+          { '@type': 'ListItem', position: 3, name: service.name, item: url },
+        ],
+      },
+    ],
   };
 }
 
