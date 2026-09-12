@@ -50,7 +50,6 @@ export function InteractiveHeroSection() {
       if (!root) return;
 
       const headline = root.querySelector('.hero-headline');
-      const copy = root.querySelector('.hero-copy');
       const statsBar = root.querySelector('.hero-stats-bar');
       const statItems = root.querySelectorAll('.hero-stat-item');
       const ctas = root.querySelectorAll('.hero-cta-btn');
@@ -68,10 +67,6 @@ export function InteractiveHeroSection() {
         },
         0.1,
       );
-
-      if (copy) {
-        tl.fromTo(copy, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.18);
-      }
 
       // Animate stats bar
       if (statsBar) {
@@ -147,7 +142,7 @@ export function InteractiveHeroSection() {
       {/* ── 3D Robot Background (Unobstructed & Free to Interact) ────── */}
       {/* Phones get their own stacking: the robot's canvas is pinned to a
           fixed band at the top instead of the whole (now taller) hero, so it
-          sits above the headline — robot, headline, copy, metrics, CTAs —
+          sits above the headline — robot, headline, metrics, CTAs —
           rather than behind four lines of type. The scene sizes the robot
           by canvas width and centres it vertically, so the band height only
           sets where it lands: 720px puts the head just under the top rail.
@@ -215,7 +210,7 @@ export function InteractiveHeroSection() {
             font size, so 2.6rem clears 960px at 1024 and 3.2rem clears
             1216px at 1280. Below lg the break is dropped and text-balance
             evens out three or four lines instead. */}
-        <h1 className="hero-headline font-display text-[1.8rem] sm:text-[2.2rem] md:text-[2.5rem] lg:text-[2.6rem] xl:text-[3.2rem] font-extrabold leading-[0.98] tracking-[-0.02em] uppercase text-white mb-4 sm:mb-5 text-balance drop-shadow-lg">
+        <h1 className="hero-headline font-display text-[1.8rem] sm:text-[2.2rem] md:text-[2.5rem] lg:text-[2.6rem] xl:text-[3.2rem] font-extrabold leading-[0.98] tracking-[-0.02em] uppercase text-white mb-6 sm:mb-7 text-balance drop-shadow-lg">
           We Build Content Systems That Turn{' '}
           <br className="hidden lg:block" />
           Attention Into{' '}
@@ -223,12 +218,6 @@ export function InteractiveHeroSection() {
             Business Growth.
           </span>
         </h1>
-
-        <p className="hero-copy mb-6 sm:mb-7 max-w-2xl text-[13px] leading-relaxed text-[#c4c4c4] sm:text-[15px] drop-shadow">
-          PUSHWebb is a full stack content and creative growth agency helping brands and creators
-          scale through strategy, video, YouTube, social media, performance marketing and AI powered
-          content systems.
-        </p>
 
         {/* ── Stats readout ─────────────────────────────────────────
             Built as a rule-separated instrument panel rather than four

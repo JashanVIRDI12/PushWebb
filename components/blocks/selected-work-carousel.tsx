@@ -301,6 +301,9 @@ export function SelectedWorkCarousel({ studies = CASE_STUDIES }: { studies?: Cas
             <h2 className="split-h2 text-[1.75rem] leading-[1.05] tracking-[-1.5px] text-ink sm:text-4xl md:text-5xl">
               Selected Work
             </h2>
+            <p className="mt-4 text-sm leading-relaxed text-ink-soft md:text-base">
+              What we managed, the challenge behind it and the system we built to solve it.
+            </p>
           </div>
           <Link
             href="/work"
