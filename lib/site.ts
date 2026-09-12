@@ -40,10 +40,10 @@ export const SOCIAL: Record<'instagram' | 'linkedin' | 'youtube', string | null>
 export const CTA_LABEL = 'Book a Strategy Call';
 export const CTA_HREF = '/contact';
 
-/** Scheduling link for high-intent visitors who skip the form. Inlined at
- *  build time, so it has to be NEXT_PUBLIC_. Null until it is set — the
- *  booking section stays off the page rather than showing a dead calendar. */
-export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || null;
+/** The booking calendar on /contact, which replaced the enquiry form.
+ *  Inlined at build time, so the override has to be NEXT_PUBLIC_. */
+export const CALENDLY_URL =
+  process.env.NEXT_PUBLIC_CALENDLY_URL || 'https://calendly.com/admin-pushwebb/30min';
 
 /** Why PUSHWebb — shared by the home page and the Dubai page. */
 export const WHY_POINTS = [
