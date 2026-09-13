@@ -20,7 +20,7 @@ The site positions PUSHWebb as the team connecting the thinking behind content t
 
 ## Operating Context
 
-The agency operates from India and Dubai and works across YouTube, short-form content, social media, paid campaigns, and marketing automation.
+The agency operates from Dubai and works across YouTube, short-form content, social media, paid campaigns, and marketing automation.
 
 ## Capabilities and Constraints
 
@@ -35,7 +35,7 @@ The product name is PUSHWebb. Existing wordmark and brand-mark assets live under
 
 ## Evidence on Hand
 
-The repository contains the current site copy, service descriptions, local studio and workflow imagery under `public/pushwebb-assets/generated/`, location imagery for Mumbai and Dubai, and an existing interactive globe implementation. No additional customer or performance claim should be invented.
+The repository contains the current site copy, service descriptions, local studio and workflow imagery under `public/pushwebb-assets/generated/`, location imagery for Dubai, and an existing interactive globe implementation. No additional customer or performance claim should be invented.
 
 ## Product Principles
 

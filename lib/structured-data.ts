@@ -1,14 +1,13 @@
 import { CASE_STUDIES } from '@/lib/case-studies';
 import { SERVICE_CHANNELS, serviceHref, type ServiceChannel } from '@/lib/services';
-import { CONTACT_EMAIL, DUBAI_ADDRESS, FOUNDER, PHONES, SITE_URL, SOCIAL } from '@/lib/site';
+import { CONTACT_EMAIL, DUBAI_ADDRESS, FOUNDER, SITE_URL, SOCIAL } from '@/lib/site';
 
 /* ────────────────────────────────────────────────────────────────
    JSON-LD builders. Only facts the site already states go in here.
 
-   Deliberately NOT included until they are confirmed:
-     • LinkedIn       — the profile URL is still a placeholder
-     • telephone      — numbers are hidden for now (see PHONES)
-   Add them to `organizationJsonLd` once they exist.
+   Deliberately NOT included: LinkedIn, whose profile URL is still a
+   placeholder (add it to `organizationJsonLd` once it exists), and any
+   telephone — email is the only published contact.
 ──────────────────────────────────────────────────────────────── */
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -24,9 +23,6 @@ const SERVICE_CATEGORIES = [
   'Podcast production',
   'Content clipping',
 ];
-
-/** schema.org wants E.164-ish numbers: "+91 9560543261" → "+91-9560543261". */
-const toSchemaPhone = (label: string) => label.replace(/\s+/, '-');
 
 export function organizationJsonLd() {
   return {
@@ -44,10 +40,8 @@ export function organizationJsonLd() {
       jobTitle: FOUNDER.role,
     },
     description:
-      'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from India and Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
+      'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
     email: CONTACT_EMAIL,
-    // Email is the published contact; phone points appear only while
-    // PHONES in lib/site has entries.
     contactPoint: [
       {
         '@type': 'ContactPoint',
@@ -55,13 +49,8 @@ export function organizationJsonLd() {
         email: CONTACT_EMAIL,
         availableLanguage: ['English'],
       },
-      ...PHONES.map((phone) => ({
-        '@type': 'ContactPoint',
-        contactType: 'sales',
-        telephone: toSchemaPhone(phone.label),
-      })),
     ],
-    // Operating base first; the India operation is listed alongside it.
+    // The Dubai operating base.
     address: {
       '@type': 'PostalAddress',
       streetAddress: `${DUBAI_ADDRESS.line1}, ${DUBAI_ADDRESS.line2}`,
@@ -78,11 +67,6 @@ export function organizationJsonLd() {
           addressLocality: DUBAI_ADDRESS.city,
           addressCountry: DUBAI_ADDRESS.countryCode,
         },
-      },
-      {
-        '@type': 'Place',
-        name: 'PUSHWebb India',
-        address: { '@type': 'PostalAddress', addressCountry: 'IN' },
       },
     ],
     areaServed: 'Worldwide',

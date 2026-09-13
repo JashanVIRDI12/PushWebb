@@ -1,7 +1,7 @@
 import type { ReactElement, SVGProps } from 'react';
 import Link from 'next/link';
 import { BrandMark } from '@/components/ui/brand-mark';
-import { CONTACT_EMAIL, CTA_HREF, CTA_LABEL, DUBAI_ADDRESS_LINE, PHONES, SOCIAL } from '@/lib/site';
+import { CONTACT_EMAIL, CTA_HREF, CTA_LABEL, DUBAI_ADDRESS_LINE, SOCIAL } from '@/lib/site';
 
 type IconComponent = (props: SVGProps<SVGSVGElement>) => ReactElement;
 
@@ -47,7 +47,6 @@ const COLUMNS: { title: string; links: FooterLink[] }[] = [
     title: 'Contact',
     links: [
       { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
-      ...PHONES,
       { label: CTA_LABEL, href: CTA_HREF },
     ],
   },

@@ -51,7 +51,7 @@ export const FAQS: Faq[] = [
   {
     id: 'dubai',
     q: 'Does PUSHWebb work with businesses in Dubai and the UAE?',
-    a: 'Yes. PUSHWebb operates in Dubai and works with brands, creators and organisations across the UAE, while delivering for clients globally. PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from India and Dubai. UAE businesses get the full service mix — YouTube management, short-form content, video production, social media management, performance creative and AI content production — from one team structured for high-volume delivery.',
+    a: 'Yes. PUSHWebb operates in Dubai and works with brands, creators and organisations across the UAE, while delivering for clients globally. PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from Dubai. UAE businesses get the full service mix — YouTube management, short-form content, video production, social media management, performance creative and AI content production — from one team structured for high-volume delivery.',
   },
   {
     id: 'single-campaign',

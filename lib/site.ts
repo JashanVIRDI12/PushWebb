@@ -23,12 +23,6 @@ export const DUBAI_ADDRESS = {
 /** One line, for the footer and any inline mention. */
 export const DUBAI_ADDRESS_LINE = `${DUBAI_ADDRESS.line1}, ${DUBAI_ADDRESS.line2}, ${DUBAI_ADDRESS.city}, ${DUBAI_ADDRESS.country}`;
 
-/** Empty on purpose — email is the only published contact right now. One
- *  Dubai number is coming; add it here and the footer, the contact page and
- *  the structured data pick it up together, e.g.
- *  { label: '+971 4 000 0000', href: 'tel:+97140000000' }. */
-export const PHONES: { label: string; href: string }[] = [];
-
 /** `null` until a real profile URL exists — never publish a placeholder. */
 export const SOCIAL: Record<'instagram' | 'linkedin' | 'youtube', string | null> = {
   instagram: 'https://www.instagram.com/pushwebb/',

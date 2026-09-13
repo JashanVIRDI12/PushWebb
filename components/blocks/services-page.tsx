@@ -164,7 +164,7 @@ function ServicesFinalCTA() {
             carries the fuller geographic story. */}
         <p className="mx-auto mt-12 max-w-2xl border-t border-line pt-8 text-xs leading-relaxed text-ink-muted sm:text-sm">
           PUSHWebb delivers content, creative, performance and AI services for brands and creators
-          across India, Dubai and international markets.
+          across Dubai and international markets.
         </p>
       </div>
     </section>

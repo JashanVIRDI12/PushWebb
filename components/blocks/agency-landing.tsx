@@ -598,7 +598,7 @@ function AboutSection() {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   LOCATIONS — Dubai leads; India is where the studio was built.
+   LOCATIONS — the Dubai operating base.
 ──────────────────────────────────────────────────────────────── */
 const LOCATIONS = [
   {
@@ -606,16 +606,9 @@ const LOCATIONS = [
     tag: 'Operating Base',
     image: '/pushwebb-assets/generated/dubai-dusk.jpg',
     alt: 'Dubai skyline at dusk with the Burj Khalifa',
-    span: 'md:col-span-3',
+    span: 'md:col-span-5',
     href: '/dubai',
     linkLabel: 'PUSHWebb in Dubai',
-  },
-  {
-    city: 'India',
-    tag: 'Creative Studio',
-    image: '/pushwebb-assets/generated/mumbai-blue-hour.jpg',
-    alt: 'Mumbai skyline at blue hour, India',
-    span: 'md:col-span-2',
   },
 ];
 
@@ -633,7 +626,7 @@ function LocationsSection() {
           </h2>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-ink-soft md:text-base">
             PUSHWebb is a content, creative, performance and AI agency serving brands, creators and
-            organisations from India and Dubai.
+            organisations from Dubai.
           </p>
         </div>
 

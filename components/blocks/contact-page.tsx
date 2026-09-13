@@ -1,12 +1,12 @@
 'use client';
 
 import { useRef } from 'react';
-import { Mail, MapPin, Clock, Phone, Eye, Clapperboard } from 'lucide-react';
+import { Mail, MapPin, Clock, Eye, Clapperboard } from 'lucide-react';
 import { NavbarModernBlock } from './navbar-modern';
 import { Footer } from './agency-landing';
 import { useGsapScrollAnimations } from '@/components/animations/gsap-scroll-provider';
 import { CalendlyInline } from '@/components/ui/calendly-inline';
-import { CALENDLY_URL, CONTACT_EMAIL, CTA_LABEL, PHONES, SOCIAL } from '@/lib/site';
+import { CALENDLY_URL, CONTACT_EMAIL, CTA_LABEL, SOCIAL } from '@/lib/site';
 
 function ContactHeader() {
   return (
@@ -173,36 +173,14 @@ function InfoPanel() {
         );
       })}
 
-      {/* Numbers are hidden for now; the card returns when PHONES has entries. */}
-      {PHONES.length > 0 ? (
-        <div className="premium-card bg-surface border border-line rounded-xl p-5">
-          <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
-            <Phone className="w-4 h-4 text-ink" />
-          </div>
-          <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">Speak with our team</p>
-          <div className="flex flex-col gap-1">
-            {PHONES.map((phone) => (
-              <a
-                key={phone.href}
-                href={phone.href}
-                className="text-ink font-medium text-sm hover:text-accent transition-colors duration-200"
-              >
-                {phone.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <div className="premium-card bg-surface border border-line rounded-xl p-5">
         <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
           <MapPin className="w-4 h-4 text-ink" />
         </div>
         <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">
-          India · Dubai · Global Delivery
+          Dubai · Global Delivery
         </p>
         <div className="flex flex-wrap gap-2">
-          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">India</span>
           <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Dubai, UAE</span>
           <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Global markets</span>
         </div>
@@ -253,7 +231,7 @@ function BookingSection() {
             {/* Who we work with, stated before the calendar, so a visitor
                 knows whether they fit before picking a time. */}
             <p className="anim-eyebrow eyebrow mb-2">
-              Working across India · Dubai · Global markets
+              Working across Dubai · Global markets
             </p>
             <p className="mb-5 text-[11px] text-ink-muted">
               Creators · Brands · Marketing Teams · Agencies

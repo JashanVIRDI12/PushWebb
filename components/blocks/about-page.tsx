@@ -29,7 +29,6 @@ import { cn } from '@/lib/utils';
 /** The masthead fact sheet — the header block of a call sheet. */
 const MASTHEAD_FACTS = [
   { label: 'Operating base', value: 'Dubai, UAE' },
-  { label: 'Studio', value: 'India' },
   { label: 'Team', value: '16+ specialists' },
   { label: 'Output', value: '1,500+ videos / month' },
 ];
@@ -111,7 +110,7 @@ const BUILT_ALONGSIDE = [
 const FAQS = [
   {
     question: 'What exactly does PUSHWebb do?',
-    answer: 'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from India and Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
+    answer: 'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
   },
   {
     question: 'Who does PUSHWebb typically work with?',
@@ -139,7 +138,7 @@ const FAQS = [
   },
   {
     question: 'Does PUSHWebb work with clients in Dubai and the UAE?',
-    answer: 'Yes. PUSHWebb operates across India and Dubai, UAE, and works with brands, creators and marketing teams throughout the Middle East and international markets.',
+    answer: 'Yes. PUSHWebb operates in Dubai, UAE, and works with brands, creators and marketing teams throughout the Middle East and international markets.',
   },
   {
     question: 'Can we hire PUSHWebb for one service only?',
@@ -166,9 +165,6 @@ const GLOBE_CONFIG: GlobeConfig = {
   glowColor: [0.85, 0.88, 0.95],
   markers: [
     { location: [25.2048, 55.2708], size: 0.12 },
-    { location: [19.076, 72.8777], size: 0.1 },
-    { location: [28.6139, 77.209], size: 0.06 },
-    { location: [12.9716, 77.5946], size: 0.055 },
     { location: [51.5074, -0.1278], size: 0.045 },
     { location: [40.7128, -74.006], size: 0.05 },
     { location: [1.3521, 103.8198], size: 0.04 },
@@ -649,8 +645,8 @@ function LocationsSection() {
         {/* Plain-language entity statement — written for search engines and AI
             systems rather than for the visual hierarchy. */}
         <p className="mt-14 max-w-[72ch] border-t border-line pt-8 text-sm leading-relaxed text-ink-soft">
-          PUSHWebb is a content, creative, performance and AI agency operating across India and
-          Dubai, UAE. The company works with creators, brands, businesses and marketing teams across
+          PUSHWebb is a content, creative, performance and AI agency operating in Dubai, UAE. The
+          company works with creators, brands, businesses and marketing teams across
           YouTube, short form content, video production, social media, paid performance and AI
           content workflows.
         </p>
