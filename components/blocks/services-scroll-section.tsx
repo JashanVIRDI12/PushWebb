@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import {
   ArrowRight,
@@ -139,11 +140,12 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
         {/* Media */}
         <div className="card-media-wrapper relative mb-5 h-44 w-full overflow-hidden rounded-2xl border border-ink/15 bg-paper-alt shadow-inner">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={service.image}
             alt={service.alt}
-            loading="lazy"
+            fill
+            sizes="(max-width: 640px) calc(100vw - 3rem), 390px"
+            quality={70}
             className="card-media-img h-full w-full scale-125 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#04091a]/88 via-[#0a1630]/18 to-transparent opacity-75" />

@@ -205,14 +205,14 @@ export function ClientLogoWall() {
       //    eye lands mid-roster and the corners resolve last. Staggering per
       //    slide keeps the off-screen slide from skewing the visible order.
       gsap.set(grids, { perspective: 1100 });
-      gsap.set(cards, { autoAlpha: 0, y: 46, scale: 0.9, rotateX: -14, transformOrigin: '50% 0%' });
+      gsap.set(cards, { autoAlpha: 0, y: 46, scale: 0.9, rotationX: -14, transformOrigin: '50% 0%' });
 
       grids.forEach((grid) => {
         gsap.to(grid.querySelectorAll('.client-card'), {
           autoAlpha: 1,
           y: 0,
           scale: 1,
-          rotateX: 0,
+          rotationX: 0,
           duration: 0.8,
           ease: 'power3.out',
           stagger: { grid: 'auto', from: 'center', amount: 0.6 },
@@ -227,8 +227,8 @@ export function ClientLogoWall() {
       media.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         const teardown = cards.map((card) => {
           // One live tween per axis rather than a new one per pointermove.
-          const rotX = gsap.quickTo(card, 'rotateX', { duration: 0.55, ease: 'power3' });
-          const rotY = gsap.quickTo(card, 'rotateY', { duration: 0.55, ease: 'power3' });
+          const rotX = gsap.quickTo(card, 'rotationX', { duration: 0.55, ease: 'power3' });
+          const rotY = gsap.quickTo(card, 'rotationY', { duration: 0.55, ease: 'power3' });
           const lift = gsap.quickTo(card, 'y', { duration: 0.55, ease: 'power3' });
 
           const onMove = (event: PointerEvent) => {

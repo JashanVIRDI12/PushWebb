@@ -29,6 +29,8 @@ interface SplineSceneLazyProps extends SplineSceneProps {
   unmountWhenHidden?: boolean
   /** Delay before first load (ms) — spreads startup work in dev */
   loadDelay?: number
+  /** Start the expensive WebGL scene on the visitor's first interaction. */
+  deferUntilInteraction?: boolean
 }
 
 /**
@@ -41,16 +43,39 @@ export function SplineSceneLazy({
   eager = false,
   unmountWhenHidden = true,
   loadDelay = 0,
+  deferUntilInteraction = false,
 }: SplineSceneLazyProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(eager)
   const [ready, setReady] = useState(loadDelay === 0)
+  const [activated, setActivated] = useState(!deferUntilInteraction)
 
   useEffect(() => {
     if (loadDelay <= 0) return
     const timer = window.setTimeout(() => setReady(true), loadDelay)
     return () => window.clearTimeout(timer)
   }, [loadDelay])
+
+  useEffect(() => {
+    if (!deferUntilInteraction || activated) return
+
+    const activate = () => setActivated(true)
+    const events: Array<keyof WindowEventMap> = [
+      'pointermove',
+      'pointerdown',
+      'touchstart',
+      'keydown',
+      'scroll',
+    ]
+
+    events.forEach((eventName) => {
+      window.addEventListener(eventName, activate, { passive: true, once: true })
+    })
+
+    return () => {
+      events.forEach((eventName) => window.removeEventListener(eventName, activate))
+    }
+  }, [activated, deferUntilInteraction])
 
   useEffect(() => {
     const el = ref.current
@@ -71,7 +96,7 @@ export function SplineSceneLazy({
     return () => observer.disconnect()
   }, [unmountWhenHidden])
 
-  const shouldRender = ready && visible
+  const shouldRender = ready && visible && activated
 
   return (
     <div ref={ref} className={className ?? 'w-full h-full'}>

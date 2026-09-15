@@ -22,7 +22,7 @@ import {
 import { InteractiveHeroSection } from './interactive-hero-section';
 import { NavbarModernBlock } from './navbar-modern';
 import { useGsapScrollAnimations } from '@/components/animations/gsap-scroll-provider';
-import { MarqueeTicker } from '@/components/animations/marquee-ticker';
+import { PhotoMarquee } from '@/components/animations/photo-marquee';
 import { ClientLogoWall } from './client-logo-wall';
 import { TrustedStrip } from './trusted-strip';
 import { SelectedWorkCarousel } from './selected-work-carousel';
@@ -130,11 +130,12 @@ function FrameworkSection() {
                     </div>
 
                     <div className="relative mb-4 hidden h-32 w-full overflow-hidden rounded-xl border border-ink/10 bg-paper-alt shadow-inner sm:block">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={s.image}
                         alt={s.alt}
-                        loading="lazy"
+                        fill
+                        sizes="(min-width: 1024px) 255px, (min-width: 640px) 45vw, 0px"
+                        quality={70}
                         className="framework-thumb h-full w-full object-cover scale-105 transition-transform duration-700 ease-out group-hover:scale-115"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#04091a]/88 via-[#0a1630]/18 to-transparent opacity-75" />
@@ -540,12 +541,26 @@ function AboutSection() {
               <div className="flex items-center gap-3">
                 <div className="about-avatars flex -space-x-2.5">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-paper shadow-md">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/pushwebb-assets/generated/team-studio.jpg" alt="PUSHWebb team reviewing footage in the studio" className="w-full h-full object-cover" />
+                    <Image
+                      src="/pushwebb-assets/generated/team-studio.jpg"
+                      alt="PUSHWebb team reviewing footage in the studio"
+                      width={40}
+                      height={40}
+                      sizes="40px"
+                      quality={65}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-paper shadow-md">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/pushwebb-assets/generated/team-producer-headshot.jpg" alt="PUSHWebb creative producer" className="w-full h-full object-cover" />
+                    <Image
+                      src="/pushwebb-assets/generated/team-producer-headshot.jpg"
+                      alt="PUSHWebb creative producer"
+                      width={40}
+                      height={40}
+                      sizes="40px"
+                      quality={65}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
                 <div>
@@ -639,11 +654,12 @@ function LocationsSection() {
                 loc.span,
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={loc.image}
                 alt={loc.alt}
-                loading="lazy"
+                fill
+                sizes={loc.span === 'md:col-span-3' ? '(min-width: 768px) 60vw, 100vw' : '(min-width: 768px) 40vw, 100vw'}
+                quality={72}
                 className="absolute inset-0 w-full h-full object-cover scale-100 transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#04091a] via-[#0a1630]/72 to-transparent" />
@@ -787,13 +803,12 @@ export function AgencyLanding() {
       <div className="sticky top-0 z-[100] -mb-[100px] sm:-mb-[112px] pointer-events-auto">
         <NavbarModernBlock />
       </div>
-      {/* Stage — black room the robot is lit in, carried through the ticker.
+      {/* Stage — black room the robot is lit in.
           The extra top pull + matching pad lets the black ground reach the
           very top of the viewport (no hairline of page bg above the nav)
           without moving the hero content. */}
       <div className="on-dark bg-black pt-7">
         <InteractiveHeroSection />
-        <MarqueeTicker />
       </div>
 
       {/* Order follows the revision brief: recognisable proof straight after
@@ -816,6 +831,7 @@ export function AgencyLanding() {
           ones keeps the headline figures from getting lost. */}
       <div className="on-dark dark-zone">
         <ClientLogoWall />
+        <PhotoMarquee />
       </div>
 
       <BuiltForScaleSection />

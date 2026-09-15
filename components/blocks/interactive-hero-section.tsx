@@ -59,9 +59,8 @@ export function InteractiveHeroSection() {
       // Animate the headline in
       tl.fromTo(
         headline,
-        { autoAlpha: 0, y: 20 },
+        { y: 20 },
         {
-          autoAlpha: 1,
           y: 0,
           duration: 0.65,
         },
@@ -156,6 +155,7 @@ export function InteractiveHeroSection() {
           className="absolute inset-0 w-full h-full"
           eager
           unmountWhenHidden
+          deferUntilInteraction
         />
         {/* Cover corner badge with black cover */}
         <div aria-hidden className="spline-badge-cover absolute bottom-0 right-0 z-50 h-20 w-60" />

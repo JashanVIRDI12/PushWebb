@@ -296,6 +296,48 @@
   }
 }
 
+/* Real-photo reel beside the home client proof. Each half of the track is the
+   same width, so translating by 50% loops without a visible jump. */
+@keyframes photo-marquee-scroll {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.photo-marquee-track {
+  animation: photo-marquee-scroll 42s linear infinite;
+  animation-play-state: paused;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.photo-marquee-track--ready {
+  animation-play-state: running;
+}
+
+.photo-marquee:hover .photo-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-marquee-viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .photo-marquee-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .photo-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .photo-marquee-copy {
+    display: none;
+  }
+}
+
 /* Required for Framer Motion useScroll when tracking section targets */
 html {
   position: relative;
