@@ -8,6 +8,39 @@ export const SITE_URL = 'https://pushwebb.com';
 
 export const CONTACT_EMAIL = 'admin@pushwebb.com';
 
+/* ── WhatsApp ────────────────────────────────────────────────────
+   One number, quoted by the sticky button on every page, the contact
+   column and the Organization structured data. `WHATSAPP_NUMBER` is the
+   dial string (what a human reads); `WHATSAPP_DIGITS` is what wa.me needs. */
+export const WHATSAPP_NUMBER = '+971 50 168 8505';
+export const WHATSAPP_DIGITS = WHATSAPP_NUMBER.replace(/\D/g, '');
+
+/** A wa.me deep link, optionally carrying the first message. */
+export function whatsappLink(message?: string) {
+  const base = `https://wa.me/${WHATSAPP_DIGITS}`;
+  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+}
+
+/** What the sticky button opens the chat with, so an enquiry starts
+    with context instead of an empty thread. */
+export const WHATSAPP_GREETING =
+  "Hi PUSHWebb — I'd like to talk about content and growth for my brand.";
+
+/* ── EmailJS ─────────────────────────────────────────────────────
+   The "Leave your number" card on /contact sends through EmailJS from
+   the browser. All three IDs are public by design — EmailJS ships them
+   in client code — so they live here rather than in env. What stops
+   another site using them is the origin allowlist: set it to
+   pushwebb.com under EmailJS → Account → Security.
+
+   The env overrides exist so a preview deploy can point at a test
+   template without a code change. */
+export const EMAILJS = {
+  serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_444vstu',
+  templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_0s3spit',
+  publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'zEDvdNo9B_zlkcpei',
+};
+
 /** Published on the About page and in the Organization structured data. */
 export const FOUNDER = { name: 'Mrigank Sharma', role: 'Founder & CEO' };
 

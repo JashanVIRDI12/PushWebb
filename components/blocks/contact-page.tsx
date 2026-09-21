@@ -1,12 +1,21 @@
 'use client';
 
 import { useRef } from 'react';
-import { Mail, MapPin, Clock, Eye, Clapperboard } from 'lucide-react';
+import { Mail, MapPin, Clock, Eye, Clapperboard, MessageCircle } from 'lucide-react';
 import { NavbarModernBlock } from './navbar-modern';
 import { Footer } from './agency-landing';
 import { useGsapScrollAnimations } from '@/components/animations/gsap-scroll-provider';
 import { CalendlyInline } from '@/components/ui/calendly-inline';
-import { CALENDLY_URL, CONTACT_EMAIL, CTA_LABEL, SOCIAL } from '@/lib/site';
+import { CallbackRequest } from '@/components/ui/callback-request';
+import {
+  CALENDLY_URL,
+  CONTACT_EMAIL,
+  CTA_LABEL,
+  SOCIAL,
+  WHATSAPP_GREETING,
+  WHATSAPP_NUMBER,
+  whatsappLink,
+} from '@/lib/site';
 
 function ContactHeader() {
   return (
@@ -111,7 +120,13 @@ const FORM_PROOF = [
 ];
 
 function InfoPanel() {
-  const items = [
+  const items: {
+    icon: typeof Mail;
+    label: string;
+    value: string;
+    href?: string;
+    external?: boolean;
+  }[] = [
     {
       icon: Mail,
       label: 'Email',
@@ -119,9 +134,16 @@ function InfoPanel() {
       href: `mailto:${CONTACT_EMAIL}`,
     },
     {
+      icon: MessageCircle,
+      label: 'WhatsApp',
+      value: WHATSAPP_NUMBER,
+      href: whatsappLink(WHATSAPP_GREETING),
+      external: true,
+    },
+    {
       icon: Clock,
       label: 'Response time',
-      value: 'Reply within 24 hours',
+      value: 'Within 24 hours',
     },
   ];
 
@@ -133,80 +155,106 @@ function InfoPanel() {
 
   return (
     <div className="flex flex-col gap-3">
-      {items.map((item) => {
-        const Icon = item.icon;
-        const content = (
-          <>
-            <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4 shrink-0">
-              <Icon className="w-4 h-4 text-ink" />
-            </div>
-            <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-1">{item.label}</p>
-            <p className="text-ink font-medium text-sm">{item.value}</p>
-          </>
-        );
-        return item.href ? (
-          <a key={item.label} href={item.href} className="premium-card bg-surface hover:bg-surface-hover border border-line rounded-xl p-5">
-            {content}
-          </a>
-        ) : (
-          <div key={item.label} className="premium-card bg-surface border border-line rounded-xl p-5">
-            {content}
-          </div>
-        );
-      })}
+      {/* One card of rows, not a card per fact. The column sits beside a
+          ~720px calendar, so every line it spends has to earn its height. */}
+      <div className="premium-card divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
+        {items.map((item) => {
+          const Icon = item.icon;
+          const inner = (
+            <>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-paper">
+                <Icon className="h-4 w-4 text-ink" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] uppercase tracking-widest text-ink-muted">
+                  {item.label}
+                </span>
+                <span className="block truncate text-sm font-medium text-ink">{item.value}</span>
+              </span>
+            </>
+          );
+          const rowClass = 'flex items-center gap-3 px-5 py-3.5';
 
-      {/* Proof, not more contact detail — this is the moment someone decides
-          whether to book. */}
-      {FORM_PROOF.map((proof) => {
-        const Icon = proof.icon;
-        return (
-          <div key={proof.value} className="premium-card bg-surface border border-line rounded-xl p-5">
-            <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
-              <Icon className="w-4 h-4 text-ink" />
+          return item.href ? (
+            <a
+              key={item.label}
+              href={item.href}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener noreferrer' : undefined}
+              className={`${rowClass} transition-colors duration-200 hover:bg-surface-hover`}
+            >
+              {inner}
+            </a>
+          ) : (
+            <div key={item.label} className={rowClass}>
+              {inner}
             </div>
-            <p className="font-display text-3xl font-semibold leading-none tracking-[-0.03em] text-ink">
-              {proof.value}
-            </p>
-            <p className="text-ink font-medium text-sm mt-1.5">{proof.label}</p>
-            <p className="text-ink-muted text-[11px] leading-relaxed mt-2">{proof.note}</p>
-          </div>
-        );
-      })}
-
-      <div className="premium-card bg-surface border border-line rounded-xl p-5">
-        <div className="w-9 h-9 rounded-lg bg-surface border border-line flex items-center justify-center mb-4">
-          <MapPin className="w-4 h-4 text-ink" />
-        </div>
-        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-2">
-          Dubai · Global Delivery
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Dubai, UAE</span>
-          <span className="text-[11px] text-ink-soft bg-surface border border-line rounded-lg px-2.5 py-1">Global markets</span>
-        </div>
+          );
+        })}
       </div>
 
-      <div className="premium-card bg-surface border border-line rounded-xl p-5">
-        <p className="text-ink-muted text-[10px] uppercase tracking-widest mb-3">Follow PUSHWebb</p>
-        <div className="flex gap-4 text-ink-soft text-sm">
-          {socials.map((social) =>
-            social.href ? (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-ink transition-colors duration-200"
-              >
-                {social.label}
-              </a>
-            ) : (
-              // No profile URL yet — the name stays, the link doesn't.
-              <span key={social.label} className="text-ink-muted">
-                {social.label}
-              </span>
-            ),
-          )}
+      {/* Not everyone wants to pick a slot; some would rather be called. */}
+      <CallbackRequest />
+
+      {/* Proof, not more contact detail — this is the moment someone decides
+          whether to book. The figure leads; the icon is a footnote to it. */}
+      <div className="premium-card divide-y divide-line overflow-hidden rounded-xl border border-line bg-surface">
+        {FORM_PROOF.map((proof) => {
+          const Icon = proof.icon;
+          return (
+            <div key={proof.value} className="flex items-start gap-4 px-5 py-4">
+              <p className="w-[4.25rem] shrink-0 font-display text-2xl font-semibold leading-none tracking-[-0.03em] text-ink">
+                {proof.value}
+              </p>
+              <div className="min-w-0">
+                <p className="flex items-center gap-1.5 text-sm font-medium text-ink">
+                  <Icon className="h-3.5 w-3.5 shrink-0 text-ink-muted" />
+                  {proof.label}
+                </p>
+                <p className="mt-1 text-[11px] leading-relaxed text-ink-muted">{proof.note}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="premium-card rounded-xl border border-line bg-surface p-5">
+        <div className="flex items-center gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-paper">
+            <MapPin className="h-4 w-4 text-ink" />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-[10px] uppercase tracking-widest text-ink-muted">
+              Dubai · Global delivery
+            </span>
+            <span className="block truncate text-sm font-medium text-ink">
+              Dubai, UAE · Global markets
+            </span>
+          </span>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-4">
+          <p className="text-[10px] uppercase tracking-widest text-ink-muted">Follow</p>
+          <div className="flex gap-4 text-sm text-ink-soft">
+            {socials.map((social) =>
+              social.href ? (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors duration-200 hover:text-ink"
+                >
+                  {social.label}
+                </a>
+              ) : (
+                // No profile URL yet — the name stays, the link doesn't.
+                <span key={social.label} className="text-ink-muted">
+                  {social.label}
+                </span>
+              ),
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -221,7 +269,7 @@ function BookingSection() {
   return (
     <section id="contact" className="relative bg-paper border-t border-line pb-16 md:pb-32">
       <div className="container mx-auto px-4 md:px-8 max-w-5xl relative z-10 pt-10 md:pt-14">
-        <div className="grid md:grid-cols-5 gap-4">
+        <div className="grid items-start gap-4 md:grid-cols-5">
 
           <div className="md:col-span-2 order-2 md:order-1">
             <InfoPanel />

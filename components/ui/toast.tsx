@@ -50,7 +50,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <div
         aria-live="polite"
-        className="fixed bottom-5 right-5 z-[10000] flex w-full max-w-sm flex-col gap-2 px-4 sm:px-0 pointer-events-none"
+        /* Stacked above the sticky WhatsApp button rather than over it. */
+        className="fixed bottom-24 right-5 z-[10000] flex w-full max-w-sm flex-col gap-2 px-4 sm:px-0 pointer-events-none"
       >
         {toasts.map((item) => (
           <ToastCard key={item.id} item={item} onDismiss={dismiss} />

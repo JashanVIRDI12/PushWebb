@@ -1,13 +1,19 @@
 import { CASE_STUDIES } from '@/lib/case-studies';
 import { SERVICE_CHANNELS, serviceHref, type ServiceChannel } from '@/lib/services';
-import { CONTACT_EMAIL, DUBAI_ADDRESS, FOUNDER, SITE_URL, SOCIAL } from '@/lib/site';
+import {
+  CONTACT_EMAIL,
+  DUBAI_ADDRESS,
+  FOUNDER,
+  SITE_URL,
+  SOCIAL,
+  WHATSAPP_NUMBER,
+} from '@/lib/site';
 
 /* ────────────────────────────────────────────────────────────────
    JSON-LD builders. Only facts the site already states go in here.
 
    Deliberately NOT included: LinkedIn, whose profile URL is still a
-   placeholder (add it to `organizationJsonLd` once it exists), and any
-   telephone — email is the only published contact.
+   placeholder (add it to `organizationJsonLd` once it exists).
 ──────────────────────────────────────────────────────────────── */
 
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -42,11 +48,14 @@ export function organizationJsonLd() {
     description:
       'PUSHWebb is a content, creative, performance and AI agency serving brands, creators and organisations from Dubai. PUSHWebb provides YouTube management, short form content, video production, post production, social media management, performance creative and AI content production.',
     email: CONTACT_EMAIL,
+    // The WhatsApp line is published on every page, so it belongs here too.
+    telephone: WHATSAPP_NUMBER,
     contactPoint: [
       {
         '@type': 'ContactPoint',
         contactType: 'sales',
         email: CONTACT_EMAIL,
+        telephone: WHATSAPP_NUMBER,
         availableLanguage: ['English'],
       },
     ],

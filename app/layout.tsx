@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import { SmoothScrollProvider } from "@/components/animations/smooth-scroll-provider";
+import { WhatsAppFloat } from "@/components/ui/whatsapp-float";
 import "./globals.css";
 
 /**
@@ -62,7 +63,11 @@ export default function RootLayout({
             drives Lenis from GSAP's ticker and keeps ScrollTrigger synchronized
             across client-side route changes. */}
         <SmoothScrollProvider>
-          <AppProviders>{children}</AppProviders>
+          <AppProviders>
+            {children}
+            {/* Sticky on every route — the one-tap path to a conversation. */}
+            <WhatsAppFloat />
+          </AppProviders>
         </SmoothScrollProvider>
       </body>
     </html>
