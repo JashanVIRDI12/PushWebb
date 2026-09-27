@@ -214,7 +214,9 @@ export function InteractiveHeroSection() {
           We Build Content Systems That Turn{' '}
           <br className="hidden lg:block" />
           Attention Into{' '}
-          <span className="bg-gradient-to-r from-white via-[#dedede] to-[#b4b4b4] bg-clip-text text-transparent">
+          {/* Solid, not gradient-clipped text: Samsung Internet's forced dark
+              mode darkens clipped gradients into near-invisible type. */}
+          <span className="text-[#d9d9d9]">
             Business Growth.
           </span>
         </h1>
@@ -247,7 +249,7 @@ export function InteractiveHeroSection() {
                   ref={(el) => {
                     counterRefs.current[i] = el;
                   }}
-                  className="font-display text-[1.75rem] font-extrabold leading-none tracking-[-0.02em] tabular-nums text-gold-gradient drop-shadow-[0_2px_12px_rgba(243,202,104,0.3)] sm:text-[2.1rem]"
+                  className="font-display text-[1.75rem] font-extrabold leading-none tracking-[-0.02em] tabular-nums text-[#f3ca68] drop-shadow-[0_2px_12px_rgba(243,202,104,0.3)] sm:text-[2.1rem]"
                 >
                   {stat.value}
                 </span>

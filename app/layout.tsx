@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import { SmoothScrollProvider } from "@/components/animations/smooth-scroll-provider";
@@ -51,13 +51,25 @@ export const metadata: Metadata = {
   },
 };
 
+// The site is designed light-only. Declaring it stops mobile browsers'
+// automatic dark mode (Chrome Android, Samsung Internet) from recoloring the
+// page, which muddied gradient headlines and stat figures.
+export const viewport: Viewport = {
+  colorScheme: "only light",
+  themeColor: "#ffffff",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${archivo.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${archivo.variable} h-full antialiased`}
+      style={{ colorScheme: "only light" }}
+    >
       <body className="min-h-full flex flex-col font-sans">
         {/* The app renders inside the single persistent Lenis owner. Its bridge
             drives Lenis from GSAP's ticker and keeps ScrollTrigger synchronized

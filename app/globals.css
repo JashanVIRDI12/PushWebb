@@ -6,6 +6,8 @@
    Paper ground, near-black navy ink, indigo accent, hairline rules.
 ──────────────────────────────────────────────────────────────── */
 :root {
+  /* Light-only: opt out of browser-forced dark mode. */
+  color-scheme: only light;
   --site-nav-height: 68px;
 
   --background: #ffffff;
@@ -38,6 +40,17 @@
   --gold-border: rgba(184, 134, 11, 0.25);
   --gold-bg-subtle: rgba(184, 134, 11, 0.07);
   --gold-glow: 0 0 16px rgba(184, 134, 11, 0.2);
+}
+
+/* Samsung Internet force-darkens pages unless the site declares its own
+   dark-mode handling. This block is that declaration: in dark mode the site
+   keeps its light palette, so Samsung leaves the colors alone. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: only light;
+    --background: #ffffff;
+    --foreground: #0b1a2b;
+  }
 }
 
 @theme {
