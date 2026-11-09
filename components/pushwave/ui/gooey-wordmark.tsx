@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { Particle } from '@/components/ui/particle-animation';
 import { cn } from '@/lib/utils';
+import { usePrefersReducedMotion } from '../hooks';
 
 const WORD = 'PUSHWAVE';
 const FONT_SIZE = 200;
@@ -28,12 +29,11 @@ export function GooeyWordmark({ className }: { className?: string }) {
   const measureRef = useRef<SVGTextElement>(null);
   const trailRef = useRef<SVGGElement>(null);
   const [layout, setLayout] = useState<Layout | null>(null);
-  const [motion, setMotion] = useState(false);
+  const motion = !usePrefersReducedMotion();
   const [active, setActive] = useState(false);
 
   // Measure the set word once the display face has loaded.
   useEffect(() => {
-    setMotion(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     let cancelled = false;
     const measure = () => {
       const text = measureRef.current;

@@ -8,8 +8,8 @@ export function Footer() {
   return (
     <footer className="relative z-[1] overflow-hidden bg-pw-void pt-24 md:pt-32">
       <div className="pw-shell">
-        <div className="grid gap-12 border-t border-pw-line pt-12 md:grid-cols-12">
-          <div className="md:col-span-6">
+        <div className="grid gap-12 border-t border-pw-line pt-12 md:grid-cols-2 lg:grid-cols-12">
+          <div className="md:col-span-2 lg:col-span-6">
             <p className="flex items-center gap-3 text-sm font-medium text-pw-steel">
               <WaveGlyph className="text-pw-wave" />
               {BRAND.byline}
@@ -22,7 +22,7 @@ export function Footer() {
               ))}
             </p>
           </div>
-          <nav aria-label="Footer" className="md:col-span-3 md:col-start-8">
+          <nav aria-label="Footer" className="lg:col-span-3 lg:col-start-8">
             <ul className="flex flex-col gap-3 text-[0.9375rem]">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -33,7 +33,7 @@ export function Footer() {
               ))}
             </ul>
           </nav>
-          <div className="flex flex-col gap-3 text-[0.9375rem] md:col-span-2">
+          <div className="flex flex-col gap-3 text-[0.9375rem] lg:col-span-2">
             <a href={`mailto:${CONTACT_EMAIL}`} className="pw-link w-fit text-pw-soft hover:text-pw-ink">
               {CONTACT_EMAIL}
             </a>

@@ -26,8 +26,9 @@ export function SplitWords({
   lines?: string[];
   id?: string;
 }) {
-  const groups = lines ?? [text];
-  let index = 0;
+  const groups = (lines ?? [text]).map((line) => line.split(' '));
+  // Word index where each line starts, so the stagger runs across lines.
+  const starts = groups.map((_, lineIndex) => groups.slice(0, lineIndex).reduce((total, words) => total + words.length, 0));
 
   return (
     <Tag id={id} className={className}>
@@ -35,9 +36,8 @@ export function SplitWords({
       <span aria-hidden>
         {groups.map((line, lineIndex) => (
           <span key={lineIndex} className={cn(lines && 'md:block')}>
-            {line.split(' ').map((word, wordIndex, words) => {
-              const delay = baseDelay + index * step;
-              index += 1;
+            {line.map((word, wordIndex, words) => {
+              const delay = baseDelay + (starts[lineIndex] + wordIndex) * step;
               return (
                 <span key={wordIndex}>
                   <span className="pw-mask">

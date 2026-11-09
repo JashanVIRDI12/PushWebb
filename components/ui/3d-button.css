@@ -1,0 +1,16 @@
+/* Raised violet face and tactile perspective, recreated from the supplied preview. */
+.three-d-button{--button-depth:6px;position:relative;display:inline-flex;align-items:stretch;justify-content:center;isolation:isolate;min-height:48px;padding:0;border:0;border-radius:15px;background:#492582;color:#f7eeff;font:inherit;text-decoration:none;cursor:pointer;transform:perspective(700px) rotateX(9deg) rotateY(-8deg) rotateZ(-2deg);box-shadow:0 7px 0 #321a54,0 13px 22px #60369635,0 2px 2px #0008;transition:transform .25s ease,box-shadow .25s ease;-webkit-tap-highlight-color:transparent}
+.three-d-button__face{position:relative;display:flex;align-items:center;justify-content:center;gap:18px;width:100%;min-height:inherit;border:2px solid #c9a5ff;border-bottom-color:#9150de;border-right-color:#a36ae8;border-radius:inherit;padding:13px 22px;background:linear-gradient(170deg,#c09af4 0%,#9c6ee9 28%,#8346ce 66%,#6929ac 100%);box-shadow:inset 0 2px 1px #ffffff50,inset 0 -4px 8px #57128b66;transform:translateY(calc(-1 * var(--button-depth)));transition:transform .25s ease,filter .25s ease;overflow:hidden}
+.three-d-button__label{font-size:12px;font-weight:600;line-height:1.25;letter-spacing:-.015em;text-shadow:0 2px 1px #4a176aaa;transition:transform .25s ease}
+.three-d-button__arrow{flex-shrink:0;filter:drop-shadow(0 2px 1px #4a176a88);transition:transform .25s ease}
+.three-d-button:hover:not(:disabled){transform:perspective(700px) rotateX(3deg) rotateY(-3deg) rotateZ(-1deg) translateY(-2px);box-shadow:0 7px 0 #321a54,0 17px 30px #8050bd55}
+.three-d-button:hover:not(:disabled) .three-d-button__face{filter:brightness(1.09)}
+.three-d-button:hover:not(:disabled) .three-d-button__arrow{transform:translateX(4px)}
+.three-d-button:active:not(:disabled){transform:perspective(700px) rotateX(0) rotateY(0) rotateZ(0);box-shadow:0 2px 0 #321a54,0 5px 10px #60369633}
+.three-d-button:active:not(:disabled) .three-d-button__face{transform:translateY(-1px)}
+.three-d-button:focus-visible{outline:2px solid #dfc5ff;outline-offset:7px}
+.three-d-button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:0 3px 0 #321a54}
+@media(prefers-reduced-motion:reduce){.three-d-button,.three-d-button__face,.three-d-button__label,.three-d-button__arrow{transition:none!important}.three-d-button:hover:not(:disabled){transform:none}.three-d-button:hover:not(:disabled) .three-d-button__arrow{transform:none}}
+/* Match the supplied hero reference: stronger tilt, violet edge and soft cast shadow. */
+.three-d-button{transform:perspective(700px) rotateX(12deg) rotateY(-12deg) rotateZ(-7deg);box-shadow:0 7px 0 #4d1c79,0 18px 28px #a060d855,0 30px 40px -15px #b170ea66}
+.three-d-button__face{background:linear-gradient(170deg,#d09af5 0%,#b56aec 28%,#9c37de 66%,#8022c5 100%);border-top-color:#ebbcff;border-left-color:#d99eff;border-right-color:#b75dec;border-bottom-color:#a03be1}

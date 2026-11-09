@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { useRef, type MouseEvent, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import type { Cta } from '@/lib/pushwave/content';
@@ -25,6 +26,7 @@ type PwButtonProps = {
   'aria-controls'?: string;
   'aria-expanded'?: boolean;
   'aria-describedby'?: string;
+  'aria-haspopup'?: 'dialog';
 };
 
 function Label({ text, icon }: { text: string; icon?: ReactNode }) {
@@ -97,6 +99,8 @@ export function PwButton({
         <Label text={text} icon={icon} />
       </Link>
     );
+  } else if (variant === 'primary') {
+    control = <ShinyButton type={type} className={cn(block && 'w-full', className)} onClick={onClick} disabled={disabled} {...aria}>{text}</ShinyButton>;
   } else {
     control = (
       <button type={type} className={classes} onClick={onClick} disabled={disabled} {...aria}>

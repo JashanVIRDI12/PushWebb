@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { useFinePointer, usePrefersReducedMotion } from '../hooks';
 
-type CursorState = 'default' | 'hover' | 'play' | 'drag';
+type CursorState = 'default' | 'hover' | 'play' | 'drag' | 'view';
+
+const LABELS: Partial<Record<CursorState, string>> = { play: 'Play', drag: 'Drag', view: 'View' };
 
 const INTERACTIVE = 'a, button, [role="tab"], label, summary, [data-cursor="hover"]';
 const TEXT_ENTRY = 'input:not([type="radio"]):not([type="checkbox"]), textarea, select';
@@ -12,7 +14,8 @@ const TEXT_ENTRY = 'input:not([type="radio"]):not([type="checkbox"]), textarea, 
 /**
  * Dot + ring cursor. The dot tracks the pointer exactly, so the real hit
  * point is never in doubt; the ring trails, grows over controls and shows
- * "Play" over videos ([data-cursor="play"]) and "Drag" over carousels.
+ * "Play" over videos ([data-cursor="play"]), "Drag" over carousels and
+ * "View" over linked imagery ([data-cursor="view"]).
  * Only on fine pointers with motion allowed; otherwise the native cursor stays.
  */
 export function Cursor() {
@@ -54,7 +57,7 @@ export function Cursor() {
       setVisible(true);
       const tagged = target.closest<HTMLElement>('[data-cursor]');
       const kind = tagged?.dataset.cursor;
-      if (kind === 'play' || kind === 'drag') setState(kind);
+      if (kind === 'play' || kind === 'drag' || kind === 'view') setState(kind);
       else if (target.closest(INTERACTIVE)) setState('hover');
       else setState('default');
     };
@@ -78,7 +81,7 @@ export function Cursor() {
     <div ref={rootRef} className="pw-cursor" data-state={state} data-visible={visible} aria-hidden>
       <div ref={ringRef} className="pw-cursor__ring">
         <div className="pw-cursor__ring-inner">
-          <span className="pw-cursor__label">{state === 'drag' ? 'Drag' : 'Play'}</span>
+          <span className="pw-cursor__label">{LABELS[state] ?? ''}</span>
         </div>
       </div>
       <div ref={dotRef} className="pw-cursor__dot" />

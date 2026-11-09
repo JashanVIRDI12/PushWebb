@@ -1,0 +1,544 @@
+/* ────────────────────────────────────────────────────────────────
+   PUSHWAVE redesign — motion layer.
+   Loaded after redesign.css. Styles for the scroll effects in
+   components/pushwave/redesign/fx/. Every rule degrades to the
+   static design: without JavaScript, or with reduced motion, the
+   page reads exactly as before.
+──────────────────────────────────────────────────────────────── */
+
+.rw {
+  --rw-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Hero ── */
+.rw .rw-char,
+.rw-hero-line > span {
+  will-change: transform;
+}
+
+/* ── Film strip: frames open bottom-up; WebGL draws the photographs ── */
+.rw-film-track {
+  position: relative;
+}
+
+.rw-frame {
+  clip-path: inset(calc((1 - var(--reveal, 1)) * 100%) 0 0 0);
+}
+
+/* First child of the track, so the frames (their shade and captions) paint above it. */
+.rw-film-gl {
+  position: absolute;
+  left: 0;
+  top: -72px;
+  width: 100%;
+  height: calc(100% + 144px);
+  pointer-events: none;
+}
+
+.rw-film-gl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rw-film-track--gl .rw-frame:not(.rw-frame-type) {
+  background: transparent;
+}
+
+.rw-film-track--gl .rw-frame img:not(.rw-logo-mark) {
+  opacity: 0;
+}
+
+/* ── Velocity marquee ── */
+.rw-marquee {
+  overflow: hidden;
+  padding: clamp(36px, 5vw, 72px) 0;
+  border-bottom: 1px solid #ffffff14;
+  background: #0b0b0e;
+}
+
+.rw-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.rw-marquee-run {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.rw-marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.32em;
+  padding-right: 0.32em;
+  font-family: var(--pw-face-display), sans-serif;
+  font-size: clamp(54px, 8.6vw, 150px);
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+}
+
+.rw-marquee-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgb(243 240 235 / 0.38);
+}
+
+.rw-marquee-fill {
+  color: #9381ff;
+}
+
+.rw-marquee-glyph {
+  width: 0.62em;
+  height: 0.31em;
+  flex: none;
+  color: #9381ff;
+}
+
+/* ── Manifesto ── */
+.rw-star {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ── The multiply scene: a tall section with a sticky WebGL stage ── */
+.rw-multiply {
+  position: relative;
+  height: 340vh;
+  background: #0b0b0e;
+}
+
+.rw-multiply-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 50% at 70% 60%, rgb(147 129 255 / 0.12), transparent 70%),
+    #0d0c12;
+}
+
+.rw-multiply-gl {
+  position: absolute;
+  inset: 0;
+}
+
+.rw-multiply-gl canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rw-multiply-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgb(13 12 18 / 0.92) 0%, rgb(13 12 18 / 0.55) 34%, transparent 58%),
+    linear-gradient(0deg, rgb(13 12 18 / 0.85) 0%, transparent 22%);
+}
+
+.rw-multiply-copy {
+  position: absolute;
+  z-index: 2;
+  left: 5.5%;
+  top: 50%;
+  max-width: min(46%, 660px);
+  transform: translateY(-50%);
+}
+
+.rw-multiply-copy .rw-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #a6a1af;
+}
+
+.rw-multiply-lines {
+  display: grid;
+  overflow: hidden;
+  margin-top: 26px;
+  padding-bottom: 0.14em;
+}
+
+.pw .rw .rw-multiply-line {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-family: var(--pw-face-display), sans-serif;
+  font-size: clamp(44px, 5.6vw, 94px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  will-change: transform;
+}
+
+.rw-multiply-line + .rw-multiply-line {
+  transform: translateY(110%);
+}
+
+.rw-multiply-line em {
+  font-style: normal;
+  color: #9381ff;
+}
+
+.rw-multiply-rail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 360px;
+  margin: 44px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rw-multiply-rail li {
+  display: grid;
+  gap: 10px;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #8d8997;
+}
+
+.rw-multiply-rail-track {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  background: #ffffff1f;
+}
+
+.rw-multiply-rail-fill {
+  display: block;
+  height: 100%;
+  background: #9381ff;
+  box-shadow: 0 0 12px #9381ff;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.rw-multiply-hint {
+  position: absolute;
+  z-index: 2;
+  right: 5.5%;
+  bottom: 40px;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  color: #6d6878;
+}
+
+/* ── Engine steps: a hairline draws in; the violet line marks the step being read ── */
+.rw .rw-steps article {
+  position: relative;
+  border-top-color: transparent;
+}
+
+.rw-steps article::before,
+.rw-steps article::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  transform-origin: left;
+}
+
+.rw-steps article::before {
+  background: #ffffff22;
+  transform: scaleX(var(--line, 1));
+}
+
+.rw-steps article::after {
+  background: #9381ff;
+  box-shadow: 0 0 14px #9381ff;
+  transform: scaleX(0);
+  transition: transform 1s var(--rw-ease);
+}
+
+.rw-steps article.is-active::after {
+  transform: scaleX(1);
+}
+
+.rw-steps article h3 {
+  transition:
+    transform 0.8s var(--rw-ease),
+    color 0.5s ease;
+}
+
+.rw-steps article.is-active h3 {
+  transform: translateX(10px);
+}
+
+.rw .rw-steps article > svg {
+  transition:
+    transform 0.8s var(--rw-ease),
+    color 0.4s ease;
+}
+
+.rw .rw-steps article.is-active > svg {
+  transform: rotate(45deg);
+  color: #9381ff;
+}
+
+.rw-step-number {
+  transition: color 0.4s ease;
+}
+
+.rw-steps article.is-active .rw-step-number {
+  color: #f3f0eb;
+}
+
+/* ── Work: GSAP owns the image transform (reveal, parallax); hover uses `scale` ── */
+.rw .rw-work-image img {
+  transition:
+    scale 0.9s var(--rw-ease),
+    filter 0.7s ease;
+}
+
+.rw .rw-work-grid > a:hover img {
+  scale: 1.05;
+  filter: saturate(1);
+}
+
+.rw-work-image {
+  will-change: transform;
+}
+
+/* ── Pricing: hover lift on `translate` (GSAP owns `transform`); a light circles the featured card ── */
+.rw .rw-price-grid article {
+  transition:
+    translate 0.6s var(--rw-ease),
+    background-color 0.4s ease;
+}
+
+.rw .rw-price-grid article:hover {
+  translate: 0 -8px;
+}
+
+@property --rw-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.rw .rw-price-grid .rw-price-featured::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(from var(--rw-angle), transparent 0 58%, #c9c0ff 74%, #9381ff 82%, transparent 94%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rw-orbit 5.5s linear infinite;
+}
+
+@keyframes rw-orbit {
+  to {
+    --rw-angle: 360deg;
+  }
+}
+
+/* ── Finale: the signal returns, in ink ── */
+.rw-finale-wave {
+  position: absolute;
+  inset: -6% -6% -6% 30%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.rw-finale > :not(.rw-finale-wave):not(.rw-logo-mark) {
+  position: relative;
+  z-index: 1;
+}
+
+.rw-signal--finale .rw-signal-fallback {
+  opacity: 0.35;
+}
+
+/* ── Floating nav ── */
+.rw-float {
+  position: fixed;
+  z-index: 60;
+  top: 14px;
+  left: 50%;
+  width: min(calc(100% - 28px), 940px);
+  transform: translate3d(-50%, -160%, 0);
+  transition: transform 0.75s var(--rw-ease);
+}
+
+.rw-float.is-shown {
+  transform: translate3d(-50%, 0, 0);
+}
+
+.rw-float-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 7px 7px 7px 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(16 14 22 / 0.7);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 0 0 1px #ffffff1a,
+    0 24px 60px -24px #000;
+}
+
+.rw-float-brand .rw-brand > .rw-logo-mark {
+  width: 28px;
+  height: 28px;
+}
+
+.rw-float-brand .rw-brand > span {
+  font-size: 18px;
+}
+
+.rw-float-brand .rw-brand small {
+  display: none;
+}
+
+.rw-float-links {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: #c9c6d0;
+}
+
+.rw-float-links a {
+  transition: color 0.25s ease;
+}
+
+.rw-float-links a:hover {
+  color: #b9adff;
+}
+
+.rw-float .rw-campaign-button {
+  min-height: 40px;
+  padding: 10px 18px;
+  font-size: 11px;
+}
+
+.rw-float-progress {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 0;
+  height: 1px;
+}
+
+.rw-float-progress > span {
+  display: block;
+  height: 100%;
+  background: #9381ff;
+  box-shadow: 0 0 10px #9381ff;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* ── Smaller screens ── */
+@media (max-width: 900px) {
+  .rw-multiply {
+    height: 280vh;
+  }
+
+  .rw-multiply-copy {
+    top: 13%;
+    right: 6%;
+    left: 6%;
+    max-width: none;
+    transform: none;
+  }
+
+  .pw .rw .rw-multiply-line {
+    font-size: clamp(36px, 10.5vw, 60px);
+  }
+
+  .rw-multiply-glow {
+    background: linear-gradient(180deg, rgb(13 12 18 / 0.9) 0%, rgb(13 12 18 / 0.4) 40%, transparent 60%);
+  }
+
+  .rw-multiply-hint {
+    display: none;
+  }
+
+  .rw-finale-wave {
+    inset: auto -30% -4% -20%;
+    height: 55%;
+    opacity: 0.55;
+  }
+}
+
+@media (max-width: 700px) {
+  .rw-float-links {
+    display: none;
+  }
+
+  .rw-float-inner {
+    gap: 12px;
+  }
+}
+
+/* ── Reduced motion: no animation; the multiply scene becomes a plain statement ── */
+@media (prefers-reduced-motion: reduce) {
+  .rw-multiply {
+    height: auto;
+  }
+
+  .rw-multiply-stage {
+    position: relative;
+    height: auto;
+    padding: 120px 0;
+  }
+
+  .rw-multiply-copy {
+    position: relative;
+    top: auto;
+    left: auto;
+    max-width: none;
+    padding: 0 5.5%;
+    transform: none;
+  }
+
+  .pw .rw .rw-multiply-line {
+    grid-area: auto;
+  }
+
+  .rw-multiply-line + .rw-multiply-line {
+    transform: none;
+  }
+
+  .rw-multiply-rail,
+  .rw-multiply-hint {
+    display: none;
+  }
+
+  .rw .rw-price-grid .rw-price-featured::before {
+    animation: none;
+  }
+
+  .rw-float {
+    transition: none;
+  }
+}
+/* Keep the product story complete when JS or WebGL is unavailable. */
+.rw-multiply-fallback{position:absolute;right:6%;top:20%;width:40%;height:60%;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.rw-multiply-fallback img{position:absolute;width:48%;height:75%;object-fit:cover;border:1px solid #9381ff66;border-radius:14px;box-shadow:0 20px 70px #0007}
+.rw-multiply-fallback img:nth-child(1){transform:translateX(-60%) rotate(-14deg)}
+.rw-multiply-fallback img:nth-child(2){transform:translateY(-8%);z-index:1}
+.rw-multiply-fallback img:nth-child(3){transform:translateX(60%) rotate(14deg)}
+.rw-multiply[data-gl='on'] .rw-multiply-fallback{display:none}
+.rw-multiply:not([data-motion='on']){height:auto}
+.rw-multiply:not([data-motion='on']) .rw-multiply-stage{position:relative;height:auto;min-height:650px;padding:100px 0}
+.rw-multiply:not([data-motion='on']) .rw-multiply-copy{position:relative;top:auto;transform:none}
+.pw .rw .rw-multiply:not([data-motion='on']) .rw-multiply-line{grid-area:auto;transform:none;margin-top:12px;font-size:clamp(36px,4vw,68px)}
+.rw-multiply:not([data-motion='on']) .rw-multiply-rail{display:none}
+@media(max-width:900px){.rw-multiply-fallback{right:15%;top:45%;width:70%;height:48%}.rw-multiply:not([data-motion='on']) .rw-multiply-stage{min-height:840px}.rw-multiply:not([data-motion='on']) .rw-multiply-copy{left:0;right:0;padding:0 6%}}
+@media(prefers-reduced-motion:reduce){.rw-multiply .rw-multiply-fallback{opacity:.4}.rw-multiply:not([data-motion='on']) .rw-multiply-stage{min-height:0}.rw-multiply .rw-multiply-fallback{right:0;width:45%;height:85%;top:10%}}

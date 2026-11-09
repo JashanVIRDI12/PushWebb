@@ -27,6 +27,14 @@ body:has(.pw) {
     --pw-intro: 1s;
     --pw-nav-h: 72px;
 
+    /* The font tokens must be real custom properties for the rules in this
+       file. globals.css declares them with `@theme inline`, which only
+       inlines them into Tailwind utilities, and they can't live on :root
+       because the faces (--pw-face-*) are set by the font classes on this
+       element. Without these, every var(--font-pw-*) fell back to Archivo. */
+    --font-pw-display: var(--pw-face-display), 'Arial', sans-serif;
+    --font-pw-sans: var(--pw-face-sans), 'Helvetica Neue', Arial, sans-serif;
+
     /* No isolation here on purpose: the preloader, grain and cursor must
        stack against the site-wide WhatsApp button in the root context. */
     position: relative;
@@ -53,6 +61,14 @@ body:has(.pw) {
     color: inherit;
     letter-spacing: -0.02em;
     text-wrap: balance;
+  }
+
+  /* Small headings are labels ("Included", "Recommended For"): the display
+     face is too tight at that size, so they use the sans. */
+  .pw :is(h4, h5, h6) {
+    font-family: var(--font-pw-sans);
+    font-weight: 500;
+    letter-spacing: 0;
   }
 
   .pw p {
@@ -731,18 +747,18 @@ body:has(.pw) {
     scale: 0.5;
   }
 
-  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__ring-inner {
+  .pw-cursor:is([data-state='play'], [data-state='drag'], [data-state='view']) .pw-cursor__ring-inner {
     scale: 1;
     background: var(--color-pw-wave);
     box-shadow: 0 12px 40px -12px rgb(59 91 255 / 0.9);
   }
 
-  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__label {
+  .pw-cursor:is([data-state='play'], [data-state='drag'], [data-state='view']) .pw-cursor__label {
     opacity: 1;
     transform: none;
   }
 
-  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__dot {
+  .pw-cursor:is([data-state='play'], [data-state='drag'], [data-state='view']) .pw-cursor__dot {
     opacity: 0;
   }
 
@@ -878,6 +894,84 @@ body:has(.pw) {
     animation: pw-float 7s ease-in-out infinite;
     animation-delay: var(--fd, 0s);
   }
+
+  /* ── Campaign builder ───────────────────────────────────────── */
+  /* A step animates in each time it is un-hidden; the form sets the
+     direction (+40px forward, -40px back). */
+  .pw-step:not([hidden]) {
+    animation: pw-step-in 0.7s var(--pw-ease-expo) both;
+  }
+
+  /* Playhead sweeping the highlight-discovery waveform. */
+  .pw-scan {
+    animation: pw-scan 6s linear infinite;
+  }
+
+  /* ── Proposal dialog ────────────────────────────────────────── */
+  .pw-dialog {
+    width: min(100% - 32px, 720px);
+    max-height: min(100% - 32px, 920px);
+    margin: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 32px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    color: var(--color-pw-ink);
+    background:
+      radial-gradient(60% 40% at 90% 0%, rgb(59 91 255 / 0.18), transparent 70%),
+      var(--color-pw-graphite);
+    box-shadow:
+      inset 0 0 0 1px var(--color-pw-line-strong),
+      0 40px 120px -40px rgb(0 0 0 / 0.9);
+    /* The custom cursor sits under the top layer, so the native one returns here. */
+    cursor: auto;
+  }
+
+  .pw[data-custom-cursor='on'] .pw-dialog :is(a, button, label) {
+    cursor: pointer;
+  }
+
+  .pw-dialog::backdrop {
+    background: rgb(7 7 10 / 0.72);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .pw-dialog[open] {
+    animation: pw-dialog-in 0.6s var(--pw-ease-expo) both;
+  }
+
+  .pw-dialog[open]::backdrop {
+    animation: pw-fade 0.4s ease both;
+  }
+
+  /* ── Audience tiles ─────────────────────────────────────────── */
+  /* The accent wash rises from the bottom edge on hover/focus. */
+  .pw-rise-wash {
+    transform: translate3d(0, 101%, 0);
+    transition: transform 0.8s var(--pw-ease-expo);
+  }
+
+  .group\/aud:hover .pw-rise-wash,
+  .group\/aud:focus-within .pw-rise-wash {
+    transform: none;
+  }
+}
+
+@keyframes pw-step-in {
+  from { opacity: 0; transform: translate3d(var(--pw-step-from, 40px), 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pw-scan {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(100%, 0, 0); }
+}
+
+@keyframes pw-dialog-in {
+  from { opacity: 0; transform: translate3d(0, 32px, 0) scale(0.98); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes pw-rise {
@@ -926,8 +1020,13 @@ body:has(.pw) {
 @media (prefers-reduced-motion: reduce) {
   .pw-grain,
   .pw-float,
+  .pw-scan,
   .pw-marquee__track {
     animation: none !important;
+  }
+
+  .pw-scan {
+    display: none;
   }
 
   .pw-preloader {
