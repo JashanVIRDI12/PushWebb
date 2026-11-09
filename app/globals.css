@@ -1109,3 +1109,42 @@ html {
   background: var(--color-ink);
   color: #ffffff;
 }
+
+/* ────────────────────────────────────────────────────────────────
+   PUSHWAVE (/pushwave) — sub-brand tokens.
+   Namespaced `pw-` so they never collide with the PUSHWebb palette.
+   Component styles live in app/pushwave/pushwave.css; the font faces
+   are loaded by app/pushwave/layout.tsx and exposed as --pw-face-*.
+──────────────────────────────────────────────────────────────── */
+@theme {
+  --color-pw-void: #07070a;
+  --color-pw-graphite: #0f0f14;
+  --color-pw-slate: #17171e;
+  --color-pw-ink: #f2f2f0;
+  --color-pw-soft: #bdbdc3;
+  --color-pw-steel: #8d8d95;
+  --color-pw-wave: #3b5bff;
+  --color-pw-wave-ink: #9aabff;
+  --color-pw-line: rgb(242 242 240 / 0.09);
+  --color-pw-line-strong: rgb(242 242 240 / 0.18);
+}
+
+@theme inline {
+  --font-pw-display: var(--pw-face-display), "Arial", sans-serif;
+  --font-pw-sans: var(--pw-face-sans), "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Particle animation (components/ui/particle-animation.tsx): characters
+   stretch vertically up to --max-scale. Also drives the PUSHWAVE footer
+   wordmark reveal. */
+@keyframes char-scale {
+  0% {
+    scale: 1 0.1;
+  }
+  50% {
+    scale: 1 var(--max-scale);
+  }
+  100% {
+    scale: 1 0.1;
+  }
+}

@@ -1,0 +1,947 @@
+/* ────────────────────────────────────────────────────────────────
+   PUSHWAVE — component styles for /pushwave.
+
+   Everything is scoped under .pw so it cannot leak into the PUSHWebb
+   site. Rules live in cascade layers on purpose: Tailwind utilities
+   (layer `utilities`) still win over anything written here.
+
+   Tokens (colors, font families) are declared in app/globals.css as
+   Tailwind theme variables: --color-pw-*, --font-pw-*.
+──────────────────────────────────────────────────────────────── */
+
+/* Page chrome outside the .pw subtree: dark overscroll and scrollbars. */
+html:has(.pw) {
+  color-scheme: dark !important;
+  background: #07070a;
+}
+
+body:has(.pw) {
+  background: #07070a;
+}
+
+@layer base {
+  .pw {
+    --pw-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --pw-ease-quart: cubic-bezier(0.76, 0, 0.24, 1);
+    --pw-ease-power4: cubic-bezier(0.22, 1, 0.36, 1);
+    --pw-intro: 1s;
+    --pw-nav-h: 72px;
+
+    /* No isolation here on purpose: the preloader, grain and cursor must
+       stack against the site-wide WhatsApp button in the root context. */
+    position: relative;
+    min-height: 100vh;
+    background: var(--color-pw-void);
+    color: var(--color-pw-ink);
+    font-family: var(--font-pw-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+
+
+  /* The PUSHWebb base layer sets uppercase, expanded headings. */
+  .pw :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-pw-display);
+    font-weight: 600;
+    text-transform: none;
+    font-variation-settings: normal;
+    color: inherit;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .pw p {
+    text-wrap: pretty;
+  }
+
+  .pw ::selection {
+    background: var(--color-pw-wave);
+    color: #ffffff;
+  }
+
+  .pw :focus-visible {
+    outline: 2px solid var(--color-pw-wave-ink);
+    outline-offset: 3px;
+  }
+
+  .pw [id] {
+    scroll-margin-top: calc(var(--pw-nav-h) + 16px);
+  }
+
+  /* Sections take programmatic focus after an in-page jump (so keyboard
+     users continue from there); that focus needs no ring. */
+  .pw [tabindex='-1']:focus {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* ── Layout ─────────────────────────────────────────────────── */
+  .pw-shell {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .pw-shell { padding-inline: 32px; }
+  }
+
+  @media (min-width: 1024px) {
+    .pw-shell { padding-inline: 48px; }
+  }
+
+  @media (min-width: 1440px) {
+    .pw-shell { padding-inline: 64px; }
+  }
+
+  /* Opaque sections cover the fixed wave stage; the hero and the final
+     call to action stay transparent so the stage shows through. */
+  .pw-section {
+    position: relative;
+    z-index: 1;
+    background: var(--color-pw-void);
+    padding-block: clamp(6rem, 4rem + 8vw, 12rem);
+  }
+
+  .pw-section--tight {
+    padding-block: clamp(4rem, 3rem + 5vw, 8rem);
+  }
+
+  /* ── Type scale ─────────────────────────────────────────────── */
+  .pw-d1 {
+    font-family: var(--font-pw-display);
+    font-weight: 600;
+    font-size: clamp(3rem, 1.2rem + 6.6vw, 8.75rem);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+  }
+
+  .pw-d2 {
+    font-family: var(--font-pw-display);
+    font-weight: 600;
+    font-size: clamp(2.375rem, 1.1rem + 4.6vw, 6rem);
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+  }
+
+  .pw-d3 {
+    font-family: var(--font-pw-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.1rem + 2.2vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.032em;
+  }
+
+  .pw-title {
+    font-family: var(--font-pw-display);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .pw-lead {
+    font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.3125rem);
+    line-height: 1.5;
+    color: var(--color-pw-soft);
+  }
+
+  .pw-small {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .pw-micro {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* Section label: a small playhead marker then the section's own name. */
+  .pw-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-pw-steel);
+  }
+
+  .pw-label::before {
+    content: '';
+    width: 6px;
+    height: 11px;
+    border-radius: 2px;
+    background: var(--color-pw-wave);
+    box-shadow: 0 0 12px rgb(59 91 255 / 0.8);
+    flex: none;
+  }
+
+  /* Fine print stays visible: smaller and muted, never hidden. */
+  .pw-fine {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-pw-steel);
+    max-width: 72ch;
+  }
+
+  /* ── Masks for split text ───────────────────────────────────── */
+  .pw-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .pw-split-line-mask {
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  /* ── Intro choreography (CSS, so it runs before hydration) ──── */
+  .pw-rise {
+    display: inline-block;
+    animation: pw-rise 1.15s var(--pw-ease-expo) both;
+    animation-delay: calc(var(--pw-intro) + var(--d, 0s));
+    will-change: transform;
+  }
+
+  .pw-appear {
+    animation: pw-appear 1s var(--pw-ease-expo) both;
+    animation-delay: calc(var(--pw-intro) + var(--d, 0s));
+  }
+
+  /* ── Buttons ────────────────────────────────────────────────── */
+  .pw-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 56px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-family: var(--font-pw-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-align: center;
+    isolation: isolate;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.5s var(--pw-ease-expo),
+      color 0.35s ease,
+      scale 0.25s var(--pw-ease-expo);
+  }
+
+  .pw-btn:active {
+    scale: 0.97;
+  }
+
+  .pw-btn--sm {
+    min-height: 44px;
+    padding: 10px 20px;
+    font-size: 0.9375rem;
+  }
+
+  .pw-btn--primary {
+    background: var(--color-pw-wave);
+    color: #ffffff;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.22),
+      0 10px 36px -14px rgb(59 91 255 / 0.85);
+  }
+
+  .pw-btn--primary:hover {
+    background: #4c69ff;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.3),
+      0 0 0 1px rgb(154 171 255 / 0.4),
+      0 16px 48px -12px rgb(59 91 255 / 0.95);
+  }
+
+  .pw-btn--ghost {
+    background: rgb(242 242 240 / 0.02);
+    color: var(--color-pw-ink);
+    box-shadow: inset 0 0 0 1px var(--color-pw-line-strong);
+  }
+
+  .pw-btn--ghost:hover {
+    background: rgb(242 242 240 / 0.07);
+    box-shadow: inset 0 0 0 1px rgb(242 242 240 / 0.4);
+  }
+
+  .pw-btn--ink {
+    background: var(--color-pw-ink);
+    color: var(--color-pw-void);
+  }
+
+  .pw-btn--ink:hover {
+    background: #ffffff;
+    box-shadow: 0 16px 48px -16px rgb(242 242 240 / 0.6);
+  }
+
+  .pw-btn[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* Label roll: the second copy slides in from below on hover. Both copies
+     share one grid cell, so wrapped (two-line) labels roll correctly too. */
+  .pw-btn__roll {
+    display: grid;
+    overflow: hidden;
+  }
+
+  .pw-btn__roll > span {
+    grid-area: 1 / 1;
+    transition: transform 0.6s var(--pw-ease-expo);
+  }
+
+  .pw-btn__roll > span + span {
+    transform: translate3d(0, 110%, 0);
+  }
+
+  @media (hover: hover) {
+    .pw-btn:hover .pw-btn__roll > span:first-child {
+      transform: translate3d(0, -110%, 0);
+    }
+
+    .pw-btn:hover .pw-btn__roll > span + span {
+      transform: none;
+    }
+  }
+
+  .pw-btn__icon {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-left: -12px;
+    border-radius: 999px;
+    background: rgb(242 242 240 / 0.1);
+    flex: none;
+    transition: transform 0.5s var(--pw-ease-expo);
+  }
+
+  .pw-btn:hover .pw-btn__icon {
+    transform: scale(1.12);
+  }
+
+  /* Text link with an underline that draws in. */
+  .pw-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--pw-ease-expo), color 0.3s ease;
+  }
+
+  .pw-link:hover,
+  .pw-link:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* ── Surfaces ───────────────────────────────────────────────── */
+  .pw-glass {
+    background: rgb(15 15 20 / 0.56);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow:
+      inset 0 0 0 1px rgb(242 242 240 / 0.1),
+      inset 0 1px 0 rgb(255 255 255 / 0.07),
+      0 30px 80px -40px rgb(0 0 0 / 0.9);
+  }
+
+  /* Card with a pointer-tracked accent border (see useCardGlow). */
+  .pw-card {
+    position: relative;
+    border-radius: 28px;
+    background: var(--color-pw-graphite);
+    box-shadow: inset 0 0 0 1px var(--color-pw-line);
+  }
+
+  .pw-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 0%),
+      rgb(59 91 255 / 0.95),
+      rgb(59 91 255 / 0.2) 36%,
+      transparent 62%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+
+  .pw-card:hover::before,
+  .pw-card:focus-within::before,
+  .pw-card[data-featured='true']::before {
+    opacity: 1;
+  }
+
+  .pw-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Clearly labelled empty slot for an asset that hasn't been supplied. */
+  .pw-slot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    border-radius: 20px;
+    padding: 20px;
+    color: var(--color-pw-steel);
+    background:
+      linear-gradient(180deg, rgb(242 242 240 / 0.03), transparent 40%),
+      repeating-linear-gradient(
+        -45deg,
+        rgb(242 242 240 / 0.025) 0 1px,
+        transparent 1px 14px
+      ),
+      var(--color-pw-graphite);
+    box-shadow: inset 0 0 0 1px rgb(242 242 240 / 0.12);
+    overflow: hidden;
+  }
+
+  .pw-slot::after {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border-radius: 12px;
+    border: 1px dashed rgb(242 242 240 / 0.14);
+    pointer-events: none;
+  }
+
+  .pw-todo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-pw-wave-ink);
+    background: rgb(59 91 255 / 0.12);
+    box-shadow: inset 0 0 0 1px rgb(59 91 255 / 0.35);
+  }
+
+  /* ── Chips (builder options) ────────────────────────────────── */
+  .pw-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-pw-soft);
+    background: rgb(242 242 240 / 0.03);
+    box-shadow: inset 0 0 0 1px var(--color-pw-line-strong);
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease,
+      scale 0.2s var(--pw-ease-expo);
+  }
+
+  .pw-chip:hover {
+    color: var(--color-pw-ink);
+    background: rgb(242 242 240 / 0.07);
+  }
+
+  .pw-chip:active {
+    scale: 0.97;
+  }
+
+  .pw-chip:has(input:checked) {
+    color: #ffffff;
+    background: rgb(59 91 255 / 0.18);
+    box-shadow:
+      inset 0 0 0 1px var(--color-pw-wave),
+      0 0 24px -8px rgb(59 91 255 / 0.8);
+  }
+
+  .pw-chip:has(input:focus-visible) {
+    outline: 2px solid var(--color-pw-wave-ink);
+    outline-offset: 3px;
+  }
+
+  .pw-chip__tick {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--color-pw-line-strong);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    flex: none;
+  }
+
+  .pw-chip:has(input:checked) .pw-chip__tick {
+    background: var(--color-pw-wave);
+    box-shadow: none;
+  }
+
+  .pw-chip__tick svg {
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity 0.25s ease, transform 0.4s var(--pw-ease-expo);
+  }
+
+  .pw-chip:has(input:checked) .pw-chip__tick svg {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── Form fields ────────────────────────────────────────────── */
+  .pw-field {
+    width: 100%;
+    min-height: 56px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-pw-ink);
+    background: rgb(242 242 240 / 0.04);
+    box-shadow: inset 0 0 0 1px var(--color-pw-line-strong);
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  }
+
+  .pw-field::placeholder {
+    color: var(--color-pw-steel);
+  }
+
+  .pw-field:hover {
+    background: rgb(242 242 240 / 0.06);
+  }
+
+  .pw-field:focus {
+    outline: none;
+    background: rgb(242 242 240 / 0.06);
+    box-shadow:
+      inset 0 0 0 1px var(--color-pw-wave),
+      0 0 0 4px rgb(59 91 255 / 0.22);
+  }
+
+  .pw-field[aria-invalid='true'] {
+    box-shadow: inset 0 0 0 1px #ff6b6b;
+  }
+
+  /* ── Accordion ──────────────────────────────────────────────── */
+  .pw-acc__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.65s var(--pw-ease-expo);
+  }
+
+  .pw-acc[data-open='true'] > .pw-acc__panel {
+    grid-template-rows: 1fr;
+  }
+
+  .pw-acc__inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .pw-acc__content {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+    transition: opacity 0.4s ease, transform 0.6s var(--pw-ease-expo);
+  }
+
+  .pw-acc[data-open='true'] .pw-acc__content {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.08s;
+  }
+
+  .pw-acc__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--color-pw-line-strong);
+    transition: background-color 0.35s ease, box-shadow 0.35s ease, transform 0.6s var(--pw-ease-expo);
+    flex: none;
+  }
+
+  .pw-acc__icon::before,
+  .pw-acc__icon::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.6s var(--pw-ease-expo);
+  }
+
+  .pw-acc__icon::after {
+    transform: rotate(90deg);
+  }
+
+  .pw-acc[data-open='true'] .pw-acc__icon {
+    background: var(--color-pw-wave);
+    box-shadow: none;
+    transform: rotate(180deg);
+  }
+
+  .pw-acc[data-open='true'] .pw-acc__icon::after {
+    transform: rotate(180deg);
+  }
+
+  /* ── Marquee ────────────────────────────────────────────────── */
+  .pw-marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .pw-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: pw-marquee 38s linear infinite;
+  }
+
+  .pw-marquee:hover .pw-marquee__track {
+    animation-play-state: paused;
+  }
+
+  /* ── Grain ──────────────────────────────────────────────────── */
+  .pw-grain {
+    position: fixed;
+    inset: -10%;
+    z-index: 300;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: pw-grain 1.2s steps(6) infinite;
+  }
+
+  /* ── Custom cursor ──────────────────────────────────────────── */
+  .pw[data-custom-cursor='on'],
+  .pw[data-custom-cursor='on'] :is(a, button, label, [role='tab'], summary) {
+    cursor: none;
+  }
+
+  .pw-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 500;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .pw-cursor[data-visible='true'] {
+    opacity: 1;
+  }
+
+  .pw-cursor__dot,
+  .pw-cursor__ring {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 999px;
+  }
+
+  .pw-cursor__dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: var(--color-pw-ink);
+    transition: opacity 0.25s ease, scale 0.4s var(--pw-ease-expo);
+  }
+
+  /* Drawn at its largest size and scaled down, so the label stays crisp. */
+  .pw-cursor__ring {
+    width: 96px;
+    height: 96px;
+    margin: -48px 0 0 -48px;
+  }
+
+  .pw-cursor__ring-inner {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 2.5px rgb(242 242 240 / 0.5);
+    scale: 0.42;
+    transition:
+      scale 0.55s var(--pw-ease-expo),
+      background-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .pw-cursor__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #ffffff;
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    transition: opacity 0.25s ease, transform 0.45s var(--pw-ease-expo);
+  }
+
+  .pw-cursor[data-state='hover'] .pw-cursor__ring-inner {
+    scale: 0.68;
+    background: rgb(242 242 240 / 0.1);
+    box-shadow: inset 0 0 0 1.5px rgb(242 242 240 / 0.2);
+  }
+
+  .pw-cursor[data-state='hover'] .pw-cursor__dot {
+    scale: 0.5;
+  }
+
+  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__ring-inner {
+    scale: 1;
+    background: var(--color-pw-wave);
+    box-shadow: 0 12px 40px -12px rgb(59 91 255 / 0.9);
+  }
+
+  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__label {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pw-cursor:is([data-state='play'], [data-state='drag']) .pw-cursor__dot {
+    opacity: 0;
+  }
+
+  /* ── Preloader ──────────────────────────────────────────────── */
+  .pw-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display: grid;
+    place-items: center;
+    background: var(--color-pw-void);
+    animation: pw-preloader-out 0.5s var(--pw-ease-quart) 0.92s both;
+    pointer-events: none;
+  }
+
+
+  .pw-preloader__inner {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    animation: pw-preloader-lift 0.5s var(--pw-ease-quart) 0.92s both;
+  }
+
+  .pw-preloader__word {
+    display: flex;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    font-family: var(--font-pw-display);
+    font-weight: 600;
+    font-size: clamp(2.5rem, 1.4rem + 5vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-pw-ink);
+  }
+
+  .pw-preloader__char {
+    display: inline-block;
+    animation: pw-rise 0.7s var(--pw-ease-expo) both;
+    animation-delay: calc(0.04s + var(--i) * 0.035s);
+  }
+
+  .pw-preloader__wave {
+    width: min(70vw, 360px);
+    height: 28px;
+    overflow: visible;
+  }
+
+  .pw-preloader__wave path {
+    fill: none;
+    stroke: var(--color-pw-wave);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    filter: drop-shadow(0 0 8px rgb(59 91 255 / 0.9));
+    animation: pw-draw 0.75s var(--pw-ease-power4) 0.12s forwards;
+  }
+
+  .pw-preloader__by {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-pw-steel);
+    animation: pw-appear 0.6s var(--pw-ease-expo) 0.3s both;
+  }
+
+  /* ── Engine timeline ────────────────────────────────────────── */
+  .pw-scrubber {
+    position: relative;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-pw-line-strong);
+  }
+
+  .pw-scrubber__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--color-pw-wave);
+    box-shadow: 0 0 16px rgb(59 91 255 / 0.9);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+  }
+
+  /* ── 9:16 frame motif (CSS fallback for the wave, step visuals) ─ */
+  .pw-frame {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: 18px;
+    overflow: hidden;
+    background:
+      radial-gradient(60% 34% at 50% 34%, rgb(242 242 240 / 0.16), transparent 70%),
+      radial-gradient(90% 40% at 50% 74%, rgb(242 242 240 / 0.09), transparent 70%),
+      linear-gradient(180deg, #1a1b24 0%, #0d0d12 100%);
+    box-shadow:
+      inset 0 0 0 1px rgb(242 242 240 / 0.12),
+      0 24px 60px -30px rgb(0 0 0 / 0.9);
+  }
+
+  .pw-frame::after {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 5%;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #ffffff var(--p, 40%), rgb(255 255 255 / 0.22) var(--p, 40%));
+  }
+
+  .pw-frame[data-accent='true'] {
+    box-shadow:
+      inset 0 0 0 1px rgb(59 91 255 / 0.8),
+      0 0 40px -10px rgb(59 91 255 / 0.7),
+      0 24px 60px -30px rgb(0 0 0 / 0.9);
+  }
+
+/* Footer wordmark reveal: letters pulse like a waveform (char-scale,
+     app/globals.css) while the gooey trail is alive. */
+  .pw-goo-char {
+    --max-scale: 1;
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: char-scale 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation-delay: calc(var(--i) * -0.22s);
+    animation-play-state: paused;
+  }
+
+  svg[data-active='true'] .pw-goo-char {
+    animation-play-state: running;
+  }
+
+  .pw-float {
+    animation: pw-float 7s ease-in-out infinite;
+    animation-delay: var(--fd, 0s);
+  }
+}
+
+@keyframes pw-rise {
+  from { transform: translate3d(0, 110%, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pw-appear {
+  from { opacity: 0; transform: translate3d(0, 24px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes pw-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pw-preloader-out {
+  from { transform: translate3d(0, 0, 0); visibility: visible; }
+  to { transform: translate3d(0, -100%, 0); visibility: hidden; }
+}
+
+@keyframes pw-preloader-lift {
+  to { transform: translate3d(0, -40vh, 0); opacity: 0; }
+}
+
+@keyframes pw-marquee {
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pw-grain {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-4%, 3%, 0); }
+  40% { transform: translate3d(3%, -5%, 0); }
+  60% { transform: translate3d(-6%, -2%, 0); }
+  80% { transform: translate3d(5%, 4%, 0); }
+  100% { transform: translate3d(-2%, 6%, 0); }
+}
+
+@keyframes pw-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); }
+  50% { transform: translate3d(0, -14px, 0) rotate(var(--r, 0deg)); }
+}
+
+/* Reduced motion: the site-wide rule in globals.css already collapses
+   animation and transition durations; these switch off what remains. */
+@media (prefers-reduced-motion: reduce) {
+  .pw-grain,
+  .pw-float,
+  .pw-marquee__track {
+    animation: none !important;
+  }
+
+  .pw-preloader {
+    display: none;
+  }
+
+  .pw-rise,
+  .pw-appear {
+    animation: pw-fade 0.3s ease both;
+    animation-delay: 0s;
+  }
+}
+
+@keyframes pw-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
